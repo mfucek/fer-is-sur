@@ -22,7 +22,7 @@ import {
 	ModalTitle,
 	ModalTrigger
 } from '@/lib/shadcn/ui/modal';
-import { useIsMobile } from '@/utils/useMediaQuery';
+import { useViewport } from '@/utils/use-viewport';
 
 interface BaseProps {
 	children: React.ReactNode;
@@ -39,14 +39,14 @@ interface DialogProps extends BaseProps {
 }
 
 const Dialog = ({ children, ...props }: RootDialogProps) => {
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 	const Dialog = isDesktop ? Modal : Drawer;
 
 	return <Dialog {...props}>{children}</Dialog>;
 };
 
 const DialogTrigger = ({ className, children, ...props }: DialogProps) => {
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 	const DialogTrigger = isDesktop ? ModalTrigger : DrawerTrigger;
 
 	return (
@@ -57,7 +57,7 @@ const DialogTrigger = ({ className, children, ...props }: DialogProps) => {
 };
 
 const DialogClose = ({ className, children, ...props }: DialogProps) => {
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 	const DialogClose = isDesktop ? ModalClose : DrawerClose;
 
 	return (
@@ -68,7 +68,7 @@ const DialogClose = ({ className, children, ...props }: DialogProps) => {
 };
 
 const DialogContent = ({ className, children, ...props }: DialogProps) => {
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 	const DialogContent = isDesktop ? ModalContent : DrawerContent;
 
 	return (
@@ -79,7 +79,7 @@ const DialogContent = ({ className, children, ...props }: DialogProps) => {
 };
 
 const DialogDescription = ({ className, children, ...props }: DialogProps) => {
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 	const DialogDescription = isDesktop ? ModalDescription : DrawerDescription;
 
 	return (
@@ -90,7 +90,7 @@ const DialogDescription = ({ className, children, ...props }: DialogProps) => {
 };
 
 const DialogHeader = ({ className, children, ...props }: DialogProps) => {
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 	const DialogHeader = isDesktop ? ModalHeader : DrawerHeader;
 
 	return (
@@ -101,7 +101,7 @@ const DialogHeader = ({ className, children, ...props }: DialogProps) => {
 };
 
 const DialogTitle = ({ className, children, ...props }: DialogProps) => {
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 	const DialogTitle = isDesktop ? ModalTitle : DrawerTitle;
 
 	return (
@@ -120,7 +120,7 @@ const DialogBody = ({ className, children, ...props }: DialogProps) => {
 };
 
 const DialogFooter = ({ className, children, ...props }: DialogProps) => {
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 	const DialogFooter = isDesktop ? ModalFooter : DrawerFooter;
 
 	return (

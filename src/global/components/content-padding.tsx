@@ -8,7 +8,8 @@ const contentPaddingVariants = cva('w-full', {
 		size: {
 			sm: 'px-2 @md:px-0',
 			md: 'px-3 @md:px-0',
-			lg: 'px-4 @md:px-0'
+			lg: 'px-4 @md:px-0',
+			xl: 'px-6 @md:px-0'
 		}
 	},
 	defaultVariants: {

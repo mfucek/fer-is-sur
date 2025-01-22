@@ -7,6 +7,7 @@ import { type Metadata } from 'next';
 
 import { AnalyticsProvider } from '@/lib/posthog';
 import { TRPCReactProvider } from '@/lib/trpc/react';
+import { ViewportSizeProvider } from '@/utils/use-viewport';
 
 export const metadata: Metadata = {
 	title: 'Crni Mag | Likovne radionice',
@@ -34,13 +35,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
 		<html lang="en" className={GeistSans.variable}>
-			<body className="bg-background min-h-screen">
-				<TRPCReactProvider>
-					<AnalyticsProvider>
-						<div className="min-h-screen overflow-x-hidden">{children}</div>
-					</AnalyticsProvider>
-				</TRPCReactProvider>
-			</body>
+			<ViewportSizeProvider>
+				<body className="bg-background min-h-screen">
+					<TRPCReactProvider>
+						<AnalyticsProvider>
+							<div className="min-h-screen overflow-x-hidden">{children}</div>
+						</AnalyticsProvider>
+					</TRPCReactProvider>
+				</body>
+			</ViewportSizeProvider>
 		</html>
 	);
 }

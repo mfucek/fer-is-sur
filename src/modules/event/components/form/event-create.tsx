@@ -2,24 +2,11 @@
 
 import { useFormContext } from 'react-hook-form';
 
+import { FormLabel } from '@/global/components/form-label';
 import { Button } from '@/lib/shadcn/ui/button';
 import { Input } from '@/lib/shadcn/ui/input';
+import { Textarea } from '@/lib/shadcn/ui/textarea';
 import { TEventCreateSchema } from '@/modules/event/schemas';
-
-const FormSection = ({
-	children,
-	title
-}: {
-	children: React.ReactNode;
-	title: string;
-}) => {
-	return (
-		<div>
-			<h2>{title}</h2>
-			{children}
-		</div>
-	);
-};
 
 export const DetailsForm = () => {
 	const {
@@ -30,25 +17,33 @@ export const DetailsForm = () => {
 	} = useFormContext<TEventCreateSchema>();
 
 	return (
-		<FormSection title="Invoice Details">
-			<Input {...register('title')} type="text" />
-			{errors.title && <p>{errors.title.message}</p>}
+		<div className="flex flex-col gap-4">
+			<FormLabel title="Title" error={errors.title?.message}>
+				<Input {...register('title')} type="text" />
+			</FormLabel>
 
-			<Input {...register('description')} type="text" />
-			{errors.description && <p>{errors.description.message}</p>}
+			<FormLabel title="Description" error={errors.description?.message}>
+				<Textarea {...register('description')} />
+			</FormLabel>
 
-			<Input {...register('location')} type="text" />
-			{errors.location && <p>{errors.location.message}</p>}
+			<div className="flex flex-row gap-2">
+				<FormLabel title="Location" error={errors.location?.message}>
+					<Input {...register('location')} type="text" />
+				</FormLabel>
 
-			<input
-				{...register('date', {
-					valueAsDate: true
-				})}
-				type="date"
-			/>
-			{errors.date && <p>{errors.date.message}</p>}
+				<FormLabel title="Date" error={errors.date?.message}>
+					<Input
+						{...register('date', {
+							valueAsDate: true
+						})}
+						type="date"
+					/>
+				</FormLabel>
+			</div>
 
-			<Button>Create</Button>
-		</FormSection>
+			<div className="flex flex-row justify-end">
+				<Button variant="solid">Create</Button>
+			</div>
+		</div>
 	);
 };

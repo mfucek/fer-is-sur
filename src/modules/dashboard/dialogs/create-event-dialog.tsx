@@ -3,11 +3,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { ContentPadding } from '@/global/components/content-padding';
+import {
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle
+} from '@/lib/shadcn/ui/dialog';
 import { api } from '@/lib/trpc/react';
+import { DetailsForm } from '@/modules/event/components/form/event-create';
 import { eventCreateSchema, TEventCreateSchema } from '@/modules/event/schemas';
-import { DetailsForm } from './form/event-create';
 
-export const EventCreator = () => {
+export const CreateEventDialogContent = () => {
 	const form = useForm<TEventCreateSchema>({
 		resolver: zodResolver(eventCreateSchema)
 	});
@@ -35,12 +42,19 @@ export const EventCreator = () => {
 	};
 
 	return (
-		<div>
-			<FormProvider {...form}>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<DetailsForm />
-				</form>
-			</FormProvider>
-		</div>
+		<DialogContent>
+			<DialogHeader>
+				<DialogTitle>Create Event</DialogTitle>
+				<DialogDescription>Create a new event.</DialogDescription>
+			</DialogHeader>
+
+			<ContentPadding size="xl">
+				<FormProvider {...form}>
+					<form onSubmit={handleSubmit(onSubmit)}>
+						<DetailsForm />
+					</form>
+				</FormProvider>
+			</ContentPadding>
+		</DialogContent>
 	);
 };

@@ -15,5 +15,12 @@ export const eventUpdateSchema = z.object({
 	date: z.date().optional()
 });
 
+export const dateRangeSchema = z.object({
+	dateFrom: z.date().nullish(),
+	dateTo: z.date().nullish()
+});
+
 export type TEventCreateSchema = z.infer<typeof eventCreateSchema>;
 export type TEventUpdateSchema = z.infer<typeof eventUpdateSchema>;
+
+export type TDateRangeSchema = z.infer<typeof dateRangeSchema>;

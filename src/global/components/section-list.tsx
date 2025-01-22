@@ -30,7 +30,7 @@ const Item: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
 	return (
 		<div
 			className={cn(
-				'flex flex-row gap-2 items-center justify-between bg-section md:bg-neutral-weak button-md group',
+				'flex flex-row gap-2 items-center justify-between bg-section button-md group',
 				className
 			)}
 			{...props}

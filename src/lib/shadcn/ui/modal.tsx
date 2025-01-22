@@ -3,6 +3,7 @@
 import * as ModalPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 
+import { ContentPadding } from '@/global/components/content-padding';
 import { Icon } from '@/global/components/icon';
 import { cn } from '@/lib/shadcn/utils';
 
@@ -21,7 +22,7 @@ const ModalOverlay = React.forwardRef<
 	<ModalPrimitive.Overlay
 		ref={ref}
 		className={cn(
-			'fixed inset-0 z-50 bg-background bg-opacity-80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+			'fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
 			className
 		)}
 		{...props}
@@ -43,7 +44,7 @@ const ModalContent = React.forwardRef<
 			)}
 			{...props}
 		>
-			{children}
+			<div className="flex flex-col py-10 gap-6">{children}</div>
 			<ModalPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-neutral-strong">
 				<Icon icon="close" size={16} />
 				<span className="sr-only">Close</span>
@@ -84,24 +85,32 @@ ModalFooter.displayName = 'ModalFooter';
 const ModalTitle = React.forwardRef<
 	React.ElementRef<typeof ModalPrimitive.Title>,
 	React.ComponentPropsWithoutRef<typeof ModalPrimitive.Title>
->(({ className, ...props }, ref) => (
-	<ModalPrimitive.Title
-		ref={ref}
-		className={cn('title-2', className)}
-		{...props}
-	/>
+>(({ className, children, ...props }, ref) => (
+	<ContentPadding size="xl">
+		<ModalPrimitive.Title
+			ref={ref}
+			className={cn('title-2', className)}
+			{...props}
+		>
+			{children}
+		</ModalPrimitive.Title>
+	</ContentPadding>
 ));
 ModalTitle.displayName = ModalPrimitive.Title.displayName;
 
 const ModalDescription = React.forwardRef<
 	React.ElementRef<typeof ModalPrimitive.Description>,
 	React.ComponentPropsWithoutRef<typeof ModalPrimitive.Description>
->(({ className, ...props }, ref) => (
-	<ModalPrimitive.Description
-		ref={ref}
-		className={cn('body-2 text-neutral-strong', className)}
-		{...props}
-	/>
+>(({ className, children, ...props }, ref) => (
+	<ContentPadding size="xl">
+		<ModalPrimitive.Description
+			ref={ref}
+			className={cn('body-2 text-neutral-strong', className)}
+			{...props}
+		>
+			{children}
+		</ModalPrimitive.Description>
+	</ContentPadding>
 ));
 ModalDescription.displayName = ModalPrimitive.Description.displayName;
 
