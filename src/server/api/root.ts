@@ -1,11 +1,8 @@
-import { createCallerFactory, createTRPCRouter, t } from '@/server/api/trpc';
+import { eventRouter } from '@/modules/event/api/router';
+import { createCallerFactory, createTRPCRouter } from '@/server/api/trpc';
 
 export const appRouter = createTRPCRouter({
-	test: createTRPCRouter({
-		hello: t.procedure.query(() => {
-			return 'Hello World';
-		})
-	})
+	event: eventRouter
 });
 
 export type AppRouter = typeof appRouter;

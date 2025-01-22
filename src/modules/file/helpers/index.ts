@@ -1,25 +1,15 @@
-import { env } from '@/env';
 import {
 	DeleteObjectCommand,
 	GetObjectCommand,
 	ListObjectsCommand,
-	PutObjectCommand,
-	S3Client
+	PutObjectCommand
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-const bucket = env.AMPLIFY_BUCKET;
-const region = env.AWS_REGION;
-const accessKeyId = env.AMPLIFY_ACCESS_KEY_ID;
-const secretAccessKey = env.AMPLIFY_SECRET_ACCESS_KEY;
+import { env } from '@/env';
+import { r2Client } from './client';
 
-const s3 = new S3Client({
-	region,
-	credentials: {
-		accessKeyId,
-		secretAccessKey
-	}
-});
+const bucket = env.CLOUDFLARE_R2_BUCKET_NAME;
 
 export const listFiles = async (prefix: string) => {
 	const command = new ListObjectsCommand({
@@ -27,7 +17,7 @@ export const listFiles = async (prefix: string) => {
 		Prefix: prefix
 	});
 
-	const response = await s3.send(command);
+	const response = await r2Client.send(command);
 
 	return response.Contents;
 };
@@ -42,7 +32,7 @@ export const uploadFiles = async (files: File[]) => {
 			Body: body
 		});
 
-		return await s3.send(command);
+		return await r2Client.send(command);
 	});
 
 	return Promise.all(response);
@@ -54,7 +44,7 @@ export const getFileUrl = async (key: string) => {
 		Key: key
 	});
 
-	return await getSignedUrl(s3, command, { expiresIn: 60 * 60 * 24 });
+	return await getSignedUrl(r2Client, command, { expiresIn: 60 * 60 * 24 });
 };
 
 export const getS3UploadPresignedUrl = async (key: string) => {
@@ -63,7 +53,7 @@ export const getS3UploadPresignedUrl = async (key: string) => {
 		Key: key
 	});
 
-	return await getSignedUrl(s3, command, { expiresIn: 60 * 60 * 24 });
+	return await getSignedUrl(r2Client, command, { expiresIn: 60 * 60 * 24 });
 };
 
 export const deleteFile = async (key: string) => {
@@ -72,7 +62,7 @@ export const deleteFile = async (key: string) => {
 		Key: key
 	});
 
-	return await s3.send(command);
+	return await r2Client.send(command);
 };
 
 export const deleteFiles = async (keys: string[]) => {

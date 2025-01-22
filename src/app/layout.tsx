@@ -8,23 +8,19 @@ import { type Metadata } from 'next';
 import { AnalyticsProvider } from '@/lib/posthog';
 import { TRPCReactProvider } from '@/lib/trpc/react';
 
-import NextTopLoader from 'nextjs-toploader';
-
 export const metadata: Metadata = {
-	title: 'Kampus.hr | Platforma za sve studente',
-	description:
-		'Kampus.hr je mjesto za diskusije, dijeljenje materijala i povezivanje s kolegama.',
+	title: 'Crni Mag | Likovne radionice',
+	description: 'Malo drugačije likovne radionice 🎨',
 	icons: [{ rel: 'icon', url: '/favicon.png' }],
 	openGraph: {
-		title: 'Kampus.hr | Platforma za sve studente',
-		description:
-			'Kampus.hr je mjesto za diskusije, dijeljenje materijala i povezivanje s kolegama.',
-		url: 'https://kampus.hr',
+		title: 'Crni Mag',
+		description: 'Malo drugačije likovne radionice 🎨',
+		url: 'https://www.crnimag.hr',
 		type: 'website',
-		siteName: 'Kampus.hr',
+		siteName: 'crnimag.hr',
 		images: [
 			{
-				url: 'https://kampus.hr/cover.png',
+				url: 'https://www.crnimag.hr/cover.png',
 				width: 1200,
 				height: 630
 			}
@@ -38,8 +34,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
 		<html lang="en" className={GeistSans.variable}>
-			<body className="bg-background min-h-screen bg-opacity-100 overscroll-none">
-				<NextTopLoader color="#3461ff" shadow={false} showSpinner={false} />
+			<body className="bg-background min-h-screen">
 				<TRPCReactProvider>
 					<AnalyticsProvider>
 						<div className="min-h-screen overflow-x-hidden">{children}</div>

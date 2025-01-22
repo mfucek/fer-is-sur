@@ -1,6 +1,6 @@
 {
-	"name": "kampus-platform",
-	"version": "0.2.11",
+	"name": "crni-mag-web",
+	"version": "0.1.0",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -14,7 +14,6 @@
 		"postinstall": "prisma generate",
 		"lint": "next lint",
 		"start": "next start",
-		"tunnel": "lt --port 3000 --subdomain kampus-clerk",
 		"knip": "knip"
 	},
 	"dependencies": {

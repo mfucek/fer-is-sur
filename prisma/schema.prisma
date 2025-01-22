@@ -4,405 +4,56 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ------------------
-// Clerk account
-// ------------------
 
-model Account {
-  id               String        @id @default(cuid())
-  clerkUserId      String        @unique
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  stripeCustomerId String?
-  package          PackageType?
-  status           AccountStatus @default(INACTIVE)
-  activeUntil      DateTime?
-
-  user        User?
-  role        RoleType     @default(BASE)
-  Permissions Permission[]
-}
-
-enum PackageType {
-  MONTHLY_CHEAP
-  MONTHLY_PRO
-  LIFETIME
-}
-
-enum AccountStatus {
-  ACTIVE
-  INACTIVE
-  CANCELLED
-}
-
-// ------------------
-// Users
-// ------------------
-
-model User {
-  id          String   @id @default(cuid())
-  displayName String
-  imageUrl    String?
-  badge       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  accountId String  @unique
-  Account   Account @relation(fields: [accountId], references: [id])
-
-  votes Vote[]
-  posts Post[]
-
-  image ImageFile?
-
-  notifications Notification[]
-  // subscriptions Subscription[]
-}
-
-// ------------------
-// Colleges
-// ------------------
-
-model College {
-  id      String  @id @default(cuid())
-  slug    String  @unique
-  name    String
-  iconSrc String?
-
-  Image  ImageFile?
-  Topics Topic[]
-  Posts  Post[]
-}
-
-// ------------------
-// Topics
-// ------------------
-
-model Topic {
-  id        String    @id @default(cuid())
-  slug      String
-  name      String
-  shortName String?
-  type      TopicType
-
-  collegeId String
-  College   College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
-
-  Program Program?
-  Subject Subject?
-  Staff   Staff?
-
-  Posts     Post[]
-  Image     ImageFile?
-  Summaries Summary[]
-}
-
-enum TopicType {
-  SUBJECT
-  STAFF
-  PROGRAM
-}
-
-model Staff {
-  topicId           String  @id @unique
-  Topic             Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
-  imageUrl          String?
-  staffExternalCode String?
-  staffExternalLink String?
-
-  Subjects SubjectStaff[]
-}
-
-model Subject {
-  topicId       String   @id @unique
-  Topic         Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
-  ects          Int?
-  externalCodes String[] @default([])
-  externalLinks String[] @default([])
-
-  Staffs   SubjectStaff[]
-  Programs ProgramSubject[]
-}
-
-model Program {
-  topicId String @id @unique
-  Topic   Topic  @relation(fields: [topicId], references: [id], onDelete: Cascade)
-
-  programExternalCode String?
-  programExternalLink String?
-  departments         String[] @default([])
-  type                String?
-
-  Subjects ProgramSubject[]
-}
-
-// Topic Relationships
-
-model SubjectStaff {
-  id String @id @default(cuid())
-
-  subjectId String
-  Subject   Subject @relation(fields: [subjectId], references: [topicId], onDelete: Cascade)
-
-  staffId String
-  Staff   Staff  @relation(fields: [staffId], references: [topicId], onDelete: Cascade)
-
-  staffRole String?
-}
-
-model ProgramSubject {
-  id String @id @default(cuid())
-
-  programId String
-  Program   Program @relation(fields: [programId], references: [topicId], onDelete: Cascade)
-
-  subjectId String
-  Subject   Subject @relation(fields: [subjectId], references: [topicId], onDelete: Cascade)
-
-  semester  Int?
-  groupName String?
-}
-
-// ------------------
-// Posts
-// ------------------
-
-model Post {
+model Event {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  body      Json?
 
-  authorId String
-  Author   User   @relation(fields: [authorId], references: [id])
+  title       String
+  description String
+  date        DateTime
+  location    String
 
-  // college this post belongs to
-  collegeId String
-  College   College @relation(fields: [collegeId], references: [id])
+  coverImageId String?
+  CoverImage   EventCover?
 
-  // subject or staff this post belongs to
-  // if empty, this is college-specific post
-  topicId String?
-  Topic   Topic?  @relation(fields: [topicId], references: [id])
+  Gallery EventGallery?
+}
 
-  // direct replies
-  // if empty, this is top level post
-  replyToId String?
-  replyTo   Post?   @relation(fields: [replyToId], references: [id], name: "PostReplies")
-  Replies   Post[]  @relation("PostReplies")
+model EventCover {
+  eventId String @id @unique
+  Event   Event  @relation(fields: [eventId], references: [id])
 
-  Votes         Vote[]
-  DocumentFiles DocumentFile[]
+  imageId String?
 
-  // notifications Notification[]
-  // subscriptions Subscription[]
+  imageFileId String?
+  Image       File?   @relation(fields: [imageFileId], references: [id])
+}
+
+model EventGallery {
+  eventId String @id @unique
+  event   Event  @relation(fields: [eventId], references: [id])
+
+  Images File[]
 }
 
 // ------------------
-// Votes
-// ------------------
 
-enum VoteType {
-  UP
-  DOWN
-}
-
-model Vote {
-  id   String   @id @default(cuid())
-  type VoteType
-
-  postId String
-  Post   Post   @relation(fields: [postId], references: [id])
-
-  userId String
-  User   User   @relation(fields: [userId], references: [id])
-}
-
-// ------------------
-// Files
-// ------------------
-
-// Used for files that are uploaded to the server
 model File {
-  id          String   @id @default(cuid())
-  key         String   @unique
-  contentType String   @default("")
-  size        Int      @default(0)
-  authorId    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String @id @default(cuid())
+  key         String
+  contentType String
+  size        Int
 
-  DocumentFile DocumentFile?
-  ImageFile    ImageFile?
-}
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-// used for files that are shown in posts' body
-// model PostFile {
-
-// }
-
-// Used for avatars, topic images, college images, etc.
-model ImageFile {
-  fileId String @id @unique
-  File   File   @relation(fields: [fileId], references: [id])
-
-  topicId String? @unique
-  Topic   Topic?  @relation(fields: [topicId], references: [id])
-
-  collegeId String?  @unique
-  College   College? @relation(fields: [collegeId], references: [id])
-
-  userId String? @unique
-  User   User?   @relation(fields: [userId], references: [id])
-}
-
-// Used for study material files
-model DocumentFile {
-  fileId String @id @unique
-  File   File   @relation(fields: [fileId], references: [id])
-
-  postId String?
-  Post   Post?   @relation(fields: [postId], references: [id])
-
-  title        String?
-  academicYear String?
-  types        DocumentFileType[]
-}
-
-enum DocumentFileType {
-  EXAM
-  COLOQUIUM
-  COLOQUIUM_MID
-  COLOQUIUM_FINAL
-  COLOQUIUM_FIRST
-  COLOQUIUM_SECOND
-  COLOQUIUM_THIRD
-  COLOQUIUM_FOURTH
-  LAB_EXERCISE
-  LECTURE
-  PRESENTATION
-  HOMEWORK
-  EXERCISES
-  SEMINAR
-  SCRIPT
-  NOTES
-  PAPER
-  OTHER
-  SUMMER_EXAM
-  FALL_EXAM
-  WINTER_EXAM
-  SPRING_EXAM
-  DEAN_EXAM
-  CORRECTION_EXAM
-  ENTRANCE_EXAM
-  EXIT_EXAM
-  ORAL_EXAM
-  POP_EXAM
-  EXAM_THEORY
-  EXAM_PROBLEMS
-  SOLVED
-}
-
-// ------------------
-// Role Based Access Control
-// ------------------
-
-enum RoleType {
-  BASE
-  ADMINISTRATOR
-}
-
-model Permission {
-  accountId String  @id
-  Account   Account @relation(fields: [accountId], references: [id])
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  expiresAt DateTime?
-  rule      RuleType
-  value     Boolean
-
-  scopeType ScopeType
-  scopeId   String?
-}
-
-enum RuleType {
-  CAN_POST
-  CAN_CHANGE_PROFILE_BADGE
-  CAN_MASS_UPLOAD
-  CAN_MANAGE_USERS
-}
-
-enum ScopeType {
-  GLOBAL
-  COLLEGE
-}
-
-// ------------------
-// Summaries
-// ------------------
-
-model Summary {
-  id        String      @id @default(cuid())
-  title     String
-  content   String
-  sentiment SummaryType
-
-  Topic   Topic  @relation(fields: [topicId], references: [id])
-  topicId String
-}
-
-enum SummaryType {
-  POSITIVE
-  NEGATIVE
-  NEUTRAL
-  WARNING
-}
-
-// ------------------
-// Subscriptions
-// ------------------
-
-// model Subscription {
-//   id String @id @default(cuid())
-
-//   userId String
-//   user   User   @relation(fields: [userId], references: [id])
-
-//   postId String?
-//   post   Post?  @relation(fields: [postId], references: [id])
-
-//   topicId String?
-//   topic   Topic? @relation(fields: [topicId], references: [id])
-// }
-
-// ------------------
-// Notifications
-// ------------------
-
-model Notification {
-  id        String           @id @default(cuid())
-  createdAt DateTime         @default(now())
-  type      NotificationType
-  read      Boolean          @default(false)
-  postId    String?
-  authorId  String?
-  // topicId String?
-
-  recepientId String
-  Recepient   User   @relation(fields: [recepientId], references: [id])
-}
-
-enum NotificationType {
-  POST_REPLY
-  POST_VOTE
-  // TOPIC_NEW_POST
-  // NEW_FEATURE
-  PACKAGE_UPGRADE
-  PACKAGE_DOWNGRADE
+  EventCover   EventCover[]
+  EventGallery EventGallery[]
 }
