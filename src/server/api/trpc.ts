@@ -1,14 +1,8 @@
-import { initTRPC, TRPCError } from '@trpc/server';
+import { initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 
-import { headers } from 'next/headers';
-
-import { NextRequest } from 'next/server';
-
 import { db } from '@/lib/db';
-import { getAuth } from '@clerk/nextjs/server';
-import { User } from '@prisma/client';
 
 // type AuthObject = ReturnType<typeof getAuth>;
 
@@ -64,63 +58,63 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 export const publicProcedure = t.procedure;
 // .use(timingMiddleware);
 
-export const optionalAuthMiddleware = t.middleware(async ({ ctx, next }) => {
-	let auth: ReturnType<typeof getAuth> | null = null;
-	let user: User | null = null;
+// export const optionalAuthMiddleware = t.middleware(async ({ ctx, next }) => {
+// 	let auth: ReturnType<typeof getAuth> | null = null;
+// 	let user: User | null = null;
 
-	auth = getAuth(
-		new NextRequest('https://notused.com', {
-			headers: await headers()
-		})
-	);
+// 	auth = getAuth(
+// 		new NextRequest('https://notused.com', {
+// 			headers: await headers()
+// 		})
+// 	);
 
-	user = auth?.userId
-		? await db.user.findFirst({
-				where: {
-					Account: {
-						clerkUserId: auth.userId
-					}
-				}
-			})
-		: null;
+// 	user = auth?.userId
+// 		? await db.user.findFirst({
+// 				where: {
+// 					Account: {
+// 						clerkUserId: auth.userId
+// 					}
+// 				}
+// 			})
+// 		: null;
 
-	return next({ ctx: { ...ctx, auth, user } });
-});
+// 	return next({ ctx: { ...ctx, auth, user } });
+// });
 
-const strictAuthMiddleware = t.middleware(async ({ ctx, next }) => {
-	const auth = getAuth(
-		new NextRequest('https://notused.com', {
-			headers: await headers()
-		})
-	);
-	const clerkUserId = auth.userId;
+// const strictAuthMiddleware = t.middleware(async ({ ctx, next }) => {
+// 	const auth = getAuth(
+// 		new NextRequest('https://notused.com', {
+// 			headers: await headers()
+// 		})
+// 	);
+// 	const clerkUserId = auth.userId;
 
-	if (!clerkUserId) {
-		throw new TRPCError({ code: 'UNAUTHORIZED' });
-	}
+// 	if (!clerkUserId) {
+// 		throw new TRPCError({ code: 'UNAUTHORIZED' });
+// 	}
 
-	const account = await db.account.findUnique({
-		where: {
-			clerkUserId
-		},
-		include: {
-			user: true
-		}
-	});
+// 	const account = await db.account.findUnique({
+// 		where: {
+// 			clerkUserId
+// 		},
+// 		include: {
+// 			user: true
+// 		}
+// 	});
 
-	if (!account) {
-		throw new TRPCError({ code: 'UNAUTHORIZED' });
-	}
+// 	if (!account) {
+// 		throw new TRPCError({ code: 'UNAUTHORIZED' });
+// 	}
 
-	const user = account.user;
+// 	const user = account.user;
 
-	if (!user) {
-		throw new TRPCError({ code: 'UNAUTHORIZED' });
-	}
+// 	if (!user) {
+// 		throw new TRPCError({ code: 'UNAUTHORIZED' });
+// 	}
 
-	return next({ ctx: { ...ctx, auth, user } });
-});
+// 	return next({ ctx: { ...ctx, auth, user } });
+// });
 
-export const protectedProcedure = t.procedure
-	// .use(timingMiddleware)
-	.use(strictAuthMiddleware);
+export const protectedProcedure = t.procedure;
+// .use(timingMiddleware)
+// .use(strictAuthMiddleware);
