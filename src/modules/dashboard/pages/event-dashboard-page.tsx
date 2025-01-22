@@ -1,15 +1,21 @@
+'use client';
+
+import { useState } from 'react';
+
 import { Icon } from '@/global/components/icon';
 import { Button } from '@/lib/shadcn/ui/button';
 import { Dialog, DialogTrigger } from '@/lib/shadcn/ui/dialog';
 import { EventsList } from '@/modules/event/components/events-list';
+import { CreateEventDialogContent } from '../../event/components/dialogs/create-event-dialog';
 import { DashboardHeader } from '../components/dashboard-header';
-import { CreateEventDialogContent } from '../dialogs/create-event-dialog';
 
 export const EventDashboardPage = () => {
+	const [dialogOpen, setDialogOpen] = useState(false);
+
 	return (
 		<>
 			<DashboardHeader title="Events">
-				<Dialog>
+				<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
 					<DialogTrigger asChild>
 						<Button variant="outline" size="md">
 							Add Event
@@ -17,7 +23,11 @@ export const EventDashboardPage = () => {
 						</Button>
 					</DialogTrigger>
 
-					<CreateEventDialogContent />
+					<CreateEventDialogContent
+						closeDialog={() => {
+							setDialogOpen(false);
+						}}
+					/>
 				</Dialog>
 			</DashboardHeader>
 

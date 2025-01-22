@@ -4,16 +4,16 @@ import { Icon } from '@/global/components/icon';
 import { SectionList } from '@/global/components/section-list';
 import { Spinner } from '@/global/components/spinner';
 import { Button } from '@/lib/shadcn/ui/button';
+import { Dialog } from '@/lib/shadcn/ui/dialog';
+import { cn } from '@/lib/shadcn/utils';
 import { api } from '@/lib/trpc/react';
+import { useState } from 'react';
+import { EventDTO } from '../api/dto/event-dto';
+import { UpdateEventDialogContent } from './dialogs/update-event-dialog';
 
-export const EventsList = () => {
-	const { data, isLoading } = api.event.list.useQuery();
-
-	if (!data) return <Spinner />;
-
+const EventSectionList = (props: { data: EventDTO[]; title: string }) => {
 	return (
 		<SectionList
-			data={data}
 			rows={(item) => {
 				return (
 					<div className="flex flex-col gap-1">
@@ -32,8 +32,15 @@ export const EventsList = () => {
 								<p className="caption text-neutral-strong">{item.location}</p>
 							</div>
 							<div>
-								<p className="caption text-neutral-strong">
-									{item.date.toLocaleDateString()}
+								<p
+									className={cn(
+										'caption',
+										item.date.getTime() > new Date().getTime()
+											? 'text-info'
+											: 'text-neutral-strong'
+									)}
+								>
+									{item.date ? item.date.toLocaleDateString() : 'No date'}
 								</p>
 							</div>
 						</div>
@@ -45,6 +52,8 @@ export const EventsList = () => {
 				const { mutateAsync: deleteEvent, isPending } =
 					api.event.delete.useMutation();
 
+				const [dialogOpen, setDialogOpen] = useState(false);
+
 				const handleDelete = async () => {
 					try {
 						await deleteEvent({ id: data.id });
@@ -55,13 +64,26 @@ export const EventsList = () => {
 					}
 				};
 
-				const handleEdit = () => {};
-
 				return (
 					<>
-						<Button variant="ghost" onClick={handleEdit} iconOnly size="sm">
-							<Icon icon="edit" />
-						</Button>
+						<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+							<Button
+								variant="ghost"
+								iconOnly
+								size="sm"
+								onClick={() => {
+									setDialogOpen(true);
+								}}
+							>
+								<Icon icon="edit" />
+							</Button>
+							<UpdateEventDialogContent
+								id={data.id}
+								closeDialog={() => {
+									setDialogOpen(false);
+								}}
+							/>
+						</Dialog>
 						<Button
 							variant="solid-weak"
 							theme="danger"
@@ -75,6 +97,27 @@ export const EventsList = () => {
 					</>
 				);
 			}}
+			{...props}
 		/>
+	);
+};
+
+export const EventsList = () => {
+	const { data, isLoading } = api.event.list.useQuery();
+
+	if (!data || isLoading) return <Spinner />;
+
+	const pastEvents = data.filter(
+		(event) => event.date.getTime() < new Date().getTime()
+	);
+	const upcomingEvents = data.filter(
+		(event) => event.date.getTime() > new Date().getTime()
+	);
+
+	return (
+		<>
+			<EventSectionList data={upcomingEvents} title="Upcoming Events" />
+			<EventSectionList data={pastEvents} title="Past Events" />
+		</>
 	);
 };

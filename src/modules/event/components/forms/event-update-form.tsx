@@ -4,17 +4,18 @@ import { useFormContext } from 'react-hook-form';
 
 import { FormLabel } from '@/global/components/form-label';
 import { Button } from '@/lib/shadcn/ui/button';
+import { DatePicker } from '@/lib/shadcn/ui/date-picker';
 import { Input } from '@/lib/shadcn/ui/input';
 import { Textarea } from '@/lib/shadcn/ui/textarea';
-import { TEventCreateSchema } from '@/modules/event/schemas';
+import { TEventUpdateSchema } from '@/modules/event/schemas';
 
-export const DetailsForm = () => {
+export const EventUpdateForm = () => {
 	const {
 		register,
 		watch,
 		setValue,
 		formState: { errors }
-	} = useFormContext<TEventCreateSchema>();
+	} = useFormContext<TEventUpdateSchema>();
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -32,17 +33,17 @@ export const DetailsForm = () => {
 				</FormLabel>
 
 				<FormLabel title="Date" error={errors.date?.message}>
-					<Input
-						{...register('date', {
-							valueAsDate: true
-						})}
-						type="date"
+					<DatePicker
+						value={watch('date')}
+						onChange={(date) => {
+							setValue('date', date);
+						}}
 					/>
 				</FormLabel>
 			</div>
 
 			<div className="flex flex-row justify-end">
-				<Button variant="solid">Create</Button>
+				<Button variant="solid">Update</Button>
 			</div>
 		</div>
 	);

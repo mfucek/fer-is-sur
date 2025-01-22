@@ -32,7 +32,12 @@ export const eventRouter = createTRPCRouter({
 				}
 			} satisfies Prisma.EventWhereInput;
 
-			const eventsRaw = await db.event.findMany({ where });
+			const eventsRaw = await db.event.findMany({
+				where,
+				orderBy: {
+					date: 'desc'
+				}
+			});
 			const events = eventsRaw.map(makeEventDTO);
 
 			return events;

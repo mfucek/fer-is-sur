@@ -11,10 +11,14 @@ import {
 	DialogTitle
 } from '@/lib/shadcn/ui/dialog';
 import { api } from '@/lib/trpc/react';
-import { DetailsForm } from '@/modules/event/components/form/event-create';
+import { EventCreateForm } from '@/modules/event/components/forms/event-create-form';
 import { eventCreateSchema, TEventCreateSchema } from '@/modules/event/schemas';
 
-export const CreateEventDialogContent = () => {
+export const CreateEventDialogContent = ({
+	closeDialog
+}: {
+	closeDialog: () => void;
+}) => {
 	const form = useForm<TEventCreateSchema>({
 		resolver: zodResolver(eventCreateSchema)
 	});
@@ -38,6 +42,7 @@ export const CreateEventDialogContent = () => {
 		} finally {
 			await utils.event.list.invalidate();
 			reset();
+			closeDialog();
 		}
 	};
 
@@ -51,7 +56,7 @@ export const CreateEventDialogContent = () => {
 			<ContentPadding size="xl">
 				<FormProvider {...form}>
 					<form onSubmit={handleSubmit(onSubmit)}>
-						<DetailsForm />
+						<EventCreateForm />
 					</form>
 				</FormProvider>
 			</ContentPadding>

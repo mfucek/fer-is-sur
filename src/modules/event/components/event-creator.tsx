@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { api } from '@/lib/trpc/react';
 import { eventCreateSchema, TEventCreateSchema } from '@/modules/event/schemas';
-import { DetailsForm } from './form/event-create';
+import { EventCreateForm } from './forms/event-create-form';
 
 export const EventCreator = () => {
 	const form = useForm<TEventCreateSchema>({
@@ -38,7 +38,7 @@ export const EventCreator = () => {
 		<div>
 			<FormProvider {...form}>
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<DetailsForm />
+					<EventCreateForm />
 				</form>
 			</FormProvider>
 		</div>
