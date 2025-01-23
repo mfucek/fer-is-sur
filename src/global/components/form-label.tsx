@@ -8,7 +8,7 @@ export const FormLabel = ({
 	children: React.ReactNode;
 }) => {
 	return (
-		<div className="flex flex-col gap-1 flex-1">
+		<div className="flex flex-col gap-1 w-full">
 			{title && <p className="caption">{title}</p>}
 			{children}
 			{error && <p className="body-2 text-danger">{error}</p>}

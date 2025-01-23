@@ -78,7 +78,7 @@ const EventSectionList = (props: { data: EventDTO[]; title: string }) => {
 								<Icon icon="edit" />
 							</Button>
 							<UpdateEventDialogContent
-								id={data.id}
+								event={data}
 								closeDialog={() => {
 									setDialogOpen(false);
 								}}

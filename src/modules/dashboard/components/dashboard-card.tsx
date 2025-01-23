@@ -22,7 +22,7 @@ export const DashboardCard: FC<HTMLAttributes<HTMLDivElement> & CardProps> = ({
 		<Link href={href}>
 			<div
 				className={cn(
-					'py-6 md:py-10 px-6 rounded-lg bg-section flex flex-row gap-3 items-center clickable',
+					'py-6 md:py-10 px-6 rounded-xl bg-section flex flex-row gap-3 items-center clickable',
 					className
 				)}
 				{...rest}

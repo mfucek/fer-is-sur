@@ -1,7 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import * as React from 'react';
+import { useState, type FC } from 'react';
 
 import { Icon } from '@/global/components/icon';
 import { Calendar } from '@/lib/shadcn/ui/calendar';
@@ -12,16 +12,13 @@ import {
 } from '@/lib/shadcn/ui/popover';
 import { cn } from '@/lib/shadcn/utils';
 
-export const DatePicker = ({
-	value,
-	defaultValue,
-	onChange
-}: {
+export const DatePicker: FC<{
 	value?: Date;
 	defaultValue?: Date;
 	onChange?: (date: Date | undefined) => void;
-}) => {
-	const [internalDate, setInternalDate] = React.useState<Date | undefined>(
+	disabled?: boolean;
+}> = ({ value, defaultValue, onChange, disabled }) => {
+	const [internalDate, setInternalDate] = useState<Date | undefined>(
 		defaultValue
 	);
 

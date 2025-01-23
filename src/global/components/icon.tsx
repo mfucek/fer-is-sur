@@ -98,7 +98,9 @@ const icons = {
 	'visibility-off': '/assets/icons/visibility-off.svg',
 	visibility: '/assets/icons/visibility.svg',
 	crown: '/assets/icons/crown.svg',
-	help: '/assets/icons/help.svg'
+	help: '/assets/icons/help.svg',
+	cloud: '/assets/icons/cloud.svg',
+	'cloud-slash': '/assets/icons/cloud-slash.svg'
 };
 
 export type IconName = keyof typeof icons;
