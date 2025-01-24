@@ -41,7 +41,7 @@ export type FileStagingContextType = {
 	removeFile: (index: number) => void;
 	updateFile: (index: number, update: Partial<StagedFile>) => void;
 	uploadFiles: () => Promise<StagedFile[]>;
-	addFilesFromKeys: (keys: string[]) => void;
+	setFilesFromKeys: (keys: string[]) => Promise<void>;
 };
 
 const FileStagingContext = createContext<FileStagingContextType>({
@@ -51,7 +51,7 @@ const FileStagingContext = createContext<FileStagingContextType>({
 	removeFile: () => {},
 	updateFile: () => {},
 	uploadFiles: async () => [],
-	addFilesFromKeys: () => {}
+	setFilesFromKeys: async () => {}
 });
 
 export const useFileStagingContext = () => {
@@ -147,16 +147,21 @@ export const FileStagingProvider: FC<{
 		return uploadedFiles;
 	};
 
-	const addFilesFromKeys = async (keys: string[]) => {
+	const setFilesFromKeys = async (keys: string[]) => {
 		const newFiles: StagedFile[] = [];
+		const existingKeys = files.map((file) => file.key);
 
-		for await (const key of keys) {
+		for (const key of keys) {
+			if (existingKeys.includes(key)) {
+				continue;
+			}
+
 			const { url } = await getDownloadUrl({ key });
 
 			newFiles.push({ key, name: key, file: new File([], '_tmp'), url });
 		}
 
-		setFiles((files) => [...files, ...newFiles]);
+		setFiles((files) => newFiles);
 	};
 
 	useImperativeHandle(ref, () => ({
@@ -166,7 +171,7 @@ export const FileStagingProvider: FC<{
 		removeFile,
 		updateFile,
 		uploadFiles,
-		addFilesFromKeys
+		setFilesFromKeys
 	}));
 
 	return (
@@ -178,7 +183,7 @@ export const FileStagingProvider: FC<{
 				removeFile,
 				updateFile,
 				uploadFiles,
-				addFilesFromKeys
+				setFilesFromKeys
 			}}
 		>
 			{children}

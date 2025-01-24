@@ -7,6 +7,8 @@ import { r2Client } from './client';
 
 const bucket = env.CLOUDFLARE_R2_BUCKET_NAME;
 
+const cacheDuration = 7 * 60 * 60 * 24; // 7 days
+
 export const getFileDownloadUrl = async (key: string) => {
 	const command = new GetObjectCommand({
 		Bucket: bucket,
@@ -15,11 +17,13 @@ export const getFileDownloadUrl = async (key: string) => {
 
 	return await unstable_cache(
 		async () => {
-			return await getSignedUrl(r2Client, command, { expiresIn: 60 * 60 * 24 });
+			return await getSignedUrl(r2Client, command, {
+				expiresIn: cacheDuration
+			});
 		},
 		['file#' + key],
 		{
-			revalidate: 60 * 60 * 24
+			revalidate: cacheDuration
 		}
 	)();
 };

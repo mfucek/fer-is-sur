@@ -22,7 +22,6 @@ export const fileRouter = createTRPCRouter({
 	getDownloadUrl: publicProcedure
 		.input(z.object({ key: z.string() }))
 		.mutation(async ({ ctx, input }) => {
-			const { db } = ctx;
 			const { key } = input;
 			const url = await getFileDownloadUrl(key);
 			return { url };

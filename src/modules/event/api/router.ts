@@ -143,7 +143,7 @@ export const eventRouter = createTRPCRouter({
 			const files = [...existingFiles, ...newFiles];
 
 			// Delete old gallery
-			db.$transaction(async (tx) => {
+			await db.$transaction(async (tx) => {
 				const exists = await tx.eventGallery.findFirst({
 					where: {
 						eventId

@@ -1,23 +1,29 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, SubmitErrorHandler, useForm } from 'react-hook-form';
+import { useRef, useState } from 'react';
+import {
+	FormProvider,
+	type SubmitErrorHandler,
+	useForm
+} from 'react-hook-form';
 
 import { ContentPadding } from '@/global/components/content-padding';
 import {
-	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle
 } from '@/lib/shadcn/ui/dialog';
 import { api } from '@/lib/trpc/react';
 import { EventCreateForm } from '@/modules/event/components/forms/event-create-form';
-import { eventCreateSchema, TEventCreateSchema } from '@/modules/event/schemas';
 import {
-	FileStagingContextType,
+	eventCreateSchema,
+	type TEventCreateSchema
+} from '@/modules/event/schemas';
+import {
+	type FileStagingContextType,
 	FileStagingProvider
 } from '@/modules/file/contexts/file-staging';
-import { useRef, useState } from 'react';
 
 export const CreateEventDialogContent = ({
 	closeDialog
@@ -28,13 +34,7 @@ export const CreateEventDialogContent = ({
 		resolver: zodResolver(eventCreateSchema)
 	});
 
-	const {
-		handleSubmit,
-		formState: { errors, isValid, isLoading },
-		setValue,
-		reset,
-		watch
-	} = form;
+	const { handleSubmit } = form;
 
 	const utils = api.useUtils();
 	const { mutateAsync: createEvent } = api.event.create.useMutation();
@@ -55,8 +55,6 @@ export const CreateEventDialogContent = ({
 			console.error(error);
 		} finally {
 			await utils.event.list.invalidate();
-			reset();
-			fileStagingRef.current?.setFiles([]);
 			closeDialog();
 		}
 		setIsSaving(false);
@@ -71,20 +69,18 @@ export const CreateEventDialogContent = ({
 	return (
 		<>
 			<FileStagingProvider ref={fileStagingRef}>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>Create Event</DialogTitle>
-						<DialogDescription>Create a new event.</DialogDescription>
-					</DialogHeader>
+				<DialogHeader>
+					<DialogTitle>Create Event</DialogTitle>
+					<DialogDescription>Create a new event.</DialogDescription>
+				</DialogHeader>
 
-					<ContentPadding size="xl">
-						<FormProvider {...form}>
-							<form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-								<EventCreateForm loading={isSaving} />
-							</form>
-						</FormProvider>
-					</ContentPadding>
-				</DialogContent>
+				<ContentPadding size="xl">
+					<FormProvider {...form}>
+						<form onSubmit={handleSubmit(onSubmit, onInvalid)}>
+							<EventCreateForm loading={isSaving} />
+						</form>
+					</FormProvider>
+				</ContentPadding>
 			</FileStagingProvider>
 		</>
 	);

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Icon } from '@/global/components/icon';
 import { Button } from '@/lib/shadcn/ui/button';
-import { Dialog, DialogTrigger } from '@/lib/shadcn/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/lib/shadcn/ui/dialog';
 import { EventsList } from '@/modules/event/components/events-list';
 import { CreateEventDialogContent } from '../../event/components/dialogs/create-event-dialog';
 import { DashboardHeader } from '../components/dashboard-header';
@@ -23,11 +23,13 @@ export const EventDashboardPage = () => {
 						</Button>
 					</DialogTrigger>
 
-					<CreateEventDialogContent
-						closeDialog={() => {
-							setDialogOpen(false);
-						}}
-					/>
+					<DialogContent>
+						<CreateEventDialogContent
+							closeDialog={() => {
+								setDialogOpen(false);
+							}}
+						/>
+					</DialogContent>
 				</Dialog>
 			</DashboardHeader>
 

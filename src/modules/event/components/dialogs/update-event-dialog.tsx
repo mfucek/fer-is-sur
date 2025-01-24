@@ -5,7 +5,6 @@ import { FormProvider, SubmitErrorHandler, useForm } from 'react-hook-form';
 
 import { ContentPadding } from '@/global/components/content-padding';
 import {
-	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle
@@ -22,9 +21,11 @@ import { EventDTO } from '../../api/dto/event-dto';
 
 export const UpdateEventDialogContent = ({
 	event,
+	dialogOpen,
 	closeDialog
 }: {
 	event: EventDTO;
+	dialogOpen: boolean;
 	closeDialog: () => void;
 }) => {
 	const form = useForm<TEventUpdateSchema>({
@@ -55,12 +56,15 @@ export const UpdateEventDialogContent = ({
 			setValue('location', event.location);
 			setValue('date', event.date);
 		}
-	}, [event]);
+	}, []);
 
+	// Add files from EventGallery to file staging context
 	useEffect(() => {
+		if (!gallery) return;
+
 		console.log('gallery', gallery);
 
-		fileStagingRef.current?.addFilesFromKeys(
+		fileStagingRef.current?.setFilesFromKeys(
 			gallery?.Images.map((image) => image.key) ?? []
 		);
 	}, [gallery]);
@@ -80,6 +84,7 @@ export const UpdateEventDialogContent = ({
 			console.error(error);
 		} finally {
 			await utils.event.list.invalidate();
+			await utils.event.getGallery.invalidate({ eventId: event.id });
 			reset();
 			closeDialog();
 		}
@@ -94,20 +99,18 @@ export const UpdateEventDialogContent = ({
 
 	return (
 		<FileStagingProvider ref={fileStagingRef}>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>Edit Event</DialogTitle>
-					<DialogDescription>Edit an existing event.</DialogDescription>
-				</DialogHeader>
+			<DialogHeader>
+				<DialogTitle>Edit Event</DialogTitle>
+				<DialogDescription>Edit an existing event.</DialogDescription>
+			</DialogHeader>
 
-				<ContentPadding size="xl">
-					<FormProvider {...form}>
-						<form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-							<EventUpdateForm loading={isLoading} />
-						</form>
-					</FormProvider>
-				</ContentPadding>
-			</DialogContent>
+			<ContentPadding size="xl">
+				<FormProvider {...form}>
+					<form onSubmit={handleSubmit(onSubmit, onInvalid)}>
+						<EventUpdateForm loading={isLoading} />
+					</form>
+				</FormProvider>
+			</ContentPadding>
 		</FileStagingProvider>
 	);
 };

@@ -20,6 +20,7 @@ const config = {
 		'@typescript-eslint/no-unsafe-assignment': 'off',
 		'@typescript-eslint/consistent-indexed-object-style': 'off',
 		'@typescript-eslint/no-require-imports': 'off',
+		'@typescript-eslint/no-floating-promises': 'off',
 		'@typescript-eslint/consistent-type-imports': [
 			'warn',
 			{
