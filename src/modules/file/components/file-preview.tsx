@@ -27,7 +27,7 @@ export const FilePreview = ({
 	}, [file]);
 
 	return (
-		<div className="aspect-square relative overflow-hidden rounded-lg group">
+		<div className="aspect-square relative overflow-hidden rounded-lg group bg-neutral-medium">
 			<img
 				src={fileUrl}
 				className="object-cover w-full h-full"

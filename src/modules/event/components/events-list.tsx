@@ -117,7 +117,12 @@ const EventSectionList: FC<{ data: EventDTO[]; title: string }> = ({
 export const EventsList = () => {
 	const { data, isLoading } = api.event.list.useQuery();
 
-	if (!data || isLoading) return <Spinner />;
+	if (!data || isLoading)
+		return (
+			<div className="flex items-center justify-center">
+				<Spinner />
+			</div>
+		);
 
 	const pastEvents = data.filter(
 		(event) => event.date.getTime() < new Date().getTime()

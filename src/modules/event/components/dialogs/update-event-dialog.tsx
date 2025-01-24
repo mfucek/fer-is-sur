@@ -62,8 +62,6 @@ export const UpdateEventDialogContent = ({
 	useEffect(() => {
 		if (!gallery) return;
 
-		console.log('gallery', gallery);
-
 		fileStagingRef.current?.setFilesFromKeys(
 			gallery?.Images.map((image) => image.key) ?? []
 		);

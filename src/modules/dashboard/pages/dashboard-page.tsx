@@ -23,6 +23,11 @@ export const DashboardPage = () => {
 					icon="users"
 					href="/admin/reservations"
 				/>
+				<DashboardCard
+					label="Coupons"
+					icon="markup-minimum"
+					href="/admin/coupons"
+				/>
 			</ContentPadding>
 		</>
 	);
