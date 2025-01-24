@@ -1,8 +1,9 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
+import { deleteFile } from '@/modules/file/helpers/delete-file';
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
-import { type Prisma } from '@prisma/client';
+import { PrismaClient, type Prisma } from '@prisma/client';
 import {
 	dateRangeSchema,
 	eventCreateSchema,
@@ -101,11 +102,21 @@ export const eventRouter = createTRPCRouter({
 			const { db } = ctx;
 			const { id } = input;
 
+			const deletedGallery = await db.eventGallery.deleteMany({
+				where: { eventId: id }
+			});
+
+			const deletedCover = await db.eventCover.deleteMany({
+				where: { eventId: id }
+			});
+
 			const deletedEvent = await db.event.delete({
 				where: {
 					id
 				}
 			});
+
+			await cleanUpOrphanedFiles(db);
 
 			return deletedEvent;
 		}),
@@ -169,23 +180,7 @@ export const eventRouter = createTRPCRouter({
 				}
 			});
 
-			// // Remove orphaned files
-			// const orphanedFiles = await db.file.deleteMany({
-			// 	where: {
-			// 		AND: [
-			// 			{
-			// 				EventCover: {
-			// 					none: {}
-			// 				}
-			// 			},
-			// 			{
-			// 				EventGallery: {
-			// 					none: {}
-			// 				}
-			// 			}
-			// 		]
-			// 	}
-			// });
+			await cleanUpOrphanedFiles(db);
 
 			return event;
 		}),
@@ -204,5 +199,111 @@ export const eventRouter = createTRPCRouter({
 			});
 
 			return gallery;
+		}),
+
+	updateCover: publicProcedure
+		.input(z.object({ eventId: z.string(), fileKey: z.string().nullable() }))
+		.mutation(async ({ ctx, input }) => {
+			const { db } = ctx;
+			const { eventId, fileKey } = input;
+
+			if (!fileKey) {
+				const existingCover = await db.eventCover.findFirst({
+					where: { eventId }
+				});
+
+				if (existingCover) {
+					await db.eventCover.delete({ where: { eventId } });
+				}
+
+				await cleanUpOrphanedFiles(db);
+
+				return null;
+			}
+
+			const event = await db.event.findUnique({
+				where: { id: eventId },
+				include: {
+					CoverImage: {
+						include: {
+							Image: true
+						}
+					}
+				}
+			});
+
+			// remove old cover image
+			if (event?.CoverImage) {
+				if (event.CoverImage.Image) {
+					await db.file.delete({ where: { id: event.CoverImage.Image.id } });
+				}
+				await db.eventCover.delete({ where: { eventId } });
+			}
+
+			// create new file
+			const newFile = await db.file.create({
+				data: {
+					key: fileKey,
+					contentType: 'image/jpeg',
+					size: 0
+				}
+			});
+
+			// create new cover image
+			const newCover = await db.eventCover.create({
+				data: {
+					eventId,
+					imageId: newFile.id
+				}
+			});
+
+			await cleanUpOrphanedFiles(db);
+
+			return newCover;
+		}),
+
+	getCover: publicProcedure
+		.input(z.object({ eventId: z.string() }))
+		.query(async ({ ctx, input }) => {
+			const { db } = ctx;
+			const { eventId } = input;
+
+			const cover = await db.eventCover.findUnique({
+				where: { eventId },
+				include: {
+					Image: true
+				}
+			});
+
+			return cover;
 		})
 });
+
+const cleanUpOrphanedFiles = async (db: PrismaClient) => {
+	const files = await db.file.findMany({
+		where: {
+			NOT: [
+				{
+					EventCover: {
+						some: {}
+					}
+				},
+				{ EventGallery: { some: {} } }
+			]
+		}
+	});
+
+	const fileIds = files.map((file) => file.id);
+
+	await db.file.deleteMany({
+		where: {
+			id: {
+				in: fileIds
+			}
+		}
+	});
+
+	await Promise.all(files.map((file) => deleteFile(file.key)));
+
+	return files;
+};

@@ -14,24 +14,28 @@ export const FilePreview = ({
 	file: StagedFile;
 	index: number;
 }) => {
-	const { key, url } = file;
-
 	const { removeFile } = useFileStagingContext();
 
 	const fileUrl = useMemo(() => {
-		if (url) {
-			return url;
+		// Remote file case
+		if (file.url) {
+			return file.url;
 		}
 
+		// Local file case
 		return URL.createObjectURL(file.file);
 	}, [file]);
+
+	const handleRemoveFile = () => {
+		removeFile(index);
+	};
 
 	return (
 		<div className="aspect-square relative overflow-hidden rounded-lg group bg-neutral-medium">
 			<img
 				src={fileUrl}
 				className="object-cover w-full h-full"
-				alt={key ?? 'New Image'}
+				alt={file.key ?? 'New Image'}
 			/>
 
 			{/* Upload status */}
@@ -49,7 +53,7 @@ export const FilePreview = ({
 					variant="solid-weak"
 					theme="danger"
 					iconOnly
-					onClick={() => removeFile(index)}
+					onClick={handleRemoveFile}
 				>
 					<Icon icon="trash" />
 				</Button>

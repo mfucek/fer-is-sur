@@ -31,9 +31,7 @@ model EventCover {
   Event   Event  @relation(fields: [eventId], references: [id])
 
   imageId String?
-
-  imageFileId String?
-  Image       File?   @relation(fields: [imageFileId], references: [id])
+  Image   File?   @relation(fields: [imageId], references: [id])
 }
 
 model EventGallery {

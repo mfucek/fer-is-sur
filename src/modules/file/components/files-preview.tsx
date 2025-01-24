@@ -1,9 +1,9 @@
 'use client';
 
-import { Icon } from '@/global/components/icon';
 import { useFileStagingContext } from '../contexts/file-staging';
 import { UploadArea } from '../hooks/use-upload-area';
 import { useUploadDialog } from '../hooks/use-upload-dialog';
+import { AddFileButton } from './add-file-button';
 import { FilePreview } from './file-preview';
 
 export const FilesPreview = () => {
@@ -20,12 +20,7 @@ export const FilesPreview = () => {
 					<FilePreview key={file.name + i} file={file} index={i} />
 				))}
 
-				<div
-					className="aspect-square flex items-center justify-center bg-neutral-weak md:hover:bg-neutral-medium duration-300 hover:duration-100 transition-all rounded-lg cursor-pointer clickable"
-					onClick={openUploadDialog}
-				>
-					<Icon icon="add-circle" size={32} className="bg-neutral-strong" />
-				</div>
+				<AddFileButton addFiles={addFiles} className="aspect-square" />
 			</div>
 		</UploadArea>
 	);

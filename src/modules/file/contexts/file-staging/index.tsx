@@ -3,10 +3,8 @@
 import { useToast } from '@/lib/shadcn/ui/use-toast';
 import { api } from '@/lib/trpc/react';
 import {
-	type Dispatch,
 	type FC,
 	type ReactNode,
-	type SetStateAction,
 	createContext,
 	useContext,
 	useImperativeHandle,
@@ -36,7 +34,7 @@ const defaultData = {
 
 export type FileStagingContextType = {
 	files: StagedFile[];
-	setFiles: Dispatch<SetStateAction<StagedFile[]>>;
+	setFiles: (files: File[]) => void;
 	addFiles: (files: File[]) => void;
 	removeFile: (index: number) => void;
 	updateFile: (index: number, update: Partial<StagedFile>) => void;
@@ -72,24 +70,17 @@ export const FileStagingProvider: FC<{
 }> = ({ children, ref }) => {
 	const { toast } = useToast();
 
-	const [files, setFiles] = useState<StagedFile[]>(defaultData.files);
+	const [stagedFiles, setStagedFiles] = useState<StagedFile[]>(
+		defaultData.files
+	);
 	const { mutateAsync: makeUploadUrl } = api.file.makeUploadUrl.useMutation();
 	const { mutateAsync: makeDownloadUrl } =
 		api.file.makeDownloadUrl.useMutation();
 
-	const addFiles = (
-		newFiles: File[],
-		opts?: { openFileDetailsDialog?: boolean }
-	) => {
-		let firstDocumentIndex: number | null = null;
-
-		const sanitizedFiles = newFiles.map((file, i) => {
+	const addFiles = (newFiles: File[]) => {
+		const sanitizedFiles = newFiles.map((file) => {
 			try {
 				const sanitizedFile = fileToStagedFile(file);
-
-				firstDocumentIndex = firstDocumentIndex
-					? firstDocumentIndex
-					: files.length + i;
 
 				return sanitizedFile;
 				// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -107,25 +98,25 @@ export const FileStagingProvider: FC<{
 			(file): file is StagedFile => file !== null
 		);
 
-		setFiles([...files, ...filteredSanitizedFiles]);
+		setStagedFiles([...stagedFiles, ...filteredSanitizedFiles]);
 	};
 
 	const updateFile = (updateIndex: number, update: Partial<StagedFile>) => {
-		setFiles(
-			files.map((file, index) =>
+		setStagedFiles(
+			stagedFiles.map((file, index) =>
 				index === updateIndex ? { ...file, ...update } : file
 			)
 		);
 	};
 
 	const removeFile = (removeIndex: number) => {
-		setFiles(files.filter((_, i) => i !== removeIndex));
+		setStagedFiles(stagedFiles.filter((_, i) => i !== removeIndex));
 	};
 
 	const uploadFiles = async () => {
 		// Make sure all files are uploaded by uploading files without a key
 		const uploadedFiles = await Promise.all(
-			files.map(async (file, index) => {
+			stagedFiles.map(async (file, index) => {
 				if (file.key) {
 					return file;
 				}
@@ -150,7 +141,7 @@ export const FileStagingProvider: FC<{
 
 	const setFilesFromKeys = async (keys: string[]) => {
 		const newFiles: StagedFile[] = [];
-		const existingKeys = files.map((file) => file.key);
+		const existingKeys = stagedFiles.map((file) => file.key);
 
 		for (const key of keys) {
 			if (existingKeys.includes(key)) {
@@ -162,11 +153,35 @@ export const FileStagingProvider: FC<{
 			newFiles.push({ key, name: key, file: new File([], '_tmp'), url });
 		}
 
-		setFiles((files) => newFiles);
+		setStagedFiles((files) => newFiles);
+	};
+
+	const setFiles = (newFiles: File[]) => {
+		const sanitizedFiles = newFiles.map((file) => {
+			try {
+				const sanitizedFile = fileToStagedFile(file);
+
+				return sanitizedFile;
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			} catch (error) {
+				toast({
+					title: 'Nedopušteni tip datoteke',
+					description: 'Dopušteni tipovi datoteka su: png, jpeg, pdf, zip',
+					variant: 'danger'
+				});
+				return null;
+			}
+		});
+
+		const filteredSanitizedFiles = sanitizedFiles.filter(
+			(file): file is StagedFile => file !== null
+		);
+
+		setStagedFiles([...filteredSanitizedFiles]);
 	};
 
 	useImperativeHandle(ref, () => ({
-		files,
+		files: stagedFiles,
 		setFiles,
 		addFiles,
 		removeFile,
@@ -178,7 +193,7 @@ export const FileStagingProvider: FC<{
 	return (
 		<FileStagingContext.Provider
 			value={{
-				files,
+				files: stagedFiles,
 				setFiles,
 				addFiles,
 				removeFile,

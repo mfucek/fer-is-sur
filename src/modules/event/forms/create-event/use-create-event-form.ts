@@ -24,11 +24,12 @@ export const useCreateEventForm = () => {
 	const utils = api.useUtils();
 	const { mutateAsync: createEvent } = api.event.create.useMutation();
 	const { mutateAsync: updateGallery } = api.event.updateGallery.useMutation();
+	const { mutateAsync: updateCover } = api.event.updateCover.useMutation();
 
 	const [isSaving, setIsSaving] = useState(false);
 
 	const onSubmit = async (data: TEventCreateSchema) => {
-		if (!fileStagingRef.current) return;
+		if (!galleryFileStagingRef.current || !coverFileStagingRef.current) return;
 
 		setIsSaving(true);
 		try {
@@ -36,7 +37,7 @@ export const useCreateEventForm = () => {
 			const { id: eventId } = await createEvent({ event: data });
 
 			// Upload gallery files to R2
-			const fileKeys = (await fileStagingRef.current.uploadFiles())
+			const fileKeys = (await galleryFileStagingRef.current.uploadFiles())
 				.filter((file) => file.key)
 				.map((file) => file.key!);
 
@@ -46,9 +47,23 @@ export const useCreateEventForm = () => {
 				fileKeys: fileKeys
 			});
 
-			// Upload cover file to R2
+			const coverFile = coverFileStagingRef.current.files[0];
 
-			// Update cover file in db to reflect R2 file
+			if (coverFile) {
+				// Upload cover file to R2
+				const stagedCoverFile = (
+					await coverFileStagingRef.current.uploadFiles()
+				)[0];
+
+				if (stagedCoverFile) {
+					// Update cover file in db to reflect R2 file
+
+					await updateCover({
+						eventId,
+						fileKey: stagedCoverFile.key
+					});
+				}
+			}
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -62,12 +77,14 @@ export const useCreateEventForm = () => {
 		console.log(errors);
 	};
 
-	const fileStagingRef = useRef<FileStagingContextType>(null);
+	const galleryFileStagingRef = useRef<FileStagingContextType>(null);
+	const coverFileStagingRef = useRef<FileStagingContextType>(null);
 
 	const handleFormSubmit = handleSubmit(onSubmit, onInvalid);
 	return {
 		handleFormSubmit,
-		fileStagingRef,
+		galleryFileStagingRef,
+		coverFileStagingRef,
 		isSaving,
 		form
 	};
