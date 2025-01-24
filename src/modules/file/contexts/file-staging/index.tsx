@@ -74,7 +74,8 @@ export const FileStagingProvider: FC<{
 
 	const [files, setFiles] = useState<StagedFile[]>(defaultData.files);
 	const { mutateAsync: makeUploadUrl } = api.file.makeUploadUrl.useMutation();
-	const { mutateAsync: getDownloadUrl } = api.file.getDownloadUrl.useMutation();
+	const { mutateAsync: makeDownloadUrl } =
+		api.file.makeDownloadUrl.useMutation();
 
 	const addFiles = (
 		newFiles: File[],
@@ -156,7 +157,7 @@ export const FileStagingProvider: FC<{
 				continue;
 			}
 
-			const { url } = await getDownloadUrl({ key });
+			const { url } = await makeDownloadUrl({ key });
 
 			newFiles.push({ key, name: key, file: new File([], '_tmp'), url });
 		}
