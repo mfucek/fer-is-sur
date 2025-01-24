@@ -1,23 +1,25 @@
 'use client';
 
-import { type FC, useState } from 'react';
+import { type FC, useRef } from 'react';
 
 import { Icon } from '@/global/components/icon';
 import { SectionList } from '@/global/components/section-list';
 import { Spinner } from '@/global/components/spinner';
 import { Button } from '@/lib/shadcn/ui/button';
-import { Dialog, DialogContent } from '@/lib/shadcn/ui/dialog';
+import {
+	Dialog,
+	DialogContent,
+	type DialogContextType
+} from '@/lib/shadcn/ui/dialog';
 import { cn } from '@/lib/shadcn/utils';
 import { api } from '@/lib/trpc/react';
 import { type EventDTO } from '../api/dto/event-dto';
-import { UpdateEventDialogContent } from './dialogs/update-event-dialog';
+import { UpdateEventDialogContent } from '../forms/update-event/update-event-form';
 
 const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 	const utils = api.useUtils();
 	const { mutateAsync: deleteEvent, isPending } =
 		api.event.delete.useMutation();
-
-	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const handleDelete = async () => {
 		try {
@@ -29,27 +31,23 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 		}
 	};
 
+	const dialogRef = useRef<DialogContextType>(null);
+
 	return (
 		<>
-			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+			<Dialog ref={dialogRef}>
 				<Button
 					variant="ghost"
 					iconOnly
 					size="sm"
 					onClick={() => {
-						setDialogOpen(true);
+						dialogRef.current?.openDialog();
 					}}
 				>
 					<Icon icon="edit" />
 				</Button>
 				<DialogContent>
-					<UpdateEventDialogContent
-						event={data}
-						dialogOpen={dialogOpen}
-						closeDialog={() => {
-							setDialogOpen(false);
-						}}
-					/>
+					<UpdateEventDialogContent event={data} />
 				</DialogContent>
 			</Dialog>
 			<Button

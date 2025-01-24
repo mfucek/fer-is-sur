@@ -1,44 +1,25 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, SubmitErrorHandler, useForm } from 'react-hook-form';
-
-import { ContentPadding } from '@/global/components/content-padding';
-import {
-	DialogDescription,
-	DialogHeader,
-	DialogTitle
-} from '@/lib/shadcn/ui/dialog';
-import { api } from '@/lib/trpc/react';
-import { EventUpdateForm } from '@/modules/event/components/forms/event-update-form';
-import { eventUpdateSchema, TEventUpdateSchema } from '@/modules/event/schemas';
-import {
-	FileStagingContextType,
-	FileStagingProvider
-} from '@/modules/file/contexts/file-staging';
 import { useEffect, useRef, useState } from 'react';
-import { EventDTO } from '../../api/dto/event-dto';
+import { type SubmitErrorHandler, useForm } from 'react-hook-form';
 
-export const UpdateEventDialogContent = ({
-	event,
-	dialogOpen,
-	closeDialog
-}: {
-	event: EventDTO;
-	dialogOpen: boolean;
-	closeDialog: () => void;
-}) => {
+import { useDialog } from '@/lib/shadcn/ui/dialog';
+import { api } from '@/lib/trpc/react';
+import {
+	eventUpdateSchema,
+	type TEventUpdateSchema
+} from '@/modules/event/schemas';
+import { type FileStagingContextType } from '@/modules/file/contexts/file-staging';
+import { type EventDTO } from '../../api/dto/event-dto';
+
+export const useUpdateEventForm = (event: EventDTO) => {
 	const form = useForm<TEventUpdateSchema>({
 		resolver: zodResolver(eventUpdateSchema)
 	});
+	const { handleSubmit, setValue, reset } = form;
 
-	const {
-		handleSubmit,
-		formState: { errors, isValid, isLoading },
-		setValue,
-		reset,
-		watch
-	} = form;
+	const { closeDialog } = useDialog();
 
 	const { data: gallery } = api.event.getGallery.useQuery({
 		eventId: event.id
@@ -95,20 +76,12 @@ export const UpdateEventDialogContent = ({
 
 	const fileStagingRef = useRef<FileStagingContextType>(null);
 
-	return (
-		<FileStagingProvider ref={fileStagingRef}>
-			<DialogHeader>
-				<DialogTitle>Edit Event</DialogTitle>
-				<DialogDescription>Edit an existing event.</DialogDescription>
-			</DialogHeader>
+	const handleFormSubmit = handleSubmit(onSubmit, onInvalid);
 
-			<ContentPadding size="xl">
-				<FormProvider {...form}>
-					<form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-						<EventUpdateForm loading={isLoading} />
-					</form>
-				</FormProvider>
-			</ContentPadding>
-		</FileStagingProvider>
-	);
+	return {
+		handleFormSubmit,
+		fileStagingRef,
+		isSaving,
+		form
+	};
 };

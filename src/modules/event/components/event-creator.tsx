@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { api } from '@/lib/trpc/react';
 import { eventCreateSchema, TEventCreateSchema } from '@/modules/event/schemas';
-import { EventCreateForm } from './forms/event-create-form';
+import { EventCreateForm } from '../forms/event-create-form';
 
 export const EventCreator = () => {
 	const form = useForm<TEventCreateSchema>({
