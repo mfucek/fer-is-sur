@@ -66,17 +66,13 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 
 const EventRow: FC<{ item: EventDTO }> = ({ item }) => {
 	return (
-		<div className="flex flex-col gap-1">
-			<div className="flex flex-row gap-2">
-				<div>
-					<p className="title-3">{item.title}</p>
-				</div>
-				<div>
-					<p className="body-2 text-neutral-strong truncate">
-						{item.description}
-					</p>
-				</div>
-			</div>
+		<div className="flex flex-col gap-1 w-full overflow-hidden">
+			<p className="title-3 w-full truncate overflow-hidden">
+				{item.title}{' '}
+				<span className="body-2 text-neutral-strong truncate">
+					{item.description}
+				</span>
+			</p>
 			<div className="flex flex-row gap-2">
 				<div>
 					<p className="caption text-neutral-strong">{item.location}</p>
@@ -106,6 +102,7 @@ const EventSectionList: FC<{ data: EventDTO[]; title: string }> = ({
 		<SectionList
 			data={data}
 			rows={(item) => <EventRow item={item} />}
+			info={data.length + ' events'}
 			actions={(item) => <EventRowActions data={item} />}
 			title={title}
 		/>

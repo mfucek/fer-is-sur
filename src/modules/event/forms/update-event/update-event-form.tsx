@@ -61,7 +61,7 @@ export const UpdateEventDialogContent = ({ event }: { event: EventDTO }) => {
 							</div>
 						</div>
 
-						<div className="flex flex-row gap-2">
+						<div className="grid grid-cols-2 gap-2">
 							<FormLabel title="Location" error={errors.location?.message}>
 								<Input
 									{...register('location')}
@@ -76,6 +76,16 @@ export const UpdateEventDialogContent = ({ event }: { event: EventDTO }) => {
 									onChange={(date) => {
 										setValue('date', date);
 									}}
+									disabled={isSaving}
+								/>
+							</FormLabel>
+
+							<FormLabel title="Capacity" error={errors.capacity?.message}>
+								<Input
+									{...register('capacity', {
+										valueAsNumber: true
+									})}
+									type="number"
 									disabled={isSaving}
 								/>
 							</FormLabel>

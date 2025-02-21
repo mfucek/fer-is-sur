@@ -1,5 +1,5 @@
 /** @type {import("eslint").Linter.Config} */
-const config = {
+export default {
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: true
@@ -21,6 +21,7 @@ const config = {
 		'@typescript-eslint/consistent-indexed-object-style': 'off',
 		'@typescript-eslint/no-require-imports': 'off',
 		'@typescript-eslint/no-floating-promises': 'off',
+		'import/no-anonymous-default-export': 'off',
 		'@typescript-eslint/consistent-type-imports': [
 			'warn',
 			{
@@ -48,4 +49,3 @@ const config = {
 		'react-hooks/exhaustive-deps': 'off'
 	}
 };
-module.exports = config;

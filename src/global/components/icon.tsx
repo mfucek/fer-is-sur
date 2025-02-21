@@ -2,7 +2,7 @@
 
 import { IconClassnameContext, IconSizeContext } from '@/lib/shadcn/ui/button';
 import { cn } from '@/lib/shadcn/utils';
-import React from 'react';
+import React, { type FC } from 'react';
 
 const icons = {
 	'add-circle': '/assets/icons/add-circle.svg',
@@ -133,4 +133,14 @@ export const Icon: React.FC<{
 			}}
 		/>
 	);
+};
+
+type a = {
+	b: 1;
+	c: 'c';
+	d: 3;
+};
+
+const fn: FC<a> = ({ b, c, d }) => {
+	return <div>{b}</div>;
 };

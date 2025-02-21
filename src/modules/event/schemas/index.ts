@@ -4,7 +4,8 @@ export const eventCreateSchema = z.object({
 	title: z.string().min(1, 'Title is required'),
 	description: z.string().min(1, 'Description is required'),
 	location: z.string().min(1, 'Location is required'),
-	date: z.date()
+	date: z.date(),
+	capacity: z.number().min(1, 'Capacity is required')
 });
 
 export const eventUpdateSchema = z.object({
@@ -12,7 +13,8 @@ export const eventUpdateSchema = z.object({
 	title: z.string().min(1, 'Title is required').optional(),
 	description: z.string().min(1, 'Description is required').optional(),
 	location: z.string().min(1, 'Location is required').optional(),
-	date: z.date().optional()
+	date: z.date().optional(),
+	capacity: z.number().optional()
 });
 
 export const dateRangeSchema = z.object({

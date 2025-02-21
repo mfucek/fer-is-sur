@@ -1,6 +1,4 @@
-import '@/styles/colors.css';
-import '@/styles/globals.css';
-import '@/styles/typography.css';
+import '@/styles/index.css';
 
 import { GeistSans } from 'geist/font/sans';
 import { type Metadata } from 'next';
@@ -36,13 +34,11 @@ export default function RootLayout({
 	return (
 		<html lang="en" className={GeistSans.variable}>
 			<ViewportSizeProvider>
-				<body className="bg-background min-h-screen">
-					<TRPCReactProvider>
-						<AnalyticsProvider>
-							<div className="min-h-screen overflow-x-hidden">{children}</div>
-						</AnalyticsProvider>
-					</TRPCReactProvider>
-				</body>
+				<TRPCReactProvider>
+					<AnalyticsProvider>
+						<body className="bg-background min-h-screen">{children}</body>
+					</AnalyticsProvider>
+				</TRPCReactProvider>
 			</ViewportSizeProvider>
 		</html>
 	);

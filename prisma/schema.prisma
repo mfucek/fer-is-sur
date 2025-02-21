@@ -19,6 +19,7 @@ model Event {
   description String
   date        DateTime
   location    String
+  capacity    Int      @default(10)
 
   coverImageId String?
   CoverImage   EventCover?

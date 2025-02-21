@@ -30,7 +30,7 @@ const Item: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
 	return (
 		<div
 			className={cn(
-				'flex flex-row gap-2 items-center justify-between bg-section button-md group',
+				'flex flex-row gap-2 items-center bg-section button-md group',
 				className
 			)}
 			{...props}
@@ -39,7 +39,7 @@ const Item: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
 };
 const ItemActions: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<div className="flex flex-row items-center gap-2 px-3 md:px-4 py-4">
+		<div className="flex flex-row shrink-0 items-center gap-2 px-3 md:px-4 py-4">
 			{children}
 		</div>
 	);
@@ -47,7 +47,7 @@ const ItemActions: FC<PropsWithChildren> = ({ children }) => {
 
 const ItemContent: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<div className="flex flex-row items-center gap-2 pl-3 md:pl-4 py-4">
+		<div className="flex flex-row grow-1 shrink items-center gap-2 pl-3 md:pl-4 py-4">
 			{children}
 		</div>
 	);

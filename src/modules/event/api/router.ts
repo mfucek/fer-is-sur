@@ -10,6 +10,7 @@ import {
 	eventUpdateSchema
 } from '../schemas';
 import { makeEventDTO } from './dto/event-dto';
+import { listShowcaseProcedure } from './procedures/list-showcase';
 
 export const eventRouter = createTRPCRouter({
 	list: publicProcedure
@@ -276,7 +277,10 @@ export const eventRouter = createTRPCRouter({
 			});
 
 			return cover;
-		})
+		}),
+
+	listShowcase: listShowcaseProcedure,
+	getEventDates: publicProcedure.query(async ({ ctx }) => {})
 });
 
 const cleanUpOrphanedFiles = async (db: PrismaClient) => {

@@ -41,6 +41,7 @@ export const useUpdateEventForm = (event: EventDTO) => {
 			setValue('description', event.description);
 			setValue('location', event.location);
 			setValue('date', event.date);
+			setValue('capacity', event.capacity);
 		}
 	}, []);
 
