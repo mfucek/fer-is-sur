@@ -1,9 +1,9 @@
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
-import packageJson from '../package.json';
+// import packageJson from '../package.json';
 
-const version = packageJson.version;
+// const version = packageJson.version;
 
 export const env = createEnv({
 	server: {
@@ -31,8 +31,8 @@ export const env = createEnv({
 	},
 
 	client: {
-		NEXT_PUBLIC_DEPLOYMENT: z.enum(['staging', 'production']),
-		NEXT_PUBLIC_VERSION: z.string()
+		NEXT_PUBLIC_DEPLOYMENT: z.enum(['staging', 'production'])
+		// NEXT_PUBLIC_VERSION: z.string()
 	},
 
 	runtimeEnv: {
@@ -56,8 +56,8 @@ export const env = createEnv({
 		STRIPE_PRICE_ID_MONTHLY_CHEAP: process.env.STRIPE_PRICE_ID_MONTHLY_CHEAP,
 		STRIPE_PRICE_ID_MONTHLY_PRO: process.env.STRIPE_PRICE_ID_MONTHLY_PRO,
 		STRIPE_PRICE_ID_LIFETIME: process.env.STRIPE_PRICE_ID_LIFETIME,
-		NEXT_PUBLIC_DEPLOYMENT: process.env.NEXT_PUBLIC_DEPLOYMENT,
-		NEXT_PUBLIC_VERSION: version
+		NEXT_PUBLIC_DEPLOYMENT: process.env.NEXT_PUBLIC_DEPLOYMENT
+		// NEXT_PUBLIC_VERSION: version
 	},
 	skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 	emptyStringAsUndefined: true
