@@ -45,8 +45,7 @@ export const DatePicker: FC<{
 				>
 					<Icon
 						icon="calendar-done"
-						className={cn('bg-neutral-strong')}
-						size={16}
+						className={cn('bg-neutral-strong size-4')}
 					/>
 					{shownDate ? format(shownDate, 'PPP') : <span>Pick a date</span>}
 				</button>

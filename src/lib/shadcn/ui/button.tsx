@@ -1,5 +1,6 @@
 'use client';
 
+import { Icon, IconName } from '@/global/components/icon';
 import { Spinner } from '@/global/components/spinner';
 import { cn } from '@/lib/shadcn/utils';
 import { Slot } from '@radix-ui/react-slot';
@@ -27,32 +28,31 @@ const buttonVariants = cva(
 			},
 			variant: {
 				solid:
-					'border border-transparent bg-theme text-theme-contrast hover:md:bg-theme-strong',
+					'border border-transparent bg-theme text-theme-contrast hover:sm:bg-theme-strong',
 				'solid-weak':
-					'border border-transparent bg-theme-weak text-theme hover:md:bg-theme-medium',
+					'border border-transparent bg-theme-weak text-theme hover:sm:bg-theme-medium',
 				outline:
-					'border border-theme-medium text-theme hover:md:bg-theme-medium',
+					'border border-theme-medium text-theme hover:sm:bg-theme-medium',
 				'outline-weak':
-					'border border-theme-weak text-theme-strong hover:md:bg-theme-medium hover:md:text-theme',
-				ghost: 'border border-transparent text-theme hover:md:bg-theme-medium',
+					'border border-theme-weak text-theme-strong hover:sm:bg-theme-medium hover:sm:text-theme',
+				ghost: 'border border-transparent text-theme hover:sm:bg-theme-medium',
 				'ghost-weak':
-					'border border-transparent text-theme-strong hover:md:text-theme hover:md:bg-neutral-medium'
+					'border border-transparent text-theme-strong hover:sm:text-theme hover:sm:bg-neutral-medium',
+				section:
+					'border border-transparent bg-section text-theme hover:sm:bg-theme-weak hover:sm:text-theme'
 			},
 			size: {
-				lg: 'h-[52px] px-[20px] gap-[8px] button-lg',
-				md: 'h-[40px] px-[16px] gap-[6px] button-md',
-				sm: 'h-[32px] px-[12px] gap-[4px] button-md',
-				xs: 'h-[24px] px-[8px] gap-[4px] button-sm'
+				lg: 'h-[52px] px-[20px] gap-[8px] button-lg rounded-[8px]',
+				md: 'h-[40px] px-[16px] gap-[6px] button-md rounded-[8px]',
+				sm: 'h-[32px] px-[12px] gap-[4px] button-md rounded-[6px]',
+				xs: 'h-[24px] px-[8px] gap-[4px] button-sm rounded-[6px]',
+				card: 'p-6 rounded-[16px]'
 			},
 			loading: {
 				true: '!text-transparent',
 				false: ''
 			},
-			iconOnly: {
-				true: '',
-				false: ''
-			},
-			rounded: {
+			hasSingleIcon: {
 				true: '',
 				false: ''
 			}
@@ -60,206 +60,164 @@ const buttonVariants = cva(
 		defaultVariants: {
 			variant: 'solid',
 			size: 'md',
-			theme: 'accent',
+			theme: 'neutral',
 			loading: false,
-			rounded: false,
-			iconOnly: false
+			hasSingleIcon: false
 		},
 		compoundVariants: [
 			{
+				hasSingleIcon: true,
 				size: 'lg',
-				iconOnly: true,
-				class: 'h-[52px] w-[52px]'
+				class: 'size-[52px] !p-0'
 			},
 			{
+				hasSingleIcon: true,
 				size: 'md',
-				iconOnly: true,
-				class: 'h-[40px] w-[40px]'
+				class: 'size-[40px] !p-0'
 			},
 			{
+				hasSingleIcon: true,
 				size: 'sm',
-				iconOnly: true,
-				class: 'h-[32px] w-[32px]'
+				class: 'size-[32px] !p-0'
 			},
 			{
+				hasSingleIcon: true,
 				size: 'xs',
-				iconOnly: true,
-				class: 'h-[24px] w-[24px]'
-			},
-			{
-				rounded: false,
-				size: 'lg',
-				class: 'rounded-[12px]'
-			},
-			{
-				rounded: false,
-				size: 'md',
-				class: 'rounded-[12px]'
-			},
-			{
-				rounded: false,
-				size: 'sm',
-				class: 'rounded-[10px]'
-			},
-			{
-				rounded: false,
-				size: 'xs',
-				class: 'rounded-[8px]'
-			},
-			{
-				rounded: true,
-				class: 'rounded-full'
+				class: 'size-[24px] !p-0'
 			}
 		]
 	}
 );
 
-export const iconClassVariants = cva('shrink-0', {
+export const iconVariants = cva('shrink-0', {
 	variants: {
-		theme: {
-			accent: 'theme-accent',
-			neutral: 'theme-neutral',
-			info: 'theme-info',
-			success: 'theme-success',
-			warning: 'theme-warning',
-			danger: 'theme-danger'
-		},
 		variant: {
-			solid: 'bg-theme-contrast group-[btn]-hover:md:bg-theme-contrast',
-			'solid-weak': 'bg-theme group-[btn]-hover:md:bg-theme',
-			outline: 'bg-theme group-[btn]-hover:md:bg-theme-contrast',
-			'outline-weak': 'bg-theme-strong group-[btn]-hover:md:bg-theme',
-			ghost: 'bg-theme group-[btn]-hover:md:bg-theme',
-			'ghost-weak': 'bg-theme-strong group-[btn]-hover:md:bg-theme'
+			solid: 'bg-theme-contrast group-[btn]-hover:sm:bg-theme-contrast',
+			'solid-weak': 'bg-theme group-[btn]-hover:sm:bg-theme',
+			outline: 'bg-theme group-[btn]-hover:sm:bg-theme-contrast',
+			'outline-weak': 'bg-theme-strong group-[btn]-hover:sm:bg-theme',
+			ghost: 'bg-theme group-[btn]-hover:sm:bg-theme',
+			'ghost-weak': 'bg-theme-strong group-[btn]-hover:sm:bg-theme',
+			section: 'bg-theme-strong group-[btn]-hover:sm:bg-theme-weak'
+		},
+		size: {
+			lg: 'size-6',
+			md: 'size-4',
+			sm: 'size-4',
+			xs: 'size-3',
+			card: 'size-6'
 		}
 	},
-	compoundVariants: [
-		{
-			variant: [
-				'solid',
-				'solid-weak',
-				'outline',
-				'outline-weak',
-				'ghost',
-				'ghost-weak'
-			],
-			class: 'group-active:opacity-50'
-		}
-	],
 	defaultVariants: {
-		variant: 'solid',
-		theme: 'accent'
+		variant: 'solid'
 	}
 });
 
-export const iconSizeVariants = cva('', {
+export const singleIconVariants = cva('', {
 	variants: {
-		size: {
-			lg: '',
-			md: '',
-			sm: '',
-			xs: ''
+		variant: {
+			solid: 'bg-theme-contrast',
+			'solid-weak': 'bg-theme',
+			outline: 'bg-theme-contrast',
+			'outline-weak': 'bg-theme-strong',
+			ghost: 'bg-theme',
+			'ghost-weak': 'bg-theme-strong',
+			section: 'bg-theme'
 		},
-		iconOnly: {
-			true: '',
-			false: ''
+		size: {
+			lg: 'size-6',
+			md: 'size-5',
+			sm: 'size-5',
+			xs: 'size-4',
+			card: 'size-6'
 		}
 	},
-	compoundVariants: [
-		{
-			size: 'lg',
-			class: '24'
-		},
-		{
-			size: 'md',
-			iconOnly: false,
-			class: '16'
-		},
-		{
-			size: 'md',
-			iconOnly: true,
-			class: '24'
-		},
-		{
-			size: 'sm',
-			iconOnly: false,
-			class: '16'
-		},
-		{
-			size: 'sm',
-			iconOnly: true,
-			class: '20'
-		},
-		{
-			size: 'xs',
-			iconOnly: false,
-			class: '12'
-		},
-		{
-			size: 'xs',
-			iconOnly: true,
-			class: '16'
-		}
-	]
+	defaultVariants: {
+		variant: 'solid',
+		size: 'md'
+	}
 });
 
-export interface ButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-		VariantProps<typeof buttonVariants> {
-	asChild?: boolean;
-}
+const spinnerVariants = cva('', {
+	variants: {
+		variant: {
+			solid: 'border-neutral-contrast',
+			'solid-weak': 'border-neutral',
+			outline: 'border-neutral',
+			'outline-weak': 'border-neutral',
+			ghost: 'border-neutral',
+			'ghost-weak': 'border-neutral',
+			section: 'border-neutral'
+		},
+		size: {
+			lg: 'size-6 border-4',
+			md: 'size-6 border-4',
+			sm: 'size-5 border-3',
+			xs: 'size-4 border-3',
+			card: 'size-6 border-4'
+		}
+	}
+});
+
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+	VariantProps<typeof buttonVariants> & {
+		asChild?: boolean;
+		singleIcon?: IconName;
+		leftIcon?: IconName;
+		rightIcon?: IconName;
+	};
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
 			className,
-			variant = 'solid',
-			size = 'md',
+			variant,
+			size,
 			loading,
-			iconOnly,
-			asChild = false,
+			asChild,
 			children,
-			theme = 'neutral',
-			rounded,
+			theme,
+			singleIcon,
+			hasSingleIcon,
+			leftIcon,
+			rightIcon,
 			...props
 		},
 		ref
 	) => {
 		const Comp = asChild ? Slot : 'button';
+
+		// Button
+		const buttonClass = cn(
+			buttonVariants({
+				variant,
+				size,
+				loading,
+				theme,
+				hasSingleIcon: hasSingleIcon ?? !!singleIcon,
+				className
+			}),
+			'group'
+		);
+
+		// Icons
+		const iconClass = cn(iconVariants({ size, variant }));
+		const singleIconClass = cn(singleIconVariants({ size, variant }));
+
+		// Spinner
+		const spinnerClass = cn(spinnerVariants({ size, variant }));
+
 		return (
-			<Comp
-				className={cn(
-					buttonVariants({
-						variant,
-						size,
-						loading,
-						iconOnly,
-						theme,
-						rounded,
-						className
-					}),
-					rounded && 'rounded-full',
-					'group'
-				)}
-				ref={ref}
-				{...props}
-			>
-				{loading && (
-					<div className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2">
-						<Spinner white />
-					</div>
-				)}
-				<IconSizeContext.Provider
-					value={Number(
-						iconSizeVariants({ size, iconOnly: iconOnly ?? false })
-					)}
-				>
-					<IconClassnameContext.Provider
-						value={iconClassVariants({ theme, variant })}
-					>
-						{children}
-					</IconClassnameContext.Provider>
-				</IconSizeContext.Provider>
+			<Comp className={buttonClass} ref={ref} {...props}>
+				{leftIcon && <Icon icon={leftIcon} className={iconClass} />}
+				{children}
+				{rightIcon && <Icon icon={rightIcon} className={iconClass} />}
+
+				{/* Only icon */}
+				{singleIcon && <Icon icon={singleIcon} className={singleIconClass} />}
+
+				{/* Spinner */}
+				{loading && <Spinner className={spinnerClass} absolutelyCentered />}
 			</Comp>
 		);
 	}

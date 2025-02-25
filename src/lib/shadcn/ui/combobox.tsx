@@ -17,7 +17,7 @@ import {
 	PopoverTrigger
 } from '@/lib/shadcn/ui/popover';
 import { cn } from '@/lib/shadcn/utils';
-import { useIsMobile } from '@/utils/useMediaQuery';
+import { useViewport } from '@/utils/use-viewport';
 import { Button } from './button';
 import { DialogHeader, DialogTitle } from './dialog';
 import { Drawer, DrawerContent, DrawerTrigger } from './drawer';
@@ -40,7 +40,7 @@ export const Combobox = <T,>({
 	className?: string;
 }) => {
 	const [open, setOpen] = useState(false);
-	const { isDesktop } = useIsMobile();
+	const { isDesktop } = useViewport();
 
 	const selectedValue = value ?? null;
 	const selectedName = selectedValue ? makeName(selectedValue) : null;
@@ -64,9 +64,8 @@ export const Combobox = <T,>({
 								{makeName(item)}
 								<Icon
 									icon="checkmark"
-									size={16}
 									className={cn(
-										'ml-auto',
+										'ml-auto size-4',
 										value && makeKey(item) === makeKey(value)
 											? 'bg-neutral'
 											: 'bg-transparent'
@@ -87,7 +86,6 @@ export const Combobox = <T,>({
 					<Button
 						variant="outline"
 						role="combobox"
-						rounded
 						aria-expanded={open}
 						className={cn(className)}
 					>
@@ -105,7 +103,7 @@ export const Combobox = <T,>({
 	return (
 		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerTrigger asChild>
-				<Button variant="outline" className={cn(className)} rounded>
+				<Button variant="outline" className={cn(className)}>
 					{selectedName ?? placeholder}
 					<Icon icon="chevron-down" className="bg-neutral-medium" />
 				</Button>

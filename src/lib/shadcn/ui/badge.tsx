@@ -1,18 +1,12 @@
 'use client';
 
+import { Icon, IconName } from '@/global/components/icon';
 import { cn } from '@/lib/shadcn/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-export const IconSizeContext = React.createContext<number | undefined>(
-	undefined
-);
-export const IconClassnameContext = React.createContext<string | undefined>(
-	undefined
-);
-
 const badgeVariants = cva(
-	'relative inline-flex items-center justify-center whitespace-nowrap',
+	'relative inline-flex flex-row items-center justify-center whitespace-nowrap',
 	{
 		variants: {
 			theme: {
@@ -29,9 +23,9 @@ const badgeVariants = cva(
 				tertiary: 'bg-theme-weak text-theme-strong'
 			},
 			size: {
-				lg: 'h-[24px] px-[8px] gap-[2px] rounded-[8px] caption',
-				md: 'h-[20px] px-[6px] gap-[2px] rounded-[8px] caption',
-				sm: 'h-[12px] px-[4px] gap-[2px] rounded-[8px] overline'
+				lg: 'h-[24px] px-[12px] gap-2 rounded-full caption',
+				md: 'h-[20px] px-[8px] gap-2 rounded-full caption',
+				sm: 'h-[12px] px-[6px] gap-2 rounded-full overline'
 			}
 		},
 		defaultVariants: {
@@ -42,7 +36,7 @@ const badgeVariants = cva(
 	}
 );
 
-const iconClassVariants = cva('shrink-0', {
+const iconVariants = cva('shrink-0', {
 	variants: {
 		theme: {
 			accent: 'theme-accent',
@@ -54,8 +48,13 @@ const iconClassVariants = cva('shrink-0', {
 		},
 		variant: {
 			primary: 'bg-theme-contrast',
-			secondary: 'bg-theme',
+			secondary: 'bg-theme-strong',
 			tertiary: 'bg-theme-strong'
+		},
+		size: {
+			lg: 'w-4 h-4',
+			md: 'w-4 h-4',
+			sm: 'h-3 w-3'
 		}
 	},
 	defaultVariants: {
@@ -64,19 +63,10 @@ const iconClassVariants = cva('shrink-0', {
 	}
 });
 
-const iconSizeVariants = cva('', {
-	variants: {
-		size: {
-			lg: '16',
-			md: '16',
-			sm: '12'
-		}
-	}
-});
-
-export interface BadgeProps
-	extends React.HTMLAttributes<HTMLDivElement>,
-		VariantProps<typeof badgeVariants> {}
+export type BadgeProps = React.HTMLAttributes<HTMLDivElement> &
+	VariantProps<typeof badgeVariants> & {
+		icon?: IconName;
+	};
 
 const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
 	(
@@ -86,6 +76,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
 			size = 'md',
 			children,
 			theme = 'accent',
+			icon,
 			...props
 		},
 		ref
@@ -108,13 +99,16 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
 				ref={ref}
 				{...props}
 			>
-				<IconSizeContext.Provider value={Number(iconSizeVariants({ size }))}>
-					<IconClassnameContext.Provider
-						value={iconClassVariants({ theme, variant })}
-					>
-						{children}
-					</IconClassnameContext.Provider>
-				</IconSizeContext.Provider>
+				{/* Icon */}
+				{icon && (
+					<Icon
+						icon={icon}
+						className={cn(iconVariants({ theme, variant, size }))}
+					/>
+				)}
+
+				{/* Text */}
+				{children}
 			</Comp>
 		);
 	}

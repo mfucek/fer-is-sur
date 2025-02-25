@@ -1,4 +1,3 @@
-import { Icon } from '@/global/components/icon';
 import { Button } from '@/lib/shadcn/ui/button';
 import { AddFileButton } from '@/modules/file/components/add-file-button';
 import { useFileStagingContext } from '@/modules/file/contexts/file-staging';
@@ -57,11 +56,9 @@ export const CoverPreview = () => {
 				<Button
 					variant="solid-weak"
 					theme="danger"
-					iconOnly
+					singleIcon="trash"
 					onClick={handleRemoveFile}
-				>
-					<Icon icon="trash" />
-				</Button>
+				/>
 			</div>
 		</div>
 	);

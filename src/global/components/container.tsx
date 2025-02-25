@@ -1,4 +1,4 @@
-import { type FC, type PropsWithChildren } from 'react';
+import { HTMLAttributes, type FC, type PropsWithChildren } from 'react';
 
 import { cn } from '@/lib/shadcn/utils';
 
@@ -10,8 +10,9 @@ const sizes = {
 };
 
 export const Container: FC<
-	PropsWithChildren<{ className?: string; size?: keyof typeof sizes }>
-> = ({ children, className, size = 'md' }) => {
+	HTMLAttributes<HTMLDivElement> &
+		PropsWithChildren<{ size?: keyof typeof sizes }>
+> = ({ className, size = 'md', ...props }) => {
 	return (
 		<div
 			className={cn(
@@ -19,8 +20,7 @@ export const Container: FC<
 				sizes[size],
 				className
 			)}
-		>
-			{children}
-		</div>
+			{...props}
+		/>
 	);
 };

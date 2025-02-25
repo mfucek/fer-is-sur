@@ -4,7 +4,6 @@ import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import { Icon } from '@/global/components/icon';
 import { cn } from '@/lib/shadcn/utils';
 import { Button } from './button';
 
@@ -87,9 +86,7 @@ const ToastClose = React.forwardRef<
 		asChild
 		{...props}
 	>
-		<Button variant="ghost" size="md" iconOnly className="p-1">
-			<Icon icon="close" size={16} />
-		</Button>
+		<Button variant="ghost" size="md" singleIcon="close" className="p-1" />
 	</ToastPrimitives.Close>
 ));
 ToastClose.displayName = ToastPrimitives.Close.displayName;

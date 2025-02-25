@@ -1,6 +1,5 @@
 'use client';
 
-import { ContentPadding } from '@/global/components/content-padding';
 import { FormLabel } from '@/global/components/form-label';
 import { Button } from '@/lib/shadcn/ui/button';
 import { DatePicker } from '@/lib/shadcn/ui/date-picker';
@@ -36,7 +35,7 @@ export const UpdateEventDialogContent = ({ event }: { event: EventDTO }) => {
 				<DialogDescription>Edit an existing event.</DialogDescription>
 			</DialogHeader>
 
-			<ContentPadding size="xl">
+			<div className="pad-xl">
 				<form onSubmit={handleFormSubmit}>
 					<div className="flex flex-col gap-4">
 						<div className="flex flex-row gap-4">
@@ -61,7 +60,7 @@ export const UpdateEventDialogContent = ({ event }: { event: EventDTO }) => {
 							</div>
 						</div>
 
-						<div className="grid grid-cols-2 gap-2">
+						<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
 							<FormLabel title="Location" error={errors.location?.message}>
 								<Input
 									{...register('location')}
@@ -102,7 +101,7 @@ export const UpdateEventDialogContent = ({ event }: { event: EventDTO }) => {
 						</div>
 					</div>
 				</form>
-			</ContentPadding>
+			</div>
 		</FileStagingProvider>
 	);
 };

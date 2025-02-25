@@ -6,12 +6,7 @@ import * as React from 'react';
 import { Icon } from '@/global/components/icon';
 import { cn } from '@/lib/shadcn/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
-import {
-	IconClassnameContext,
-	iconClassVariants,
-	IconSizeContext,
-	iconSizeVariants
-} from './button';
+import { iconVariants } from './button';
 
 const selectTriggerVariants = cva(
 	'flex items-center justify-between rounded-full border border-theme-medium ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 [&>span]:text-left [&>span>span]:break-all',
@@ -90,36 +85,32 @@ const SelectTrigger = React.forwardRef<
 			...props
 		},
 		ref
-	) => (
-		<SelectPrimitive.Trigger
-			ref={ref}
-			className={cn(
-				selectTriggerVariants({
-					variant,
-					size,
-					loading,
-					theme,
-					rounded,
-					className
-				}),
+	) => {
+		// Button
+		const buttonClass = cn(
+			selectTriggerVariants({
+				variant,
+				size,
+				loading,
+				theme,
 				className
-			)}
-			{...props}
-		>
-			{children}
-			<SelectPrimitive.Icon asChild>
-				<IconSizeContext.Provider
-					value={Number(iconSizeVariants({ size, iconOnly: false }))}
-				>
-					<IconClassnameContext.Provider
-						value={iconClassVariants({ theme, variant })}
-					>
-						<Icon icon="chevron-down" />
-					</IconClassnameContext.Provider>
-				</IconSizeContext.Provider>
-			</SelectPrimitive.Icon>
-		</SelectPrimitive.Trigger>
-	)
+			}),
+			'group',
+			className
+		);
+
+		// Icons
+		const iconClass = cn(iconVariants({ size, variant }));
+
+		return (
+			<SelectPrimitive.Trigger ref={ref} className={buttonClass} {...props}>
+				{children}
+				<SelectPrimitive.Icon asChild>
+					<Icon icon="chevron-down" className={iconClass} />
+				</SelectPrimitive.Icon>
+			</SelectPrimitive.Trigger>
+		);
+	}
 );
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 

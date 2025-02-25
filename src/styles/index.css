@@ -6,12 +6,12 @@
 @layer components;
 @layer utilities;
 
-@plugin "tailwindcss-animate";
 @plugin "tailwindcss-displaymodes";
 
 @import './typography.css';
 @import './colors.css';
 @import './tiptap.css';
+@import './animate.css';
 
 @theme {
 	--breakpoint-xs: 400px;
@@ -19,14 +19,6 @@
 	--breakpoint-md: 768px;
 	--breakpoint-lg: 1024px;
 	--breakpoint-xl: 1280px;
-}
-
-@theme {
-	--container-xs: 400px;
-	--container-sm: 640px;
-	--container-md: 768px;
-	--container-lg: 1024px;
-	--container-xl: 1280px;
 }
 
 @theme {
@@ -103,6 +95,70 @@
 	display: none;
 }
 
-* {
-	@apply text-neutral;
+/* Container */
+
+@theme {
+	--container-xs: 400px;
+	--container-sm: 640px;
+	--container-md: 768px;
+	--container-lg: 1024px;
+	--container-xl: 1280px;
+}
+
+@utility container-fluid {
+	@apply @container max-w-full w-full relative;
+}
+
+@utility container-xs {
+	@apply @container max-w-[var(--container-xs)] w-full relative;
+}
+
+@utility container-sm {
+	@apply @container max-w-[var(--container-sm)] w-full relative;
+}
+
+@utility container-md {
+	@apply @container max-w-[var(--container-md)] w-full relative;
+}
+
+@utility container-lg {
+	@apply @container max-w-[var(--container-lg)] w-full relative;
+}
+
+@utility container-xl {
+	@apply @container max-w-[var(--container-xl)] w-full relative;
+}
+
+@utility pad-sm {
+	@apply px-2 @md:px-0;
+}
+
+@utility pad-md {
+	@apply px-3 @md:px-0;
+}
+
+@utility pad-lg {
+	@apply px-4 @md:px-0;
+}
+
+@utility pad-xl {
+	@apply px-6 @md:px-0;
+}
+
+@utility flex-page {
+	@apply flex flex-col w-full items-center;
+}
+
+@utility dottet-gradient-pre {
+	background-size: 2px 2px;
+	mask: linear-gradient(rgb(0, 0, 0) 40%, rgba(0, 0, 0, 0) 100%);
+}
+
+@utility dotted-gradient {
+	backdrop-filter: blur(4px);
+	background-color: rgba(from var(--color-background) r g b / 0.7);
+	background-image: radial-gradient(
+		transparent 1px,
+		var(--color-background) 1px
+	);
 }

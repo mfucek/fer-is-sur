@@ -52,11 +52,9 @@ export const FilePreview = ({
 				<Button
 					variant="solid-weak"
 					theme="danger"
-					iconOnly
+					singleIcon="trash"
 					onClick={handleRemoveFile}
-				>
-					<Icon icon="trash" />
-				</Button>
+				/>
 			</div>
 		</div>
 	);

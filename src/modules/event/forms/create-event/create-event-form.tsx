@@ -1,6 +1,5 @@
 'use client';
 
-import { ContentPadding } from '@/global/components/content-padding';
 import { FileStagingProvider } from '@/modules/file/contexts/file-staging';
 
 import { FormLabel } from '@/global/components/form-label';
@@ -24,7 +23,7 @@ export const CreateEventForm = () => {
 	const { register } = form;
 
 	return (
-		<ContentPadding size="xl">
+		<div className="pad-xl">
 			<form onSubmit={handleFormSubmit}>
 				<div className="flex flex-col gap-4">
 					<div className="flex flex-row gap-4">
@@ -45,7 +44,7 @@ export const CreateEventForm = () => {
 						</div>
 					</div>
 
-					<div className="grid grid-cols-2 gap-2">
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
 						<FormLabel title="Location" error={errors.location?.message}>
 							<Input
 								{...register('location')}
@@ -88,6 +87,6 @@ export const CreateEventForm = () => {
 					</div>
 				</div>
 			</form>
-		</ContentPadding>
+		</div>
 	);
 };

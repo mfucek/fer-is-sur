@@ -2,7 +2,6 @@
 
 import { type FC, useRef } from 'react';
 
-import { Icon } from '@/global/components/icon';
 import { SectionList } from '@/global/components/section-list';
 import { Spinner } from '@/global/components/spinner';
 import { Button } from '@/lib/shadcn/ui/button';
@@ -38,14 +37,12 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 			<Dialog ref={dialogRef}>
 				<Button
 					variant="ghost"
-					iconOnly
+					singleIcon="edit"
 					size="sm"
 					onClick={() => {
 						dialogRef.current?.openDialog();
 					}}
-				>
-					<Icon icon="edit" />
-				</Button>
+				/>
 				<DialogContent>
 					<UpdateEventDialogContent event={data} />
 				</DialogContent>
@@ -54,12 +51,10 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 				variant="solid-weak"
 				theme="danger"
 				onClick={handleDelete}
-				iconOnly
+				singleIcon="trash"
 				size="sm"
 				loading={isPending}
-			>
-				<Icon icon="trash" />
-			</Button>
+			/>
 		</>
 	);
 };
@@ -67,28 +62,24 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 const EventRow: FC<{ item: EventDTO }> = ({ item }) => {
 	return (
 		<div className="flex flex-col gap-1 w-full overflow-hidden">
-			<p className="title-3 w-full truncate overflow-hidden">
-				{item.title}{' '}
-				<span className="body-2 text-neutral-strong truncate">
-					{item.description}
-				</span>
-			</p>
+			{/* Title */}
+			<p className="title-3 overflow-hidden text-neutral">{item.title} </p>
+
 			<div className="flex flex-row gap-2">
-				<div>
-					<p className="caption text-neutral-strong">{item.location}</p>
-				</div>
-				<div>
-					<p
-						className={cn(
-							'caption',
-							item.date.getTime() > new Date().getTime()
-								? 'text-info'
-								: 'text-neutral-strong'
-						)}
-					>
-						{item.date ? item.date.toLocaleDateString() : 'No date'}
-					</p>
-				</div>
+				{/* Location */}
+				<span className="caption text-neutral-strong">{item.location}</span>
+
+				{/* Date */}
+				<span
+					className={cn(
+						'caption',
+						item.date.getTime() > new Date().getTime()
+							? 'text-info'
+							: 'text-neutral-strong'
+					)}
+				>
+					{item.date ? item.date.toLocaleDateString() : 'No date'}
+				</span>
 			</div>
 		</div>
 	);
@@ -102,7 +93,7 @@ const EventSectionList: FC<{ data: EventDTO[]; title: string }> = ({
 		<SectionList
 			data={data}
 			rows={(item) => <EventRow item={item} />}
-			info={data.length + ' events'}
+			description={data.length + ' events'}
 			actions={(item) => <EventRowActions data={item} />}
 			title={title}
 		/>

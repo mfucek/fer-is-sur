@@ -62,7 +62,7 @@ export const UploadAreaOverlay: FC<{ isDragging: boolean }> = ({
 				backgroundColor: 'rgba(from var(--color-accent-medium) r g b / 0.5)'
 			}}
 		>
-			<Icon icon="add-circle" size={32} className="bg-accent" />
+			<Icon icon="add-circle" className="bg-accent size-8" />
 		</div>
 	);
 };

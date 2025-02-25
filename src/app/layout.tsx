@@ -4,7 +4,9 @@ import { GeistSans } from 'geist/font/sans';
 import { type Metadata } from 'next';
 
 import { AnalyticsProvider } from '@/lib/posthog';
+import { cn } from '@/lib/shadcn/utils';
 import { TRPCReactProvider } from '@/lib/trpc/react';
+import { ThemeProvider } from '@/modules/theme/providers/theme-provider';
 import { ViewportSizeProvider } from '@/utils/use-viewport';
 
 export const metadata: Metadata = {
@@ -32,14 +34,16 @@ export default function RootLayout({
 	children
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" className={GeistSans.variable}>
-			<ViewportSizeProvider>
-				<TRPCReactProvider>
-					<AnalyticsProvider>
-						<body className="bg-background min-h-screen">{children}</body>
-					</AnalyticsProvider>
-				</TRPCReactProvider>
-			</ViewportSizeProvider>
-		</html>
+		<ThemeProvider>
+			<html lang="en" className={cn(GeistSans.variable, 'bg-background')}>
+				<ViewportSizeProvider>
+					<TRPCReactProvider>
+						<AnalyticsProvider>
+							<body className="min-h-screen">{children}</body>
+						</AnalyticsProvider>
+					</TRPCReactProvider>
+				</ViewportSizeProvider>
+			</html>
+		</ThemeProvider>
 	);
 }

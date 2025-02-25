@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { deleteFile } from '@/modules/file/helpers/delete-file';
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { PrismaClient, type Prisma } from '@prisma/client';
+import { addMonths, subMonths } from 'date-fns';
 import {
 	dateRangeSchema,
 	eventCreateSchema,
@@ -280,7 +281,23 @@ export const eventRouter = createTRPCRouter({
 		}),
 
 	listShowcase: listShowcaseProcedure,
-	getEventDates: publicProcedure.query(async ({ ctx }) => {})
+	getEventDates: publicProcedure
+		.input(z.object({ monthDate: z.number() }))
+		.mutation(async ({ ctx, input }) => {
+			// month previous to the given date's month
+			const dateFrom = subMonths(input.monthDate, 1);
+			const dateTo = addMonths(input.monthDate, 1);
+
+			const eventsRaw = await ctx.db.event.findMany({
+				where: {
+					date: { gte: dateFrom, lte: dateTo }
+				}
+			});
+
+			const events = eventsRaw.map((eventRaw) => ({ ...eventRaw }));
+
+			return events;
+		})
 });
 
 const cleanUpOrphanedFiles = async (db: PrismaClient) => {

@@ -1,19 +1,41 @@
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from '@/lib/shadcn/utils';
 
 export const Spinner = ({
-  white,
-  className,
+	className,
+	absolutelyCentered = false
 }: {
-  className?: string;
-  white?: boolean;
+	className?: string;
+	absolutelyCentered?: boolean;
 }) => {
-  return (
-    <span
-      className={cn(
-        `inline-block h-4 w-4 animate-spin rounded-full border-b-2 border-r-2`,
-        white ? "border-neutral-200" : "border-neutral-500",
-        className,
-      )}
-    />
-  );
+	return (
+		<>
+			<div
+				className={cn(
+					absolutelyCentered
+						? 'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+						: 'relative',
+					'inline-block h-4 w-4',
+					className,
+					'border-none'
+				)}
+			>
+				<span
+					className={cn(
+						'absolute left-0 top-0 box-border h-4 w-4 rounded-full border-2',
+						'border-white',
+						className,
+						'opacity-20'
+					)}
+				/>
+				<span
+					className={cn(
+						'rounded-full',
+						'absolute left-0 top-0 box-border h-4 w-4 animate-spin border-2 border-white',
+						className,
+						'border-l-0 border-t-0'
+					)}
+				/>
+			</div>
+		</>
+	);
 };

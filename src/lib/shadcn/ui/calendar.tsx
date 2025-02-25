@@ -31,8 +31,7 @@ const Calendar = ({
 						theme: 'neutral',
 						variant: 'outline',
 						size: 'sm',
-						iconOnly: true,
-						rounded: true
+						hasSingleIcon: true
 					})
 				),
 				nav_button_previous: '',
@@ -47,8 +46,7 @@ const Calendar = ({
 						theme: 'neutral',
 						variant: 'ghost',
 						size: 'md',
-						iconOnly: true,
-						rounded: true
+						hasSingleIcon: true
 					})
 				),
 				day_range_end: 'day-range-end',
@@ -57,8 +55,7 @@ const Calendar = ({
 						theme: 'accent',
 						variant: 'solid',
 						size: 'md',
-						iconOnly: true,
-						rounded: true
+						hasSingleIcon: true
 					})
 				),
 				day_today: cn('!border !border-neutral-medium'),
@@ -67,8 +64,7 @@ const Calendar = ({
 						theme: 'neutral',
 						variant: 'ghost-weak',
 						size: 'md',
-						iconOnly: true,
-						rounded: true
+						hasSingleIcon: true
 					}),
 					'opacity-50'
 				),

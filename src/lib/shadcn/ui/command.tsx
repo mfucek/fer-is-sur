@@ -43,7 +43,7 @@ const CommandInput = React.forwardRef<
 		className="flex items-center border-b border-b-neutral-weak px-3"
 		cmdk-input-wrapper=""
 	>
-		<Icon icon="search" className="mr-2 shrink-0 bg-neutral-medium" size={16} />
+		<Icon icon="search" className="mr-2 shrink-0 bg-neutral-medium size-4" />
 		<CommandPrimitive.Input
 			ref={ref}
 			className={cn(

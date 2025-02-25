@@ -1,14 +1,16 @@
 import { type FC } from 'react';
+import { AboutSection } from '../components/sections/about';
 import { FooterSection } from '../components/sections/footer';
-import { GalleriesSection } from '../components/sections/galleries';
 import { HeroSection } from '../components/sections/hero';
+import { PastEventsSection } from '../components/sections/past-events';
 import { ReserveSection } from '../components/sections/reserve';
 
 export const LandingPage: FC = () => {
 	return (
-		<div className="flex flex-col items-center">
+		<div className="flex-page">
 			<HeroSection />
-			<GalleriesSection />
+			<PastEventsSection />
+			<AboutSection />
 			<ReserveSection />
 			<FooterSection />
 		</div>

@@ -1,13 +1,12 @@
 import { useEffect, useState, type FC } from 'react';
 
-import { Container } from '@/global/components/container';
 import { cn } from '@/lib/shadcn/utils';
 import { api } from '@/lib/trpc/react';
 import { type EventDTO } from '@/modules/event/api/dto/event-dto';
 import { formatDate } from 'date-fns';
 import Image from 'next/image';
 
-export const EventGallery: FC<{ event: EventDTO; side?: 'left' | 'right' }> = ({
+export const EventSection: FC<{ event: EventDTO; side?: 'left' | 'right' }> = ({
 	event,
 	side = 'left'
 }) => {
@@ -46,8 +45,39 @@ export const EventGallery: FC<{ event: EventDTO; side?: 'left' | 'right' }> = ({
 		fetchGallery();
 	}, [gallery]);
 
+	const Details = () => (
+		<div
+			className={cn(
+				'overflow-hidden grow-0 shrink-0 w-1/2 flex flex-col gap-4 justify-center',
+				side === 'left' ? 'pl-[160px]' : 'pr-[160px]'
+			)}
+		>
+			<div className="flex flex-col gap-1">
+				<p className="title-3 text-neutral-medium">
+					{formatDate(event.date, 'PP')}
+				</p>
+				<h1 className="display-3 font-bold text-neutral">{event.title}</h1>
+			</div>
+			<p className="body-1 text-neutral-strong">{event.description}</p>
+		</div>
+	);
+
+	const Cover = () => (
+		<div className="absolute overflow-hidden left-1/2 bottom-0 -translate-x-1/2 w-[200px] h-[320px] bg-blue-200 border-[12px] border-b-0 box-content border-background">
+			{coverUrl && (
+				<Image
+					src={coverUrl}
+					alt="Event Cover"
+					className="object-cover"
+					sizes="100vw"
+					fill
+				/>
+			)}
+		</div>
+	);
+
 	return (
-		<Container>
+		<div className="container-lg py-20">
 			<div
 				className={cn(
 					'flex relative',
@@ -98,34 +128,11 @@ export const EventGallery: FC<{ event: EventDTO; side?: 'left' | 'right' }> = ({
 				</div>
 
 				{/* Description */}
-				<div
-					className={cn(
-						'overflow-hidden grow-0 shrink-0 w-1/2 flex flex-col gap-4 justify-center',
-						side === 'left' ? 'pl-[160px]' : 'pr-[160px]'
-					)}
-				>
-					<div className="flex flex-col gap-1">
-						<p className="title-3 text-neutral-medium">
-							{formatDate(event.date, 'PP')}
-						</p>
-						<h1 className="text-2xl font-bold">{event.title}</h1>
-					</div>
-					<p className="body-1 text-neutral-strong">{event.description}</p>
-				</div>
+				<Details />
 
 				{/* Cover */}
-				<div className="absolute overflow-hidden left-1/2 bottom-0 -translate-x-1/2 w-[200px] h-[320px] bg-blue-200 border-[12px] border-b-0 box-content border-background">
-					{coverUrl && (
-						<Image
-							src={coverUrl}
-							alt="Event Cover"
-							className="object-cover"
-							sizes="100vw"
-							fill
-						/>
-					)}
-				</div>
+				<Cover />
 			</div>
-		</Container>
+		</div>
 	);
 };

@@ -29,7 +29,7 @@ export const DashboardCard: FC<HTMLAttributes<HTMLDivElement> & CardProps> = ({
 			>
 				{icon && (
 					<div className="w-10 h-10 rounded-lg bg-neutral-weak flex justify-center items-center">
-						<Icon icon={icon} size={20} />
+						<Icon icon={icon} className="size-5" />
 					</div>
 				)}
 				<div className="flex flex-col">

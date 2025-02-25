@@ -16,7 +16,7 @@ const EXPAND_THRESHOLD = 5;
 
 interface SectionListProps<T> {
 	title?: string;
-	info?: ReactNode;
+	description?: ReactNode;
 	showAll?: boolean;
 	data: T[];
 	keyKey?: keyof T;
@@ -70,7 +70,7 @@ const ItemEmptyContent: FC<HTMLAttributes<HTMLDivElement>> = ({
 
 export const SectionList = <T extends Record<string, unknown>>({
 	title,
-	info,
+	description,
 	data,
 	rows,
 	actions,
@@ -118,7 +118,7 @@ export const SectionList = <T extends Record<string, unknown>>({
 		<div className="flex flex-col gap-2">
 			<div className="flex flex-row items-center justify-between px-4">
 				<p className="caption text-neutral-strong">{title}</p>
-				<p className="caption text-neutral-strong">{info}</p>
+				<p className="caption text-neutral-strong">{description}</p>
 			</div>
 			<Wrapper>
 				<ContentPadding size="sm">

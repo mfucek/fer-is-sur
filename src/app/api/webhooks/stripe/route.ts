@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 import { env } from '@/env';
-import { db } from '@/lib/db';
+// import { db } from '@/lib/db';
 
 const webhookSecret = env.STRIPE_WEBHOOK_SECRET;
 
@@ -24,102 +24,99 @@ export async function POST(request: Request) {
 		const sig = request.headers.get('stripe-signature')!;
 
 		const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-			apiVersion: '2024-12-18.acacia'
+			apiVersion: '2025-01-27.acacia'
 		});
 
 		const event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
 
 		switch (event.type) {
 			case 'customer.subscription.created': {
-				const subscription = event.data.object;
-
-				const package_plan = getPackageFromProductId(
-					subscription.items.data[0]!.plan.product as string
-				);
-
-				await db.account.update({
-					where: {
-						clerkUserId: subscription.metadata.userId
-					},
-					data: {
-						status: 'ACTIVE',
-						package: package_plan,
-						stripeCustomerId: subscription.customer as string,
-						user: {
-							update: {
-								badge: package_plan === 'MONTHLY_PRO' ? 'Legenda' : 'Sponzor'
-							}
-						}
-					}
-				});
-				break;
+				// const subscription = event.data.object;
+				// const package_plan = getPackageFromProductId(
+				// 	subscription.items.data[0]!.plan.product as string
+				// );
+				// await db.account.update({
+				// 	where: {
+				// 		clerkUserId: subscription.metadata.userId
+				// 	},
+				// 	data: {
+				// 		status: 'ACTIVE',
+				// 		package: package_plan,
+				// 		stripeCustomerId: subscription.customer as string,
+				// 		user: {
+				// 			update: {
+				// 				badge: package_plan === 'MONTHLY_PRO' ? 'Legenda' : 'Sponzor'
+				// 			}
+				// 		}
+				// 	}
+				// });
+				// break;
 			}
 
 			case 'checkout.session.completed': {
-				const payment = event.data.object;
-
-				if (payment.mode === 'payment') {
-					await db.account.update({
-						where: {
-							clerkUserId: payment.metadata!.userId
-						},
-						data: {
-							status: 'ACTIVE',
-							package: 'LIFETIME',
-							activeUntil: null
-						}
-					});
-					break;
-				}
+				// const payment = event.data.object;
+				// if (payment.mode === 'payment') {
+				// 	await db.account.update({
+				// 		where: {
+				// 			clerkUserId: payment.metadata!.userId
+				// 		},
+				// 		data: {
+				// 			status: 'ACTIVE',
+				// 			package: 'LIFETIME',
+				// 			activeUntil: null
+				// 		}
+				// 	});
+				// 	break;
+				// }
 			}
 
 			case 'customer.subscription.updated': {
 				const subscription = event.data.object as Stripe.Subscription;
 
-				if (subscription.cancel_at_period_end) {
-					await db.account.update({
-						where: {
-							clerkUserId: subscription.metadata.userId
-						},
-						data: {
-							status: 'CANCELLED',
-							activeUntil: new Date(subscription.current_period_end * 1000)
-						}
-					});
-				} else {
-					await db.account.update({
-						where: {
-							clerkUserId: subscription.metadata.userId
-						},
-						data: {
-							status: 'ACTIVE',
-							activeUntil: null
-						}
-					});
-				}
+				// if (subscription.cancel_at_period_end) {
+				// 	await db.account.update({
+				// 		where: {
+				// 			clerkUserId: subscription.metadata.userId
+				// 		},
+				// 		data: {
+				// 			status: 'CANCELLED',
+				// 			activeUntil: new Date(subscription.current_period_end * 1000)
+				// 		}
+				// 	});
+				// } else {
+				// 	await db.account.update({
+				// 		where: {
+				// 			clerkUserId: subscription.metadata.userId
+				// 		},
+				// 		data: {
+				// 			status: 'ACTIVE',
+				// 			activeUntil: null
+				// 		}
+				// 	});
+				// }
 
 				break;
 			}
 
 			case 'customer.subscription.deleted': {
-				const subscription = event.data.object;
+				// const subscription = event.data.object;
 
-				await db.account.update({
-					where: {
-						clerkUserId: subscription.metadata.userId
-					},
-					data: {
-						status: 'INACTIVE',
-						package: null,
-						stripeCustomerId: null,
-						activeUntil: null,
-						user: {
-							update: {
-								badge: null
-							}
-						}
-					}
-				});
+				// await db.account.update({
+				// 	where: {
+				// 		clerkUserId: subscription.metadata.userId
+				// 	},
+				// 	data: {
+				// 		status: 'INACTIVE',
+				// 		package: null,
+				// 		stripeCustomerId: null,
+				// 		activeUntil: null,
+				// 		user: {
+				// 			update: {
+				// 				badge: null
+				// 			}
+				// 		}
+				// 	}
+				// });
 
 				break;
 			}

@@ -17,7 +17,7 @@ export const AddFileButton: FC<{
 			)}
 			onClick={openUploadDialog}
 		>
-			<Icon icon="add-circle" size={32} className="bg-neutral-strong" />
+			<Icon icon="add-circle" className="size-8 bg-neutral-strong" />
 		</div>
 	);
 };
