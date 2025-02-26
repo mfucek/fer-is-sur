@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/lib/trpc/react';
+import { api } from '@/deps/trpc/react';
 import { EventSection } from '../event-section';
 import { HeadingSection } from '../heading-section';
 

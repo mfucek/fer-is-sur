@@ -1,11 +1,11 @@
 'use client';
 
+import { Button } from '@/deps/shadcn/ui/button';
+import { Input } from '@/deps/shadcn/ui/input';
+import { api } from '@/deps/trpc/react';
 import { FormLabel } from '@/global/components/form-label';
 import { Icon } from '@/global/components/icon';
 import { Wizard, wizardContext, WizardStep } from '@/global/components/wizard';
-import { Button } from '@/lib/shadcn/ui/button';
-import { Input } from '@/lib/shadcn/ui/input';
-import { api } from '@/lib/trpc/react';
 import { format } from 'date-fns';
 import { FC, useContext } from 'react';
 import { EventCalendar } from '../event-calendar';

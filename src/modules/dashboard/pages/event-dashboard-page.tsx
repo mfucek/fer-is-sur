@@ -1,7 +1,6 @@
 'use client';
 
-import { Icon } from '@/global/components/icon';
-import { Button } from '@/lib/shadcn/ui/button';
+import { Button } from '@/deps/shadcn/ui/button';
 import {
 	Dialog,
 	DialogContent,
@@ -9,7 +8,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger
-} from '@/lib/shadcn/ui/dialog';
+} from '@/deps/shadcn/ui/dialog';
+import { Icon } from '@/global/components/icon';
 import { EventsList } from '@/modules/event/components/events-list';
 import { CreateEventForm } from '../../event/forms/create-event/create-event-form';
 import { DashboardHeader } from '../components/dashboard-header';

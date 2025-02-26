@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { type FC, type HTMLAttributes } from 'react';
 
+import { cn } from '@/deps/shadcn/utils';
 import { Icon, IconName } from '@/global/components/icon';
-import { cn } from '@/lib/shadcn/utils';
 
 interface CardProps {
 	icon?: IconName;

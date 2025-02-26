@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from '@/lib/trpc/trpc';
+import { createTRPCRouter, publicProcedure } from '@/deps/trpc/trpc';
 import { nanoid } from 'nanoid';
 import { getFileDownloadUrl } from '../helpers/get-download-url';
 import { getFileUploadUrl } from '../helpers/get-file-upload-url';

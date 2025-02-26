@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type FC, type HTMLAttributes } from 'react';
 
-import { cn } from '@/lib/shadcn/utils';
+import { cn } from '@/deps/shadcn/utils';
 
 const contentPaddingVariants = cva('w-full', {
 	variants: {

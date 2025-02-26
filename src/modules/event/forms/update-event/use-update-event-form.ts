@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
 import { type SubmitErrorHandler, useForm } from 'react-hook-form';
 
-import { useDialog } from '@/lib/shadcn/ui/dialog';
-import { api } from '@/lib/trpc/react';
+import { useDialog } from '@/deps/shadcn/ui/dialog';
+import { api } from '@/deps/trpc/react';
 import {
 	eventUpdateSchema,
 	type TEventUpdateSchema

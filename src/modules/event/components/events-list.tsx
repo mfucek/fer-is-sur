@@ -2,16 +2,16 @@
 
 import { type FC, useRef } from 'react';
 
-import { SectionList } from '@/global/components/section-list';
-import { Spinner } from '@/global/components/spinner';
-import { Button } from '@/lib/shadcn/ui/button';
+import { Button } from '@/deps/shadcn/ui/button';
 import {
 	Dialog,
 	DialogContent,
 	type DialogContextType
-} from '@/lib/shadcn/ui/dialog';
-import { cn } from '@/lib/shadcn/utils';
-import { api } from '@/lib/trpc/react';
+} from '@/deps/shadcn/ui/dialog';
+import { cn } from '@/deps/shadcn/utils';
+import { api } from '@/deps/trpc/react';
+import { SectionList } from '@/global/components/section-list';
+import { Spinner } from '@/global/components/spinner';
 import { type EventDTO } from '../api/dto/event-dto';
 import { UpdateEventDialogContent } from '../forms/update-event/update-event-form';
 

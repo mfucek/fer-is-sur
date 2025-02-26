@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from '@/lib/trpc/trpc';
+import { createTRPCRouter, publicProcedure } from '@/deps/trpc/trpc';
 import { deleteFile } from '@/modules/file/helpers/delete-file';
 import { PrismaClient, type Prisma } from '@prisma/client';
 import { addMonths, subMonths } from 'date-fns';

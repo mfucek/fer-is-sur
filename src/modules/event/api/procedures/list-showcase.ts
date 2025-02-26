@@ -1,4 +1,4 @@
-import { publicProcedure } from '@/lib/trpc/trpc';
+import { publicProcedure } from '@/deps/trpc/trpc';
 import { type Prisma } from '@prisma/client';
 import { makeEventDTO } from '../dto/event-dto';
 

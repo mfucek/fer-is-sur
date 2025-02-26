@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/lib/shadcn/ui/button';
-import { cn } from '@/lib/shadcn/utils';
+import { Button } from '@/deps/shadcn/ui/button';
+import { cn } from '@/deps/shadcn/utils';
 import Link from 'next/link';
 import React, {
 	useState,

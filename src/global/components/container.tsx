@@ -1,6 +1,6 @@
 import { HTMLAttributes, type FC, type PropsWithChildren } from 'react';
 
-import { cn } from '@/lib/shadcn/utils';
+import { cn } from '@/deps/shadcn/utils';
 
 const sizes = {
 	sm: 'max-w-[480px]',

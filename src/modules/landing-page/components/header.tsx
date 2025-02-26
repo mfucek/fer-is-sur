@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/lib/shadcn/ui/button';
-import { cn } from '@/lib/shadcn/utils';
+import { Button } from '@/deps/shadcn/ui/button';
+import { cn } from '@/deps/shadcn/utils';
 import { ThemeToggler } from '@/modules/theme/components/theme-toggler';
 import { navigateToId } from '@/utils/navigate-to-id';
 import { useEffect, useState } from 'react';

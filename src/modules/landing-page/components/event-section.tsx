@@ -1,7 +1,7 @@
 import { useEffect, useState, type FC } from 'react';
 
-import { cn } from '@/lib/shadcn/utils';
-import { api } from '@/lib/trpc/react';
+import { cn } from '@/deps/shadcn/utils';
+import { api } from '@/deps/trpc/react';
 import { type EventDTO } from '@/modules/event/api/dto/event-dto';
 import { formatDate } from 'date-fns';
 import Image from 'next/image';

@@ -1,7 +1,7 @@
 'use client';
 
+import { cn } from '@/deps/shadcn/utils';
 import { Icon } from '@/global/components/icon';
-import { cn } from '@/lib/shadcn/utils';
 import { type DragEvent, type FC, type HTMLAttributes, useState } from 'react';
 
 export const useUploadArea = (addFiles: (files: File[]) => void) => {

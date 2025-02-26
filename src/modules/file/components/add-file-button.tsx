@@ -1,5 +1,5 @@
+import { cn } from '@/deps/shadcn/utils';
 import { Icon } from '@/global/components/icon';
-import { cn } from '@/lib/shadcn/utils';
 import { FC } from 'react';
 import { useUploadDialog } from '../hooks/use-upload-dialog';
 

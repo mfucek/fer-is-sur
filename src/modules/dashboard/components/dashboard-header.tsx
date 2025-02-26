@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/lib/shadcn/ui/button';
+import { Button } from '@/deps/shadcn/ui/button';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';

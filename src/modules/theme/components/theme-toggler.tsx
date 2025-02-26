@@ -4,7 +4,7 @@ import { useEffect, useState, type FC } from 'react';
 
 import { useTheme } from '../providers/theme-provider';
 
-import { Button, type ButtonProps } from '@/lib/shadcn/ui/button';
+import { Button, type ButtonProps } from '@/deps/shadcn/ui/button';
 
 export const ThemeToggler: FC<ButtonProps> = ({ className, ...props }) => {
 	const { theme, toggleTheme } = useTheme();

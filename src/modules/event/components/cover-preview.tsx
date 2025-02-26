@@ -1,4 +1,4 @@
-import { Button } from '@/lib/shadcn/ui/button';
+import { Button } from '@/deps/shadcn/ui/button';
 import { AddFileButton } from '@/modules/file/components/add-file-button';
 import { useFileStagingContext } from '@/modules/file/contexts/file-staging';
 import { useMemo } from 'react';

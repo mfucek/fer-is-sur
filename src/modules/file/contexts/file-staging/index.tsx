@@ -1,7 +1,7 @@
 'use client';
 
-import { useToast } from '@/lib/shadcn/ui/use-toast';
-import { api } from '@/lib/trpc/react';
+import { useToast } from '@/deps/shadcn/ui/use-toast';
+import { api } from '@/deps/trpc/react';
 import {
 	type FC,
 	type ReactNode,

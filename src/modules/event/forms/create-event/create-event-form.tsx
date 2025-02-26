@@ -2,10 +2,10 @@
 
 import { FileStagingProvider } from '@/modules/file/contexts/file-staging';
 
+import { Button } from '@/deps/shadcn/ui/button';
+import { Input } from '@/deps/shadcn/ui/input';
+import { Textarea } from '@/deps/shadcn/ui/textarea';
 import { FormLabel } from '@/global/components/form-label';
-import { Button } from '@/lib/shadcn/ui/button';
-import { Input } from '@/lib/shadcn/ui/input';
-import { Textarea } from '@/lib/shadcn/ui/textarea';
 import { FilesPreview } from '@/modules/file/components/files-preview';
 import { CoverPreview } from '../../components/cover-preview';
 import { useCreateEventForm } from './use-create-event-form';

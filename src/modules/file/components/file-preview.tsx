@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
+import { Button } from '@/deps/shadcn/ui/button';
 import { Icon } from '@/global/components/icon';
-import { Button } from '@/lib/shadcn/ui/button';
 import {
 	StagedFile,
 	useFileStagingContext

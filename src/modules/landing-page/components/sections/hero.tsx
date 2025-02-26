@@ -1,7 +1,7 @@
 'use client';
 
-import { Badge } from '@/lib/shadcn/ui/badge';
-import { Button } from '@/lib/shadcn/ui/button';
+import { Badge } from '@/deps/shadcn/ui/badge';
+import { Button } from '@/deps/shadcn/ui/button';
 import { navigateToId } from '@/utils/navigate-to-id';
 import Image from 'next/image';
 

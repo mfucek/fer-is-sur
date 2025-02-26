@@ -1,7 +1,7 @@
+import { Button, ButtonProps, buttonVariants } from '@/deps/shadcn/ui/button';
+import { cn } from '@/deps/shadcn/utils';
+import { api } from '@/deps/trpc/react';
 import { Icon } from '@/global/components/icon';
-import { Button, ButtonProps, buttonVariants } from '@/lib/shadcn/ui/button';
-import { cn } from '@/lib/shadcn/utils';
-import { api } from '@/lib/trpc/react';
 import { useViewport } from '@/utils/use-viewport';
 import {
 	format,

@@ -1,15 +1,15 @@
 'use client';
 
-import { FormLabel } from '@/global/components/form-label';
-import { Button } from '@/lib/shadcn/ui/button';
-import { DatePicker } from '@/lib/shadcn/ui/date-picker';
+import { Button } from '@/deps/shadcn/ui/button';
+import { DatePicker } from '@/deps/shadcn/ui/date-picker';
 import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle
-} from '@/lib/shadcn/ui/dialog';
-import { Input } from '@/lib/shadcn/ui/input';
-import { Textarea } from '@/lib/shadcn/ui/textarea';
+} from '@/deps/shadcn/ui/dialog';
+import { Input } from '@/deps/shadcn/ui/input';
+import { Textarea } from '@/deps/shadcn/ui/textarea';
+import { FormLabel } from '@/global/components/form-label';
 import { FilesPreview } from '@/modules/file/components/files-preview';
 import { FileStagingProvider } from '@/modules/file/contexts/file-staging';
 import { type EventDTO } from '../../api/dto/event-dto';

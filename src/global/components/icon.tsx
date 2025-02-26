@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/shadcn/utils';
+import { cn } from '@/deps/shadcn/utils';
 import React, { type FC } from 'react';
 
 const icons = {
