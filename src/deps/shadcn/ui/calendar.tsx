@@ -3,9 +3,10 @@
 import * as React from 'react';
 import { DayPicker } from 'react-day-picker';
 
-import { buttonVariants } from '@/deps/shadcn/ui/button';
+import { Button, ButtonProps, buttonVariants } from '@/deps/shadcn/ui/button';
 import { cn } from '@/deps/shadcn/utils';
 import { Icon } from '@/global/components/icon';
+import { isSameDay, isSameMonth } from 'date-fns';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -13,8 +14,13 @@ const Calendar = ({
 	className,
 	classNames,
 	showOutsideDays = true,
+	selected,
+	onSelect,
 	...props
-}: CalendarProps) => {
+}: CalendarProps & {
+	selected: Date | undefined;
+	onSelect: (date: Date) => void;
+}) => {
 	return (
 		<DayPicker
 			showOutsideDays={showOutsideDays}
@@ -24,7 +30,7 @@ const Calendar = ({
 				months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
 				month: 'space-y-4',
 				caption: 'flex justify-center relative items-center',
-				caption_label: 'title-3 text-left w-full',
+				caption_label: 'title-3 text-left w-full text-neutral',
 				nav: 'flex gap-2 items-center shrink-0',
 				nav_button: cn(
 					buttonVariants({
@@ -70,13 +76,52 @@ const Calendar = ({
 				),
 				day_disabled: 'opacity-50',
 				day_range_middle: '',
-				// 'aria-selected:bg-accent aria-selected:text-accent-foreground',
+
 				day_hidden: 'invisible',
 				...classNames
 			}}
 			components={{
 				IconLeft: () => <Icon icon="chevron-left" />,
-				IconRight: () => <Icon icon="chevron-right" />
+				IconRight: () => <Icon icon="chevron-right" />,
+				Day: ({ date, displayMonth }) => {
+					const isToday = isSameDay(date, new Date());
+					const isOutsideCurrentMonth = !isSameMonth(date, displayMonth);
+					const isSelected = selected && isSameDay(date, selected);
+
+					let variant: ButtonProps['variant'] = 'ghost';
+					let theme: ButtonProps['theme'] = 'neutral';
+					let disabled: boolean = false;
+					let opacity: number = 1;
+
+					if (isOutsideCurrentMonth) {
+						opacity = 0.2;
+					}
+
+					if (isToday) {
+						variant = 'solid-weak';
+					}
+
+					if (isSelected) {
+						theme = 'info';
+						variant = 'solid';
+					}
+
+					return (
+						<Button
+							variant={variant}
+							theme={theme}
+							disabled={disabled}
+							style={{ opacity }}
+							hasSingleIcon
+							type="button"
+							onClick={() => {
+								onSelect?.(date);
+							}}
+						>
+							{date.getDate()}
+						</Button>
+					);
+				}
 			}}
 			{...props}
 		/>

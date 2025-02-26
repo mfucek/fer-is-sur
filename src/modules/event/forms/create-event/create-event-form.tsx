@@ -3,6 +3,7 @@
 import { FileStagingProvider } from '@/modules/file/contexts/file-staging';
 
 import { Button } from '@/deps/shadcn/ui/button';
+import { DatePicker } from '@/deps/shadcn/ui/date-picker';
 import { Input } from '@/deps/shadcn/ui/input';
 import { Textarea } from '@/deps/shadcn/ui/textarea';
 import { FormLabel } from '@/global/components/form-label';
@@ -20,7 +21,7 @@ export const CreateEventForm = () => {
 	} = useCreateEventForm();
 
 	const errors = form.formState.errors;
-	const { register } = form;
+	const { register, watch, setValue } = form;
 
 	return (
 		<div className="pad-xl">
@@ -54,11 +55,13 @@ export const CreateEventForm = () => {
 						</FormLabel>
 
 						<FormLabel title="Date" error={errors.date?.message}>
-							<Input
-								{...register('date', {
-									valueAsDate: true
-								})}
-								type="date"
+							<DatePicker
+								value={watch('date')}
+								onChange={(date) => {
+									if (date) {
+										setValue('date', date);
+									}
+								}}
 								disabled={isSaving}
 							/>
 						</FormLabel>

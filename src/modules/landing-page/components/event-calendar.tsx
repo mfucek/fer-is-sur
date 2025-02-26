@@ -95,12 +95,13 @@ export const EventCalendar: FC<{
 						if (hasEvents) {
 							// is after Today
 							variant = 'solid-weak';
-							theme = 'neutral';
+							theme = 'info';
 							disabled = false;
 							opacity = 1;
+
 							if (isToday) {
 								variant = 'solid-weak';
-								theme = 'neutral';
+								theme = 'info';
 								disabled = false;
 								opacity = 1;
 							}
@@ -117,6 +118,7 @@ export const EventCalendar: FC<{
 							theme = 'neutral';
 							disabled = true;
 							opacity = 0.5;
+
 							if (isToday) {
 								variant = 'ghost';
 								theme = 'neutral';
@@ -139,7 +141,6 @@ export const EventCalendar: FC<{
 						return (
 							<Button
 								variant={variant}
-								hasSingleIcon={true}
 								size={buttonSize}
 								theme={theme}
 								disabled={disabled}
@@ -150,6 +151,7 @@ export const EventCalendar: FC<{
 										onDaySelect(date);
 									}
 								}}
+								hasSingleIcon
 							>
 								{format(date, 'd')}
 								{hasEvents && (
