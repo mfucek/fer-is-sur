@@ -53,9 +53,12 @@ export const WizardStep: FC<{ step: number; children: React.ReactNode }> = ({
 			className={cn(
 				'flex flex-col gap-10 w-full shrink-0 [&:not(:first-child)]:ml-[-100%]',
 				'transition-all duration-600 ease-[cubic-bezier(0.25, 0.1, 0.25, 1)]',
+				'transform-3d',
 				isActive && 'scale-100',
-				isBehind && 'scale-110 opacity-0 pointer-events-none',
-				isAhead && 'scale-90 opacity-0 pointer-events-none'
+				isBehind &&
+					'scale-110 opacity-0 -rotate-y-90 -translate-x-[50%] pointer-events-none',
+				isAhead &&
+					'scale-90 opacity-0 rotate-y-90 translate-x-[50%] pointer-events-none'
 			)}
 		>
 			{children}
