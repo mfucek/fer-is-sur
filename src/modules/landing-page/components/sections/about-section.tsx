@@ -2,7 +2,7 @@ import { HeadingSection } from '../heading-section';
 
 const TestemonialCard = () => {
 	return (
-		<div className="flex flex-col p-3 gap-3 rounded-2xl bg-section text-center items-center justify-center min-h-[160px]">
+		<div className="flex flex-col p-3 gap-3 rounded-2xl bg-section text-center items-center justify-center min-h-[160px] w-[320px] sm:w-auto shrink-0">
 			<p className="body-3 text-neutral">
 				❤️ zakon je bilo! Definitivno preporucam svima da se iskusaju!
 			</p>
@@ -13,12 +13,12 @@ const TestemonialCard = () => {
 
 export const AboutSection = () => {
 	return (
-		<div className="flex-page pad-lg py-20" id="about">
+		<div className="flex-page py-20" id="about">
 			<HeadingSection
 				title="O nama"
 				description="Studio postoji vec 53 godine i namjenjen je pocetnicima koje interesira nauciti slikati. Ovo je neki tekst o povijesti studija bla bla. Poanta je da u par natuknica posjetitelj dobije confidence da se rezervira."
 			/>
-			<div className="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+			<div className="w-full pad-lg md:container-lg flex flex-row overflow-x-scroll sm:grid sm:grid-cols-2 md:grid-cols-3 gap-2">
 				<TestemonialCard />
 				<TestemonialCard />
 				<TestemonialCard />
