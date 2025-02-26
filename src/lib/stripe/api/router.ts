@@ -1,4 +1,4 @@
-import { createTRPCRouter } from '@/server/api/trpc';
+import { createTRPCRouter } from '@/lib/trpc/trpc';
 // import { PackageType } from '@prisma/client';
 
 export const stripeRouter = createTRPCRouter({
