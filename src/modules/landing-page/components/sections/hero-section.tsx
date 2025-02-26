@@ -7,7 +7,10 @@ import Image from 'next/image';
 
 export const HeroSection = () => {
 	return (
-		<div className="flex-page relative" id="hero">
+		<div
+			className="flex-page justify-center relative h-[80vh] md:h-auto"
+			id="hero"
+		>
 			<Image
 				src="/assets/images/backdrop.png"
 				alt="Backdrop"
@@ -17,7 +20,7 @@ export const HeroSection = () => {
 					maskImage: 'linear-gradient(to bottom, black, transparent)'
 				}}
 			/>
-			<div className="container-md pad-lg py-20">
+			<div className="container-md pad-lg py-20 flex flex-col gap-20 sm:gap-10">
 				{/* Logo */}
 				<div className="relative">
 					<img src="/assets/images/hero.png" alt="Logo" className="w-full" />

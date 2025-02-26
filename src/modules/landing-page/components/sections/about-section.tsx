@@ -1,4 +1,4 @@
-import { HeadingSection } from '../heading-section';
+import { LandingHeading } from '../landing-heading';
 
 const TestemonialCard = () => {
 	return (
@@ -14,7 +14,7 @@ const TestemonialCard = () => {
 export const AboutSection = () => {
 	return (
 		<div className="flex-page py-20" id="about">
-			<HeadingSection
+			<LandingHeading
 				title="O nama"
 				description="Studio postoji vec 53 godine i namjenjen je pocetnicima koje interesira nauciti slikati. Ovo je neki tekst o povijesti studija bla bla. Poanta je da u par natuknica posjetitelj dobije confidence da se rezervira."
 			/>

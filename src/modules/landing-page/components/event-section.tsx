@@ -46,7 +46,7 @@ export const EventSection: FC<{
 	);
 
 	return (
-		<div className="container-lg py-20">
+		<div className="container-lg">
 			<div
 				className={cn(
 					'flex relative',
