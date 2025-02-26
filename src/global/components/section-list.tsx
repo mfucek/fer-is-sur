@@ -10,7 +10,6 @@ import React, {
 	type PropsWithChildren,
 	type ReactNode
 } from 'react';
-import { ContentPadding } from './content-padding';
 
 const EXPAND_THRESHOLD = 5;
 
@@ -115,34 +114,32 @@ export const SectionList = <T extends Record<string, unknown>>({
 			});
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2 w-full">
 			<div className="flex flex-row items-center justify-between px-4">
 				<p className="caption text-neutral-strong">{title}</p>
 				<p className="caption text-neutral-strong">{description}</p>
 			</div>
 			<Wrapper>
-				<ContentPadding size="sm">
-					<div className="rounded-xl overflow-x-auto overflow-y-hidden scrollbar-hidden">
+				<div className="rounded-xl overflow-x-auto overflow-y-hidden scrollbar-hidden">
+					<div className="flex flex-col gap-px">
+						{data.length === 0 && (
+							<Item>
+								<ItemEmptyContent>{emptyRow}</ItemEmptyContent>
+							</Item>
+						)}
 						<div className="flex flex-col gap-px">
-							{data.length === 0 && (
-								<Item>
-									<ItemEmptyContent>{emptyRow}</ItemEmptyContent>
-								</Item>
-							)}
-							<div className="flex flex-col gap-px">
-								<ItemList items={firstHalf} />
-							</div>
-							<div
-								className="flex flex-col gap-px"
-								style={{
-									display: showAll || expanded ? 'flex' : 'none'
-								}}
-							>
-								<ItemList items={secondHalf} />
-							</div>
+							<ItemList items={firstHalf} />
+						</div>
+						<div
+							className="flex flex-col gap-px"
+							style={{
+								display: showAll || expanded ? 'flex' : 'none'
+							}}
+						>
+							<ItemList items={secondHalf} />
 						</div>
 					</div>
-				</ContentPadding>
+				</div>
 			</Wrapper>
 			{!showAll && data.length > EXPAND_THRESHOLD && (
 				<div className="flex w-full justify-center">

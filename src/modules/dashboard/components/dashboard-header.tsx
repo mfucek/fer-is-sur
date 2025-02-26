@@ -16,7 +16,7 @@ export const DashboardHeader = ({
 	const isOnDashboardHome = pathname === '/admin';
 
 	return (
-		<div className="flex flex-row items-center pad-md">
+		<div className="flex flex-row items-center w-full min-h-[52px]">
 			<div className="flex flex-row items-center gap-2 flex-1">
 				{!isOnDashboardHome && (
 					<Link href="/admin">

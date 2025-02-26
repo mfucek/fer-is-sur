@@ -1,11 +1,14 @@
 'use client';
 
-import { type FC, useRef } from 'react';
+import { useRef, type FC } from 'react';
 
 import { Button } from '@/deps/shadcn/ui/button';
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
 	type DialogContextType
 } from '@/deps/shadcn/ui/dialog';
 import { cn } from '@/deps/shadcn/utils';
@@ -13,7 +16,7 @@ import { api } from '@/deps/trpc/react';
 import { SectionList } from '@/global/components/section-list';
 import { Spinner } from '@/global/components/spinner';
 import { type EventDTO } from '../api/dto/event-dto';
-import { UpdateEventDialogContent } from '../forms/update-event/update-event-form';
+import { UpdateEventForm } from '../forms/update-event/update-event-form';
 
 const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 	const utils = api.useUtils();
@@ -44,7 +47,12 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 					}}
 				/>
 				<DialogContent>
-					<UpdateEventDialogContent event={data} />
+					<DialogHeader>
+						<DialogTitle>Edit Event</DialogTitle>
+						<DialogDescription>Edit an existing event.</DialogDescription>
+					</DialogHeader>
+
+					<UpdateEventForm event={data} />
 				</DialogContent>
 			</Dialog>
 			<Button

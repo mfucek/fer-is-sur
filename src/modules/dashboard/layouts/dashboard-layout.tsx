@@ -1,13 +1,7 @@
-import { Container } from '@/global/components/container';
-
 export const DashboardLayout = ({
 	children
 }: {
 	children: React.ReactNode;
 }) => {
-	return (
-		<div className="flex flex-col items-center py-20">
-			<Container>{children}</Container>
-		</div>
-	);
+	return <div className="flex-page gap-10 py-20">{children}</div>;
 };

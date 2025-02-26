@@ -28,7 +28,7 @@ export const DashboardCard: FC<HTMLAttributes<HTMLDivElement> & CardProps> = ({
 				{...rest}
 			>
 				{icon && (
-					<div className="w-10 h-10 rounded-lg bg-neutral-weak flex justify-center items-center">
+					<div className="size-10 rounded-lg bg-neutral-weak flex justify-center items-center">
 						<Icon icon={icon} className="size-5" />
 					</div>
 				)}

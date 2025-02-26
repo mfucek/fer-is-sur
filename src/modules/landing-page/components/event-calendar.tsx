@@ -95,7 +95,7 @@ export const EventCalendar: FC<{
 						if (hasEvents) {
 							// is after Today
 							variant = 'solid-weak';
-							theme = 'info';
+							theme = 'neutral';
 							disabled = false;
 							opacity = 1;
 
@@ -121,7 +121,7 @@ export const EventCalendar: FC<{
 
 							if (isToday) {
 								variant = 'ghost';
-								theme = 'neutral';
+								theme = 'info';
 								disabled = true;
 								opacity = 1;
 							}
@@ -134,7 +134,7 @@ export const EventCalendar: FC<{
 							}
 						}
 
-						if (isOutsideCurrentMonth) {
+						if (isOutsideCurrentMonth && !isToday) {
 							opacity = 0.2;
 						}
 

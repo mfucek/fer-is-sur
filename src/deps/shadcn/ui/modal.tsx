@@ -4,7 +4,6 @@ import * as ModalPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 
 import { cn } from '@/deps/shadcn/utils';
-import { ContentPadding } from '@/global/components/content-padding';
 import { Button } from './button';
 
 const Modal = ModalPrimitive.Root;
@@ -91,7 +90,7 @@ const ModalTitle = React.forwardRef<
 	React.ElementRef<typeof ModalPrimitive.Title>,
 	React.ComponentPropsWithoutRef<typeof ModalPrimitive.Title>
 >(({ className, children, ...props }, ref) => (
-	<ContentPadding size="xl">
+	<div className="pad-xl">
 		<ModalPrimitive.Title
 			ref={ref}
 			className={cn('title-2 text-neutral', className)}
@@ -99,7 +98,7 @@ const ModalTitle = React.forwardRef<
 		>
 			{children}
 		</ModalPrimitive.Title>
-	</ContentPadding>
+	</div>
 ));
 ModalTitle.displayName = ModalPrimitive.Title.displayName;
 
@@ -107,7 +106,7 @@ const ModalDescription = React.forwardRef<
 	React.ElementRef<typeof ModalPrimitive.Description>,
 	React.ComponentPropsWithoutRef<typeof ModalPrimitive.Description>
 >(({ className, children, ...props }, ref) => (
-	<ContentPadding size="xl">
+	<div className="pad-xl">
 		<ModalPrimitive.Description
 			ref={ref}
 			className={cn('body-2 text-neutral-strong', className)}
@@ -115,7 +114,7 @@ const ModalDescription = React.forwardRef<
 		>
 			{children}
 		</ModalPrimitive.Description>
-	</ContentPadding>
+	</div>
 ));
 ModalDescription.displayName = ModalPrimitive.Description.displayName;
 

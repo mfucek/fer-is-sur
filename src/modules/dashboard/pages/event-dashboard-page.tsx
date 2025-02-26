@@ -17,27 +17,31 @@ import { DashboardHeader } from '../components/dashboard-header';
 export const EventDashboardPage = () => {
 	return (
 		<>
-			<DashboardHeader title="Events">
-				<Dialog>
-					<DialogTrigger asChild>
-						<Button variant="outline" size="md">
-							Add Event
-							<Icon icon="add" />
-						</Button>
-					</DialogTrigger>
+			<div className="container-md pad-sm">
+				<DashboardHeader title="Events">
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button variant="outline" size="md">
+								Add Event
+								<Icon icon="add" />
+							</Button>
+						</DialogTrigger>
 
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Create Event</DialogTitle>
-							<DialogDescription>Create a new event.</DialogDescription>
-						</DialogHeader>
+						<DialogContent>
+							<DialogHeader>
+								<DialogTitle>Create Event</DialogTitle>
+								<DialogDescription>Create a new event.</DialogDescription>
+							</DialogHeader>
 
-						<CreateEventForm />
-					</DialogContent>
-				</Dialog>
-			</DashboardHeader>
+							<CreateEventForm />
+						</DialogContent>
+					</Dialog>
+				</DashboardHeader>
+			</div>
 
-			<EventsList />
+			<div className="container-md pad-sm flex flex-col gap-10">
+				<EventsList />
+			</div>
 		</>
 	);
 };

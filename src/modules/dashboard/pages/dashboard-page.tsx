@@ -1,13 +1,14 @@
-import { ContentPadding } from '@/global/components/content-padding';
 import { DashboardCard } from '../components/dashboard-card';
 import { DashboardHeader } from '../components/dashboard-header';
 
 export const DashboardPage = () => {
 	return (
 		<>
-			<DashboardHeader title="Dashboard" />
+			<div className="container-md pad-sm">
+				<DashboardHeader title="Dashboard" />
+			</div>
 
-			<ContentPadding className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+			<div className="container-md pad-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
 				<DashboardCard
 					label="Events"
 					icon="calendar-done"
@@ -28,7 +29,7 @@ export const DashboardPage = () => {
 					icon="markup-minimum"
 					href="/admin/coupons"
 				/>
-			</ContentPadding>
+			</div>
 		</>
 	);
 };
