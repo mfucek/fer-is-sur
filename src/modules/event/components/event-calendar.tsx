@@ -14,6 +14,7 @@ import {
 } from 'date-fns';
 import { FC, useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
+import { EventDTO } from '../api/dto/event-dto';
 
 const getCurrentMonth = () => {
 	const date = new Date();
@@ -23,8 +24,8 @@ const getCurrentMonth = () => {
 };
 
 export const EventCalendar: FC<{
-	onDaySelect: (day: Date) => void;
-}> = ({ onDaySelect }) => {
+	onEventSelect: (event: EventDTO) => void;
+}> = ({ onEventSelect }) => {
 	const { isMobile } = useViewport();
 
 	const { mutateAsync: getEventDates, data: eventsNearScope } =
@@ -148,7 +149,13 @@ export const EventCalendar: FC<{
 								style={{ opacity }}
 								onClick={() => {
 									if (hasEvents && !isBeforeToday) {
-										onDaySelect(date);
+										const event = eventsNearScope?.find((event) =>
+											isSameDay(date, new Date(event.date))
+										);
+
+										if (event) {
+											onEventSelect(event);
+										}
 									}
 								}}
 								hasSingleIcon

@@ -8,7 +8,8 @@ export const makeEventDTO = (event: Event) => ({
 	location: event.location,
 	title: event.title,
 	description: event.description,
-	capacity: event.capacity
+	capacity: event.capacity,
+	price: event.price
 });
 
 export type EventDTO = ReturnType<typeof makeEventDTO>;

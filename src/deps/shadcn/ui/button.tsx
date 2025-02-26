@@ -15,7 +15,7 @@ export const IconClassnameContext = React.createContext<string | undefined>(
 );
 
 const buttonVariants = cva(
-	'relative inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-all duration-300 hover:sm:duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:opacity-50 group-[btn] clickable',
+	'relative inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-all duration-300 hover:sm:duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:opacity-50 group-[btn] [&:not(:disabled)]:clickable',
 	{
 		variants: {
 			theme: {

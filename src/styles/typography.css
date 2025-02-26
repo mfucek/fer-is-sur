@@ -56,7 +56,7 @@
 
 /* Input */
 @utility input {
-	@apply font-nunito text-[16px] font-normal leading-[24px] sm:text-[14px] sm:leading-[24px];
+	@apply font-nunito text-[16px] font-normal leading-[24px] h-[24px] sm:text-[14px] sm:leading-[24px] sm:h-[24px];
 }
 
 /* Buttons */

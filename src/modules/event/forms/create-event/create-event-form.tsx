@@ -75,6 +75,16 @@ export const CreateEventForm = () => {
 								disabled={isSaving}
 							/>
 						</FormLabel>
+
+						<FormLabel title="Price" error={errors.price?.message}>
+							<Input
+								{...register('price', {
+									valueAsNumber: true
+								})}
+								type="number"
+								disabled={isSaving}
+							/>
+						</FormLabel>
 					</div>
 
 					<FormLabel title="Image Gallery">

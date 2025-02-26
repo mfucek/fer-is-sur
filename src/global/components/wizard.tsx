@@ -54,8 +54,8 @@ export const WizardStep: FC<{ step: number; children: React.ReactNode }> = ({
 				'flex flex-col gap-10 w-full shrink-0 [&:not(:first-child)]:ml-[-100%]',
 				'transition-all duration-600 ease-[cubic-bezier(0.25, 0.1, 0.25, 1)]',
 				isActive && 'scale-100',
-				isBehind && 'scale-120 opacity-0 pointer-events-none',
-				isAhead && 'scale-80 opacity-0 pointer-events-none'
+				isBehind && 'scale-110 opacity-0 pointer-events-none',
+				isAhead && 'scale-90 opacity-0 pointer-events-none'
 			)}
 		>
 			{children}

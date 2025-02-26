@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { createTRPCRouter, publicProcedure } from '@/deps/trpc/trpc';
 import { deleteFile } from '@/modules/file/helpers/delete-file';
+import { getFileDownloadUrl } from '@/modules/file/helpers/get-download-url';
 import { PrismaClient, type Prisma } from '@prisma/client';
 import { addMonths, subMonths } from 'date-fns';
 import {
@@ -270,14 +271,21 @@ export const eventRouter = createTRPCRouter({
 			const { db } = ctx;
 			const { eventId } = input;
 
-			const cover = await db.eventCover.findUnique({
+			const coverRaw = await db.eventCover.findUnique({
 				where: { eventId },
 				include: {
 					Image: true
 				}
 			});
 
-			return cover;
+			const coverUrl = coverRaw?.Image
+				? await getFileDownloadUrl(coverRaw?.Image?.key)
+				: null;
+
+			return {
+				...coverRaw,
+				url: coverUrl
+			};
 		}),
 
 	listShowcase: listShowcaseProcedure,

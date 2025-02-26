@@ -11,6 +11,7 @@ import {
 } from '@/deps/shadcn/ui/popover';
 import { cn } from '@/deps/shadcn/utils';
 import { Icon } from '@/global/components/icon';
+import { Button } from './button';
 
 export const DatePicker: FC<{
 	value?: Date;
@@ -34,21 +35,29 @@ export const DatePicker: FC<{
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<button
-					className={cn(
-						'relative inline-flex items-center justify-start whitespace-nowrap ring-offset-background duration-300 hover:md:duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:opacity-50 group-[btn]',
-						'border border-neutral-medium text-neutral hover:md:bg-neutral-weak',
-						'h-[40px] px-[16px] gap-[6px] button-md',
-						'rounded-lg',
-						isEmpty && 'text-neutral-medium'
-					)}
+				<Button
+					variant="outline"
+					theme="neutral"
+					// className={cn(
+					// 	'relative inline-flex items-center justify-start whitespace-nowrap ring-offset-background duration-300 hover:md:duration-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:opacity-50 group-[btn]',
+					// 	'border border-neutral-medium text-neutral hover:md:bg-neutral-weak',
+					// 	'h-[40px] px-[16px] gap-[6px] button-md',
+					// 	'rounded-lg',
+					// 	isEmpty && 'text-neutral-medium'
+					// )}
+					className="justify-start px-3"
+					disabled={disabled}
 				>
 					<Icon
 						icon="calendar-done"
 						className={cn('bg-neutral-strong size-4')}
 					/>
-					{shownDate ? format(shownDate, 'PPP') : <span>Pick a date</span>}
-				</button>
+					{shownDate ? (
+						<span className="input">{format(shownDate, 'PPP')}</span>
+					) : (
+						<span className="input">Pick a date</span>
+					)}
+				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0" align="start">
 				<Calendar

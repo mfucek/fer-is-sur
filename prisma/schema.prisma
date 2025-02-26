@@ -20,11 +20,10 @@ model Event {
   date        DateTime
   location    String
   capacity    Int      @default(10)
+  price       Int      @default(0)
 
-  coverImageId String?
-  CoverImage   EventCover?
-
-  Gallery EventGallery?
+  CoverImage EventCover?
+  Gallery    EventGallery?
 }
 
 model EventCover {
