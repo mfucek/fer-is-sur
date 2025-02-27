@@ -23,13 +23,13 @@
 
 /* Title */
 @utility title-1 {
-	@apply font-nunito text-[18px] font-bold leading-[24px] tracking-[-0.54px] sm:text-[22px] sm:leading-[24px] sm:tracking-[-0.66px];
+	@apply font-nunito text-[18px] font-extrabold leading-[24px] tracking-[-0.54px] sm:text-[22px] sm:leading-[24px] sm:tracking-[-0.66px];
 }
 @utility title-2 {
-	@apply font-nunito text-[16px] font-bold leading-[24px] tracking-[-0.48px] sm:text-[18px] sm:leading-[24px] sm:tracking-[-0.54px];
+	@apply font-nunito text-[16px] font-extrabold leading-[24px] tracking-[-0.48px] sm:text-[18px] sm:leading-[24px] sm:tracking-[-0.54px];
 }
 @utility title-3 {
-	@apply font-nunito text-[15px] font-bold leading-[20px] tracking-[-0.45px] sm:text-[14px] sm:leading-[20px] sm:tracking-[-0.42px];
+	@apply font-nunito text-[15px] font-extrabold leading-[20px] tracking-[-0.45px] sm:text-[14px] sm:leading-[20px] sm:tracking-[-0.42px];
 }
 
 /* Body */
