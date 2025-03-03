@@ -30,7 +30,8 @@ export const EventSection: FC<{
 				'-mb-30 sm:mb-0',
 				'w-full sm:w-[200px] sm:h-[320px] box-content',
 				'bg-section sm:border-[12px] border-b-0 border-background',
-				'-z-10 sm:z-0'
+				'-z-10 sm:z-0',
+				'sm:drop-shadow-[0_4px_64px_var(--color-shad)]'
 			)}
 		>
 			{event.cover && (
@@ -59,7 +60,7 @@ export const EventSection: FC<{
 					{/* Gallery */}
 					<div
 						className={cn(
-							'sm:absolute sm:w-[50vw] flex gap-3 px-6 sm:px-0',
+							'sm:absolute sm:w-[50vw] w-full flex gap-3 px-6 sm:px-0',
 							'overflow-x-scroll sm:overflow-hidden',
 							side === 'left'
 								? 'sm:flex-row-reverse sm:items-end sm:right-0'
@@ -92,7 +93,7 @@ export const EventSection: FC<{
 						{/* Gradient */}
 						<div
 							className={cn(
-								'absolute top-0 bottom-0 w-[120px] lg:w-[400px] sm:block hidden',
+								'absolute top-0 bottom-0 w-[120px] lg:w-[200px] sm:block hidden',
 								'from-transparent to-background',
 								side === 'left'
 									? 'left-0 bg-gradient-to-l'

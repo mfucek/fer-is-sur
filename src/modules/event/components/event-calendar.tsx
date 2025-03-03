@@ -38,8 +38,8 @@ export const EventCalendar: FC<{
 		getEventDates({ monthDate: currentMonthState.getTime() });
 	}, [currentMonthState]);
 
-	const buttonSize = isMobile ? 'md' : 'lg';
-	const dayWidth = isMobile ? 'w-10' : 'w-13';
+	const buttonSize = isMobile ? 'md' : 'md';
+	const dayWidth = isMobile ? 'w-10' : 'w-10';
 
 	return (
 		<>

@@ -5,8 +5,8 @@ export const NUM_PARTICLES = 300;
 export const PARTICLE_LIFETIME = 4000;
 export const PARTICLE_LIFETIME_VARIANCE = 2000;
 
-export const PARTICLE_SIZE = 12;
-export const PARTICLE_SIZE_VARIANCE = 8;
+export const PARTICLE_SIZE = 10;
+export const PARTICLE_SIZE_VARIANCE = 5;
 
 export const PARTICLE_COLOR = '#ff2c9d';
 export const PARTICLE_HUE_VARIANCE = 16;

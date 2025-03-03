@@ -4,13 +4,13 @@
 
 @theme {
 	--color-section: #ffffff;
-	--color-background: #eee0d3;
+	--color-background: #eeeeee;
 	--color-foreground: #ffffffc0;
 
 	--color-neutral: #000000;
 	--color-neutral-strong: #747474;
 	--color-neutral-medium: #adadad;
-	--color-neutral-weak: #e9e9e9;
+	--color-neutral-weak: #00000010;
 	--color-neutral-contrast: #ffffff;
 
 	--color-accent: #e40100;
@@ -42,6 +42,8 @@
 	--color-danger-medium: #f5c1bf;
 	--color-danger-weak: #fceae6;
 	--color-danger-contrast: #ffffff;
+
+	--color-shad: rgba(from var(--color-section) r g b / 0.8);
 }
 
 @layer base {

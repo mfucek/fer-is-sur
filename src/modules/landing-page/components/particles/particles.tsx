@@ -75,8 +75,8 @@ export const Particles: FC<
 	return (
 		<div
 			className={cn('relative', className)}
-			onMouseLeave={() => (mouse = null)}
-			onMouseMove={(e) => {
+			onPointerLeave={() => (mouse = null)}
+			onPointerMove={(e) => {
 				if (!canvasRef.current) return;
 
 				const rect = canvasRef.current.getBoundingClientRect();
@@ -97,7 +97,7 @@ export const Particles: FC<
 					filter: 'blur(2px)'
 				}}
 				ref={canvasRef}
-				onMouseMove={(e) => {
+				onPointerMove={(e) => {
 					if (!canvasRef.current) return;
 
 					const rect = canvasRef.current.getBoundingClientRect();

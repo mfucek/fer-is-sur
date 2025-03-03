@@ -6,7 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 const badgeVariants = cva(
-	'relative inline-flex flex-row items-center justify-center whitespace-nowrap',
+	'relative inline-flex flex-row items-center justify-center whitespace-nowrap backdrop-blur-xs',
 	{
 		variants: {
 			theme: {
