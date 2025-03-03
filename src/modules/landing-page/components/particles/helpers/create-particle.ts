@@ -4,7 +4,8 @@ import {
 	PARTICLE_LIFETIME,
 	PARTICLE_LIFETIME_VARIANCE,
 	PARTICLE_SIZE,
-	PARTICLE_SIZE_VARIANCE
+	PARTICLE_SIZE_VARIANCE,
+	Y_LENGTH
 } from '../constants';
 import { Particle } from '../types';
 import { hexRotateHue } from '../utils/hex-rotate-hue';
@@ -21,7 +22,7 @@ export const createParticle = (
 	const xStart = randomInRange(spawnArea.fromX + 5, spawnArea.toX - 5);
 	const yStart = randomInRange(spawnArea.fromY + 5, spawnArea.toY - 5);
 
-	const yEnd = randomInRange(canvas.height / 4, canvas.height / 2);
+	const yEnd = yStart - Y_LENGTH; //randomInRange(canvas.height / 4, canvas.height / 2);
 
 	const time = Date.now();
 

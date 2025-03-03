@@ -1,9 +1,4 @@
-import {
-	MOUSE_RADIUS,
-	MOUSE_STRENGTH,
-	SWAY_FREQUENCY,
-	SWAY_STRENGTH
-} from '../constants';
+import { SWAY_FREQUENCY, SWAY_STRENGTH } from '../constants';
 import { scaleCurve } from '../curves';
 import { Particle } from '../types';
 import { computeBezier } from '../utils/compute-bezier';
@@ -41,9 +36,7 @@ export const updateParticles = (
 		if (mouse) {
 			const newPoint = offsetPoint({
 				point: { x: particle.x, y: particle.y },
-				offsetOrigin: mouse,
-				offsetRadius: MOUSE_RADIUS,
-				strength: MOUSE_STRENGTH
+				offsetOrigin: mouse
 			});
 
 			particle.x = newPoint.x;

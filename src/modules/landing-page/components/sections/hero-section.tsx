@@ -69,10 +69,11 @@ export const HeroSection = () => {
 							variant="secondary"
 							theme="neutral"
 							size="lg"
-							className="w-fit"
+							className="w-fit pointer-events-none"
 							icon="status-pending"
 						>
-							Iduća radionica je za {daysUntilNextEvent} dana
+							Iduća radionica je za {daysUntilNextEvent}{' '}
+							{daysUntilNextEvent === 1 ? 'dan' : 'dana'}
 						</Badge>
 					)}
 				</div>
