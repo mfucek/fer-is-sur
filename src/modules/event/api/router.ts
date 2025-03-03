@@ -5,7 +5,7 @@ import { createTRPCRouter, publicProcedure } from '@/deps/trpc/trpc';
 import { deleteFile } from '@/modules/file/helpers/delete-file';
 import { getFileDownloadUrl } from '@/modules/file/helpers/get-download-url';
 import { PrismaClient, type Prisma } from '@prisma/client';
-import { addMonths, subMonths } from 'date-fns';
+import { addMonths, differenceInDays, subMonths } from 'date-fns';
 import {
 	dateRangeSchema,
 	eventCreateSchema,
@@ -305,7 +305,25 @@ export const eventRouter = createTRPCRouter({
 			const events = eventsRaw.map((eventRaw) => ({ ...eventRaw }));
 
 			return events;
-		})
+		}),
+
+	getDaysUntilNextEvent: publicProcedure.query(async ({ ctx }) => {
+		const { db } = ctx;
+
+		const nearestEvent = await db.event.findFirst({
+			orderBy: {
+				date: 'desc'
+			}
+		});
+
+		if (!nearestEvent) {
+			return null;
+		}
+
+		const daysUntilNextEvent = differenceInDays(nearestEvent.date, new Date());
+
+		return daysUntilNextEvent;
+	})
 });
 
 const cleanUpOrphanedFiles = async (db: PrismaClient) => {

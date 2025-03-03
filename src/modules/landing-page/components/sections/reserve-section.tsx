@@ -287,7 +287,7 @@ export const ReserveSection = () => {
 	const [selectedEvent, setSelectedEvent] = useState<EventDTO | null>(null);
 
 	return (
-		<div className="flex-page py-20 gap-10">
+		<div className="flex-page py-20 gap-10" id="reserve">
 			<ReserveHeader />
 
 			<Wizard className="container-sm pad-md" totalSteps={2}>

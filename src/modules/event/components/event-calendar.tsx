@@ -95,20 +95,20 @@ export const EventCalendar: FC<{
 
 						if (hasEvents) {
 							// is after Today
-							variant = 'solid-weak';
+							variant = 'solid';
 							theme = 'neutral';
 							disabled = false;
 							opacity = 1;
 
 							if (isToday) {
-								variant = 'solid-weak';
+								variant = 'solid';
 								theme = 'info';
 								disabled = false;
 								opacity = 1;
 							}
 
 							if (isBeforeToday) {
-								variant = 'ghost';
+								variant = 'solid-weak';
 								theme = 'neutral';
 								disabled = true;
 								opacity = 0.5;
@@ -161,7 +161,7 @@ export const EventCalendar: FC<{
 								hasSingleIcon
 							>
 								{format(date, 'd')}
-								{hasEvents && (
+								{/* {hasEvents && (
 									<div
 										className={cn(
 											'absolute bottom-0 h-1/3 flex items-center justify-center'
@@ -174,7 +174,7 @@ export const EventCalendar: FC<{
 											)}
 										></div>
 									</div>
-								)}
+								)} */}
 							</Button>
 						);
 					}
