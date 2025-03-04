@@ -1,20 +1,15 @@
-import { initTRPC } from '@trpc/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 
 import { db } from '@/deps/db';
-
-// type AuthObject = ReturnType<typeof getAuth>;
+import { getSessionCookie, setSessionCookie } from '@/modules/auth/api/session';
 
 /* CONTEXT */
-export const createTRPCContext = async (opts: {
-	headers: Headers;
-	// auth: AuthObject;
-}) => {
+export const createTRPCContext = async (opts: { headers: Headers }) => {
 	return {
 		db,
-		// clerkUserId: opts.auth.userId
-		auth: null,
+		session: null,
 		...opts
 	};
 };
@@ -33,88 +28,75 @@ export const t = initTRPC.context<typeof createTRPCContext>().create({
 	}
 });
 
-/* Create a server-side caller. */
 export const createCallerFactory = t.createCallerFactory;
 
 export const createTRPCRouter = t.router;
 
-const timingMiddleware = t.middleware(async ({ next, path }) => {
-	const start = Date.now();
+export const createTRPCMiddleware = t.middleware;
 
-	if (process.env.NODE_ENV !== 'production') {
-		// artificial delay in dev
-		const waitMs = Math.floor(Math.random() * 200) + 500;
-		await new Promise((resolve) => setTimeout(resolve, waitMs));
+/* Middlewares */
+const sessionMiddleware = createTRPCMiddleware(async ({ ctx, next }) => {
+	const { db } = ctx;
+
+	// check for session
+	const session = await getSessionCookie();
+
+	if (!session) {
+		throw new TRPCError({ code: 'UNAUTHORIZED' });
 	}
 
-	const result = await next();
+	// check for user in db
+	const user = await db.user.findUnique({
+		where: {
+			id: session.user.id
+		}
+	});
 
-	const end = Date.now();
-	console.log(`\n[TRPC] ${path} took ${end - start}ms to execute`);
+	if (!user) {
+		throw new TRPCError({ code: 'UNAUTHORIZED' });
+	}
 
-	return result;
+	// renew session
+	const newSession = await setSessionCookie(user);
+
+	// add session to context
+	return next({ ctx: { ...ctx, session: newSession } });
 });
 
+const optionalSessionMiddleware = createTRPCMiddleware(
+	async ({ ctx, next }) => {
+		const { db } = ctx;
+
+		// check for session
+		const session = await getSessionCookie();
+
+		if (!session) {
+			return next({ ctx: { ...ctx, session: null } });
+		}
+
+		// check for user in db
+		const user = await db.user.findUnique({
+			where: {
+				id: session.user.id
+			}
+		});
+
+		if (!user) {
+			return next({ ctx: { ...ctx, session: null } });
+		}
+
+		// renew session
+		const newSession = await setSessionCookie(user);
+
+		// add session to context
+		return next({ ctx: { ...ctx, session: newSession } });
+	}
+);
+
+/* PROCEDURES */
+
 export const publicProcedure = t.procedure;
-// .use(timingMiddleware);
 
-// export const optionalAuthMiddleware = t.middleware(async ({ ctx, next }) => {
-// 	let auth: ReturnType<typeof getAuth> | null = null;
-// 	let user: User | null = null;
+export const authedProcedure = t.procedure.use(sessionMiddleware);
 
-// 	auth = getAuth(
-// 		new NextRequest('https://notused.com', {
-// 			headers: await headers()
-// 		})
-// 	);
-
-// 	user = auth?.userId
-// 		? await db.user.findFirst({
-// 				where: {
-// 					Account: {
-// 						clerkUserId: auth.userId
-// 					}
-// 				}
-// 			})
-// 		: null;
-
-// 	return next({ ctx: { ...ctx, auth, user } });
-// });
-
-// const strictAuthMiddleware = t.middleware(async ({ ctx, next }) => {
-// 	const auth = getAuth(
-// 		new NextRequest('https://notused.com', {
-// 			headers: await headers()
-// 		})
-// 	);
-// 	const clerkUserId = auth.userId;
-
-// 	if (!clerkUserId) {
-// 		throw new TRPCError({ code: 'UNAUTHORIZED' });
-// 	}
-
-// 	const account = await db.account.findUnique({
-// 		where: {
-// 			clerkUserId
-// 		},
-// 		include: {
-// 			user: true
-// 		}
-// 	});
-
-// 	if (!account) {
-// 		throw new TRPCError({ code: 'UNAUTHORIZED' });
-// 	}
-
-// 	const user = account.user;
-
-// 	if (!user) {
-// 		throw new TRPCError({ code: 'UNAUTHORIZED' });
-// 	}
-
-// 	return next({ ctx: { ...ctx, auth, user } });
-// });
-
-export const protectedProcedure = t.procedure;
-// .use(timingMiddleware)
-// .use(strictAuthMiddleware);
+export const maybeAuthedProcedure = t.procedure.use(optionalSessionMiddleware);
