@@ -9,7 +9,7 @@ import { createParticle } from './create-particle';
 export const updateParticles = (
 	canvas: HTMLCanvasElement,
 	particles: Particle[],
-	mouse: { x: number; y: number } | null
+	mouse: { x: number; y: number; hovering: boolean }
 ) => {
 	const time = Date.now();
 
@@ -33,7 +33,7 @@ export const updateParticles = (
 			Math.sin(t * Math.PI * 2 * SWAY_FREQUENCY + particle.swayOffset) *
 				SWAY_STRENGTH;
 
-		if (mouse) {
+		if (mouse.hovering) {
 			const newPoint = offsetPoint({
 				point: { x: particle.x, y: particle.y },
 				offsetOrigin: mouse

@@ -4,7 +4,8 @@ import {
 	HTMLAttributes,
 	PropsWithChildren,
 	useEffect,
-	useRef
+	useRef,
+	useState
 } from 'react';
 import {
 	BOTTOM_PADDING,
@@ -17,11 +18,19 @@ import { drawParticles } from './helpers/draw-particles';
 import { updateParticles } from './helpers/update-particles';
 import { Particle } from './types';
 
-let mouse: { x: number; y: number } | null = null;
-
 export const Particles: FC<
 	HTMLAttributes<HTMLDivElement> & PropsWithChildren
 > = ({ children, className }) => {
+	const [mouse, setMouse] = useState<{
+		x: number;
+		y: number;
+		hovering: boolean;
+	}>({
+		x: 0,
+		y: 0,
+		hovering: false
+	});
+
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	const particles: Particle[] = [];
@@ -75,7 +84,7 @@ export const Particles: FC<
 	return (
 		<div
 			className={cn('relative', className)}
-			onPointerLeave={() => (mouse = null)}
+			onPointerLeave={() => (mouse.hovering = false)}
 			onPointerMove={(e) => {
 				if (!canvasRef.current) return;
 
@@ -84,7 +93,9 @@ export const Particles: FC<
 				const x = e.clientX - rect.left;
 				const y = e.clientY - rect.top;
 
-				mouse = { x, y };
+				mouse.x = x;
+				mouse.y = y;
+				mouse.hovering = true;
 			}}
 		>
 			<canvas
@@ -105,7 +116,9 @@ export const Particles: FC<
 					const x = e.clientX - rect.left;
 					const y = e.clientY - rect.top;
 
-					mouse = { x, y };
+					mouse.x = x;
+					mouse.y = y;
+					mouse.hovering = true;
 					e.stopPropagation();
 				}}
 			/>

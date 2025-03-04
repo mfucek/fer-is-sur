@@ -3,7 +3,7 @@ import { Particle } from '../types';
 export const drawParticles = (
 	canvas: HTMLCanvasElement,
 	particles: Particle[],
-	mouse: { x: number; y: number } | null
+	mouse: { x: number; y: number; hovering: boolean }
 ) => {
 	const ctx = canvas.getContext('2d');
 
