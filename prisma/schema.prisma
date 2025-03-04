@@ -24,6 +24,8 @@ model Event {
 
   CoverImage EventCover?
   Gallery    EventGallery?
+
+  Reservation Reservation[]
 }
 
 model EventCover {
@@ -54,4 +56,59 @@ model File {
 
   EventCover   EventCover[]
   EventGallery EventGallery[]
+}
+
+// ------------------
+
+model Reservation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  eventId String
+  Event   Event  @relation(fields: [eventId], references: [id])
+
+  couponId String? @unique
+  Coupon   Coupon? @relation(fields: [couponId], references: [id])
+
+  totalPrice Int
+
+  reservationStatus ReservationStatus @default(PENDING)
+  paymentStatus     PaymentStatus     @default(NOT_PAID)
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  NOT_PAID
+  PAID
+  REFUNDED
+}
+
+model Coupon {
+  id String @id @default(cuid())
+
+  code String
+
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+  usedDate  DateTime?
+
+  discountPercent Int?
+  discountAmount  Int?
+
+  reservationId String?
+  Reservation   Reservation?
+}
+
+// ------------------
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  email String @unique
 }
