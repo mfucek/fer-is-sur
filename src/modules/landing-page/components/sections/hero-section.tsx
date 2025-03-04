@@ -64,18 +64,23 @@ export const HeroSection = () => {
 					</Particles>
 
 					{/* Days until next event */}
-					{daysUntilNextEvent && daysUntilNextEvent > 0 && (
-						<Badge
-							variant="secondary"
-							theme="neutral"
-							size="lg"
-							className="w-fit pointer-events-none"
-							icon="status-pending"
-						>
-							Iduća radionica je za {daysUntilNextEvent}{' '}
-							{daysUntilNextEvent === 1 ? 'dan' : 'dana'}
-						</Badge>
-					)}
+					{daysUntilNextEvent !== null &&
+						daysUntilNextEvent !== undefined &&
+						daysUntilNextEvent >= 0 && (
+							<Badge
+								variant="secondary"
+								theme="neutral"
+								size="lg"
+								className="w-fit pointer-events-none"
+								icon="status-pending"
+							>
+								{daysUntilNextEvent > 0 &&
+									`Iduća radionica je za ${daysUntilNextEvent}`}
+								{daysUntilNextEvent === 1 &&
+									`Iduća radionica je za ${daysUntilNextEvent} dan`}
+								{daysUntilNextEvent === 0 && 'Iduća radionica je danas'}
+							</Badge>
+						)}
 				</div>
 			</div>
 		</div>
