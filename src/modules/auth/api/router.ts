@@ -1,3 +1,4 @@
+import { db } from '@/deps/db';
 import {
 	authedProcedure,
 	createTRPCRouter,
@@ -5,6 +6,7 @@ import {
 	publicProcedure
 } from '@/deps/trpc/trpc';
 import { TRPCError } from '@trpc/server';
+import { hash } from 'bcrypt';
 import { z } from 'zod';
 import { comparePassword } from '../helpers/compare-password';
 import { removeSessionCookie, setSessionCookie } from './session';
@@ -56,6 +58,39 @@ export const authRouter = createTRPCRouter({
 			success: true
 		};
 	}),
+
+	changePassword: authedProcedure
+		.input(
+			z.object({
+				oldPassword: z.string(),
+				newPassword: z.string()
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { session } = ctx;
+
+			const user = (await db.user.findUnique({
+				where: { id: session.user.id }
+			}))!;
+
+			if (!comparePassword(user, input.oldPassword)) {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED',
+					message: 'Invalid old password'
+				});
+			}
+
+			const hashedPassword = await hash(input.newPassword, 10);
+
+			await db.user.update({
+				where: { id: session.user.id },
+				data: { password: hashedPassword }
+			});
+
+			return {
+				success: true
+			};
+		}),
 
 	me: maybeAuthedProcedure.query(async ({ ctx }) => {
 		const { session } = ctx;

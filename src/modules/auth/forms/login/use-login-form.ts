@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 import { api } from '@/deps/trpc/react';
-import { loginSchema, LoginSchema } from '../schemas/login-schema';
+import { loginSchema, LoginSchema } from '../../schemas/login-schema';
 
 export const useLoginForm = () => {
 	const { mutateAsync: login, error } = api.auth.logIn.useMutation();

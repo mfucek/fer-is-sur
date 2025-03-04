@@ -2,8 +2,10 @@
 
 import { Button } from '@/deps/shadcn/ui/button';
 import { cn } from '@/deps/shadcn/utils';
+import { Protected } from '@/modules/auth/components/protected';
 import { ThemeToggler } from '@/modules/theme/components/theme-toggler';
 import { navigateToId } from '@/utils/navigate-to-id';
+import Link from 'next/link';
 
 export const Header = () => {
 	return (
@@ -46,14 +48,24 @@ export const Header = () => {
 
 					{/* <div className="w-px bg-neutral-medium self-stretch my-3" /> */}
 
-					<Button
-						variant="solid-weak"
-						theme="accent"
-						size="md"
-						onClick={() => navigateToId('reserve')}
-					>
-						Rezerviraj termin
-					</Button>
+					<div className="flex flex-row gap-2">
+						<Button
+							variant="solid-weak"
+							theme="accent"
+							size="md"
+							onClick={() => navigateToId('reserve')}
+						>
+							Rezerviraj termin
+						</Button>
+
+						<Protected>
+							<Link href="/admin">
+								<Button variant="solid" theme="neutral" size="md">
+									Dashboard
+								</Button>
+							</Link>
+						</Protected>
+					</div>
 				</div>
 			</div>
 		</div>

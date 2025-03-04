@@ -1,11 +1,16 @@
+import { ChangePasswordButton } from '../components/change-password-button';
 import { DashboardCard } from '../components/dashboard-card';
 import { DashboardHeader } from '../components/dashboard-header';
+import { LogOutButton } from '../components/log-out-button';
 
 export const DashboardPage = () => {
 	return (
 		<>
 			<div className="container-md pad-sm">
-				<DashboardHeader title="Dashboard" />
+				<DashboardHeader title="Dashboard">
+					<ChangePasswordButton />
+					<LogOutButton />
+				</DashboardHeader>
 			</div>
 
 			<div className="container-md pad-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
