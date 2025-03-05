@@ -15,6 +15,7 @@ import { cn } from '@/deps/shadcn/utils';
 import { api } from '@/deps/trpc/react';
 import { SectionList } from '@/global/components/section-list';
 import { Spinner } from '@/global/components/spinner';
+import { isToday } from 'date-fns';
 import { type EventDTO } from '../api/dto/event-dto';
 import { UpdateEventForm } from '../forms/update-event/update-event-form';
 
@@ -119,10 +120,12 @@ export const EventsList = () => {
 		);
 
 	const pastEvents = data.filter(
-		(event) => event.date.getTime() < new Date().getTime()
+		(event) =>
+			event.date.getTime() < new Date().getTime() && !isToday(event.date)
 	);
 	const upcomingEvents = data.filter(
-		(event) => event.date.getTime() > new Date().getTime()
+		(event) =>
+			event.date.getTime() >= new Date().getTime() || isToday(event.date)
 	);
 
 	return (

@@ -19,7 +19,7 @@ const actionsSizeContext = createContext<{
 	setSize: () => {}
 });
 const ActionsSizeProvider: FC<PropsWithChildren> = ({ children }) => {
-	const [size, setSize] = useState(0);
+	const [size, setSize] = useState(48);
 
 	return (
 		<actionsSizeContext.Provider value={{ size, setSize }}>
@@ -39,7 +39,7 @@ export const List: FC<PropsWithChildren> = ({ children }) => {
 	);
 };
 export const Labels: FC<PropsWithChildren> = ({ children }) => {
-	return <div className="flex flex-row gap-2 px-4">{children}</div>;
+	return <div className="flex flex-row gap-2 px-3 md:px-4">{children}</div>;
 };
 export const Label: FC<PropsWithChildren> = ({ children }) => {
 	return <div className="caption text-neutral-strong w-full">{children}</div>;
@@ -50,7 +50,7 @@ export const ActionsLabel = () => {
 		<div
 			className="caption text-neutral-strong text-right shrink-0"
 			style={{
-				...(size ? { width: size } : {})
+				width: size ? Math.min(size, 48) : 48
 			}}
 		>
 			Actions
@@ -65,7 +65,9 @@ export const Items: FC<PropsWithChildren> = ({ children }) => {
 };
 export const Item: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<div className="flex flex-row items-center gap-2 px-4 py-4">{children}</div>
+		<div className="flex flex-row items-center gap-2 px-3 md:px-4 py-4">
+			{children}
+		</div>
 	);
 };
 export const Content: FC<PropsWithChildren> = ({ children }) => {
@@ -79,7 +81,7 @@ export const Data: FC<
 	return (
 		<div
 			className={cn(
-				'body-2 text-neutral flex-1',
+				'body-2 text-neutral flex-1 relative',
 				strong && 'text-neutral font-bold',
 				className
 			)}
@@ -108,7 +110,7 @@ export const Actions: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<div
 			ref={ref}
-			className="flex flex-row items-center gap-2 shrink-0"
+			className="flex flex-row items-center gap-2 shrink-0 min-w-12 justify-end"
 			onClick={(e) => e.stopPropagation()}
 		>
 			{children}

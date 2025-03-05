@@ -20,6 +20,22 @@ export const couponRouter = createTRPCRouter({
 			});
 		}),
 
+	checkCoupon: publicProcedure
+		.input(
+			z.object({
+				couponCode: z.string()
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			const coupon = await ctx.db.coupon.count({
+				where: {
+					code: input.couponCode.toUpperCase()
+				}
+			});
+
+			return coupon > 0;
+		}),
+
 	create: createCouponProcedure,
 
 	delete: deleteProcedure

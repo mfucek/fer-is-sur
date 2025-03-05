@@ -1,16 +1,8 @@
 'use client';
 
-import { useRef, type FC } from 'react';
+import { type FC } from 'react';
 
 import { Button } from '@/deps/shadcn/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	type DialogContextType
-} from '@/deps/shadcn/ui/dialog';
 import { cn } from '@/deps/shadcn/utils';
 import { api } from '@/deps/trpc/react';
 import {
@@ -42,29 +34,8 @@ const CouponRowActions: FC<{ data: ListCouponsItem }> = ({ data }) => {
 		}
 	};
 
-	const dialogRef = useRef<DialogContextType>(null);
-
 	return (
 		<>
-			<Dialog ref={dialogRef}>
-				<Button
-					variant="solid-weak"
-					singleIcon="edit"
-					size="sm"
-					onClick={() => {
-						dialogRef.current?.openDialog();
-					}}
-				/>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>Edit Event</DialogTitle>
-						<DialogDescription>Edit an existing event.</DialogDescription>
-					</DialogHeader>
-
-					{/* <UpdateEventForm event={data} /> */}
-				</DialogContent>
-			</Dialog>
-
 			<Button
 				variant="solid-weak"
 				theme="danger"
@@ -80,13 +51,6 @@ const CouponRowActions: FC<{ data: ListCouponsItem }> = ({ data }) => {
 export const CouponsList = () => {
 	const { data, isLoading } = api.coupon.list.useQuery();
 
-	if (!data || isLoading)
-		return (
-			<div className="flex items-center justify-center">
-				<Spinner />
-			</div>
-		);
-
 	return (
 		<List>
 			<Labels>
@@ -97,46 +61,55 @@ export const CouponsList = () => {
 				<ActionsLabel />
 			</Labels>
 			<Items>
-				{data.map((coupon) => {
-					const isExpired =
-						coupon.expiresAt &&
-						coupon.expiresAt.getTime() < new Date().getTime();
+				{(!data || isLoading) && (
+					<Item>
+						<Data>
+							<Spinner absolutelyCentered />
+						</Data>
+					</Item>
+				)}
 
-					const discountString = coupon.discountPercent
-						? `${coupon.discountPercent}%`
-						: coupon.discountAmount
-							? `${coupon.discountAmount} EUR`
-							: 'No discount';
+				{data &&
+					data.map((coupon) => {
+						const isExpired =
+							coupon.expiresAt &&
+							coupon.expiresAt.getTime() < new Date().getTime();
 
-					const expiryString = coupon.expiresAt
-						? coupon.expiresAt.toLocaleDateString()
-						: 'Never';
+						const discountString = coupon.discountPercent
+							? `${coupon.discountPercent}%`
+							: coupon.discountAmount
+								? `${coupon.discountAmount} EUR`
+								: 'No discount';
 
-					const usesString =
-						coupon.maxUses === 0
-							? `${coupon._count.Reservations} (Unlimited)`
-							: `${coupon._count.Reservations} / ${coupon.maxUses}`;
+						const expiryString = coupon.expiresAt
+							? coupon.expiresAt.toLocaleDateString()
+							: 'Never';
 
-					return (
-						<Item key={coupon.id}>
-							<Content>
-								<Data strong>{coupon.code}</Data>
-								<Data>{discountString}</Data>
-								<Data className={cn(!isExpired && 'text-neutral')}>
-									{expiryString}
-								</Data>
-								<Data>
-									<Button variant="ghost" size="sm" className="-ml-3">
-										{usesString}
-									</Button>
-								</Data>
-							</Content>
-							<Actions>
-								<CouponRowActions data={coupon} />
-							</Actions>
-						</Item>
-					);
-				})}
+						const usesString =
+							coupon.maxUses === 0
+								? `${coupon._count.Reservations} (Unlimited)`
+								: `${coupon._count.Reservations} / ${coupon.maxUses}`;
+
+						return (
+							<Item key={coupon.id}>
+								<Content>
+									<Data strong>{coupon.code}</Data>
+									<Data>{discountString}</Data>
+									<Data className={cn(!isExpired && 'text-neutral')}>
+										{expiryString}
+									</Data>
+									<Data>
+										<Button variant="ghost" size="sm" className="-ml-3">
+											{usesString}
+										</Button>
+									</Data>
+								</Content>
+								<Actions>
+									<CouponRowActions data={coupon} />
+								</Actions>
+							</Item>
+						);
+					})}
 			</Items>
 		</List>
 	);

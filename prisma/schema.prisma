@@ -76,10 +76,12 @@ model Reservation {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
+  email String
+
   eventId String
   Event   Event  @relation(fields: [eventId], references: [id])
 
-  totalPrice Int
+  totalPrice Int // cents
 
   reservationStatus ReservationStatus @default(PENDING)
   paymentStatus     PaymentStatus     @default(NOT_PAID)

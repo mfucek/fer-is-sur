@@ -16,7 +16,7 @@ export const IconClassnameContext = React.createContext<string | undefined>(
 
 const buttonVariants = cva(
 	cn(
-		'relative inline-flex items-center justify-center whitespace-nowrap transition-all duration-300 hover:sm:duration-100 disabled:pointer-events-none disabled:opacity-50 active:opacity-50 group-[btn] [&:not(:disabled)]:clickable',
+		'relative inline-flex items-center justify-center whitespace-nowrap transition-all duration-300 hover:sm:duration-100 disabled:opacity-50 active:opacity-50 group-[btn] [&:not(:disabled)]:clickable disabled:cursor-not-allowed',
 		'focus-visible:outline-neutral focus-visible:outline-offset-2 outline-offset-2 focus-visible:outline-2 outline-neutral'
 	),
 	{
@@ -194,6 +194,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			hasSingleIcon,
 			leftIcon,
 			rightIcon,
+			disabled,
+			onClick,
 			...props
 		},
 		ref
@@ -221,7 +223,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const spinnerClass = cn(spinnerVariants({ size, variant }));
 
 		return (
-			<Comp className={buttonClass} ref={ref} {...props}>
+			<Comp
+				className={buttonClass}
+				ref={ref}
+				{...props}
+				onClick={disabled ? undefined : onClick}
+				disabled={disabled}
+			>
 				{leftIcon && <Icon icon={leftIcon} className={iconClass} />}
 				{children}
 				{rightIcon && <Icon icon={rightIcon} className={iconClass} />}

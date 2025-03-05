@@ -70,7 +70,7 @@ export const createCouponProcedure = publicProcedure
 
 		const coupon = await ctx.db.coupon.create({
 			data: {
-				code: finalCode,
+				code: finalCode.toUpperCase(),
 				discountPercent,
 				discountAmount,
 				maxUses: maxUses ?? 0,

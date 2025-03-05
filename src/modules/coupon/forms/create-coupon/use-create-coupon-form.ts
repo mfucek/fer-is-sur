@@ -18,6 +18,7 @@ export const useCreateCouponForm = () => {
 		}
 	});
 	const { handleSubmit } = form;
+
 	// Dialog
 	const { closeDialog } = useDialog();
 
