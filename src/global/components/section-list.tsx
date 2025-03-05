@@ -19,6 +19,7 @@ interface SectionListProps<T> {
 	showAll?: boolean;
 	data: T[];
 	keyKey?: keyof T;
+	headerRow?: ReactNode;
 	rows: (item: T, index: number) => ReactNode;
 	actions?: (item: T, index: number) => ReactNode;
 	emptyRow?: ReactNode;
@@ -29,7 +30,7 @@ const Item: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
 	return (
 		<div
 			className={cn(
-				'flex flex-row gap-2 items-center bg-section button-md group',
+				'flex flex-row gap-2 items-center bg-section button-md group px-2 md:px-4 py-4',
 				className
 			)}
 			{...props}
@@ -38,15 +39,13 @@ const Item: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => {
 };
 const ItemActions: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<div className="flex flex-row shrink-0 items-center gap-2 px-3 md:px-4 py-4">
-			{children}
-		</div>
+		<div className="flex flex-row shrink-0 items-center gap-2">{children}</div>
 	);
 };
 
 const ItemContent: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<div className="flex flex-row grow-1 shrink items-center gap-2 pl-3 md:pl-4 py-4">
+		<div className="flex flex-row grow-1 shrink items-center gap-2">
 			{children}
 		</div>
 	);
@@ -70,6 +69,7 @@ const ItemEmptyContent: FC<HTMLAttributes<HTMLDivElement>> = ({
 export const SectionList = <T extends Record<string, unknown>>({
 	title,
 	description,
+	headerRow,
 	data,
 	rows,
 	actions,
@@ -116,8 +116,23 @@ export const SectionList = <T extends Record<string, unknown>>({
 	return (
 		<div className="flex flex-col gap-2 w-full">
 			<div className="flex flex-row items-center justify-between px-4">
-				<p className="caption text-neutral-strong">{title}</p>
-				<p className="caption text-neutral-strong">{description}</p>
+				{headerRow ? (
+					<>
+						<div className="flex flex-row w-full items-center gap-2">
+							{headerRow}
+						</div>
+						{actions && (
+							<div className="flex flex-row shrink-0 items-center gap-2 h-1 pl-2">
+								{actions(data[0]!, 0)}
+							</div>
+						)}
+					</>
+				) : (
+					<>
+						<p className="caption text-neutral-strong">{title}</p>
+						<p className="caption text-neutral-strong">{description}</p>
+					</>
+				)}
 			</div>
 			<Wrapper>
 				<div className="rounded-xl overflow-x-auto overflow-y-hidden scrollbar-hidden">

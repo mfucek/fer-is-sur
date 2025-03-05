@@ -1,7 +1,7 @@
-import { ChangePasswordButton } from '../components/change-password-button';
+import { ChangePasswordButton } from '../../auth/components/change-password-button';
+import { LogOutButton } from '../../auth/components/log-out-button';
 import { DashboardCard } from '../components/dashboard-card';
 import { DashboardHeader } from '../components/dashboard-header';
-import { LogOutButton } from '../components/log-out-button';
 
 export const DashboardPage = () => {
 	return (

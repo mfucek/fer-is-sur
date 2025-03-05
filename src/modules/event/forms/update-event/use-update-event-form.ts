@@ -6,12 +6,12 @@ import { type SubmitErrorHandler, useForm } from 'react-hook-form';
 
 import { useDialog } from '@/deps/shadcn/ui/dialog';
 import { api } from '@/deps/trpc/react';
+import { type FileStagingContextType } from '@/modules/file/contexts/file-staging';
+import { type EventDTO } from '../../api/dto/event-dto';
 import {
 	eventUpdateSchema,
 	type TEventUpdateSchema
-} from '@/modules/event/schemas';
-import { type FileStagingContextType } from '@/modules/file/contexts/file-staging';
-import { type EventDTO } from '../../api/dto/event-dto';
+} from '../../schemas/event-update-schema';
 
 export const useUpdateEventForm = (event: EventDTO) => {
 	const form = useForm<TEventUpdateSchema>({

@@ -1,12 +1,12 @@
-import { createTRPCRouter, publicProcedure } from '@/deps/trpc/trpc';
 import { z } from 'zod';
 
+import { publicProcedure } from '@/deps/trpc/procedures';
+import { createTRPCRouter } from '@/deps/trpc/trpc';
+import { createCouponProcedure } from './procedures/create';
+import { deleteProcedure } from './procedures/delete';
+import { listProcedure } from './procedures/list';
 export const couponRouter = createTRPCRouter({
-	list: publicProcedure.query(async ({ ctx }) => {
-		const coupons = await ctx.db.coupon.findMany();
-
-		return coupons;
-	}),
+	list: listProcedure,
 
 	get: publicProcedure
 		.input(
@@ -20,25 +20,7 @@ export const couponRouter = createTRPCRouter({
 			});
 		}),
 
-	create: publicProcedure
-		.input(
-			z.object({
-				code: z.string(),
-				discountPercent: z.number().optional(),
-				discountAmount: z.number().optional(),
-				expiresAt: z.date().optional()
-			})
-		)
-		.mutation(async ({ ctx, input }) => {
-			const coupon = await ctx.db.coupon.create({
-				data: {
-					code: input.code,
-					discountPercent: input.discountPercent,
-					discountAmount: input.discountAmount,
-					expiresAt: input.expiresAt
-				}
-			});
+	create: createCouponProcedure,
 
-			return coupon;
-		})
+	delete: deleteProcedure
 });

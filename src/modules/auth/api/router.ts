@@ -1,10 +1,10 @@
 import { db } from '@/deps/db';
 import {
 	authedProcedure,
-	createTRPCRouter,
 	maybeAuthedProcedure,
 	publicProcedure
-} from '@/deps/trpc/trpc';
+} from '@/deps/trpc/procedures';
+import { createTRPCRouter } from '@/deps/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { hash } from 'bcrypt';
 import { z } from 'zod';

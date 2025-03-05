@@ -6,28 +6,34 @@ import { type SubmitErrorHandler, useForm } from 'react-hook-form';
 
 import { useDialog } from '@/deps/shadcn/ui/dialog';
 import { api } from '@/deps/trpc/react';
+import { type FileStagingContextType } from '@/modules/file/contexts/file-staging';
 import {
 	eventCreateSchema,
 	type TEventCreateSchema
-} from '@/modules/event/schemas';
-import { type FileStagingContextType } from '@/modules/file/contexts/file-staging';
+} from '../../schemas/event-create-schema';
 
 export const useCreateEventForm = () => {
+	// React Hook Form
 	const form = useForm<TEventCreateSchema>({
 		resolver: zodResolver(eventCreateSchema)
 	});
-
 	const { handleSubmit } = form;
 
+	// Dialog
 	const { closeDialog } = useDialog();
 
+	// TRPC
 	const utils = api.useUtils();
 	const { mutateAsync: createEvent } = api.event.create.useMutation();
 	const { mutateAsync: updateGallery } = api.event.updateGallery.useMutation();
 	const { mutateAsync: updateCover } = api.event.updateCover.useMutation();
-
 	const [isSaving, setIsSaving] = useState(false);
 
+	// File staging refs
+	const galleryFileStagingRef = useRef<FileStagingContextType>(null);
+	const coverFileStagingRef = useRef<FileStagingContextType>(null);
+
+	// Form submission
 	const onSubmit = async (data: TEventCreateSchema) => {
 		if (!galleryFileStagingRef.current || !coverFileStagingRef.current) return;
 
@@ -77,10 +83,8 @@ export const useCreateEventForm = () => {
 		console.log(errors);
 	};
 
-	const galleryFileStagingRef = useRef<FileStagingContextType>(null);
-	const coverFileStagingRef = useRef<FileStagingContextType>(null);
-
 	const handleFormSubmit = handleSubmit(onSubmit, onInvalid);
+
 	return {
 		handleFormSubmit,
 		galleryFileStagingRef,

@@ -2,7 +2,7 @@ import { AddEventButton } from '@/modules/event/components/add-event-button';
 import { EventsList } from '@/modules/event/components/events-list';
 import { DashboardHeader } from '../components/dashboard-header';
 
-export const EventDashboardPage = () => {
+export const EventsDashboardPage = () => {
 	return (
 		<>
 			<div className="container-md pad-sm">

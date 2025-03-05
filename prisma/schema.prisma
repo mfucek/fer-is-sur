@@ -79,13 +79,13 @@ model Reservation {
   eventId String
   Event   Event  @relation(fields: [eventId], references: [id])
 
-  couponId String? @unique
-  Coupon   Coupon? @relation(fields: [couponId], references: [id])
-
   totalPrice Int
 
   reservationStatus ReservationStatus @default(PENDING)
   paymentStatus     PaymentStatus     @default(NOT_PAID)
+
+  couponId String?
+  Coupon   Coupon? @relation(fields: [couponId], references: [id])
 }
 
 enum ReservationStatus {
@@ -107,13 +107,13 @@ model Coupon {
 
   createdAt DateTime  @default(now())
   expiresAt DateTime?
-  usedDate  DateTime?
 
   discountPercent Int?
   discountAmount  Int?
 
-  reservationId String?
-  Reservation   Reservation?
+  maxUses Int @default(1)
+
+  Reservations Reservation[]
 }
 
 // ------------------

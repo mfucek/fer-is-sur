@@ -1,4 +1,4 @@
-import { publicProcedure } from '@/deps/trpc/trpc';
+import { publicProcedure } from '@/deps/trpc/procedures';
 import { getFileDownloadUrl } from '@/modules/file/helpers/get-download-url';
 import { type Prisma } from '@prisma/client';
 import { makeEventDTO } from '../dto/event-dto';

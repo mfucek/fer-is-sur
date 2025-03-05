@@ -1,16 +1,15 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { createTRPCRouter, publicProcedure } from '@/deps/trpc/trpc';
+import { publicProcedure } from '@/deps/trpc/procedures';
+import { createTRPCRouter } from '@/deps/trpc/trpc';
 import { deleteFile } from '@/modules/file/helpers/delete-file';
 import { getFileDownloadUrl } from '@/modules/file/helpers/get-download-url';
 import { PrismaClient, type Prisma } from '@prisma/client';
 import { addMonths, differenceInDays, subMonths } from 'date-fns';
-import {
-	dateRangeSchema,
-	eventCreateSchema,
-	eventUpdateSchema
-} from '../schemas';
+import { dateRangeSchema } from '../schemas/date-range-schema';
+import { eventCreateSchema } from '../schemas/event-create-schema';
+import { eventUpdateSchema } from '../schemas/event-update-schema';
 import { makeEventDTO } from './dto/event-dto';
 import { listShowcaseProcedure } from './procedures/list-showcase';
 

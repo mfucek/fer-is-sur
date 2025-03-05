@@ -109,10 +109,15 @@ export const iconVariants = cva('shrink-0', {
 			sm: 'size-4',
 			xs: 'size-3',
 			card: 'size-6'
+		},
+		loading: {
+			true: '!opacity-0 duration-0',
+			false: ''
 		}
 	},
 	defaultVariants: {
-		variant: 'solid'
+		variant: 'solid',
+		loading: false
 	}
 });
 
@@ -133,11 +138,16 @@ export const singleIconVariants = cva('', {
 			sm: 'size-5',
 			xs: 'size-4',
 			card: 'size-6'
+		},
+		loading: {
+			true: '!opacity-0 duration-0',
+			false: ''
 		}
 	},
 	defaultVariants: {
 		variant: 'solid',
-		size: 'md'
+		size: 'md',
+		loading: false
 	}
 });
 
@@ -204,8 +214,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		);
 
 		// Icons
-		const iconClass = cn(iconVariants({ size, variant }));
-		const singleIconClass = cn(singleIconVariants({ size, variant }));
+		const iconClass = cn(iconVariants({ size, variant, loading }));
+		const singleIconClass = cn(singleIconVariants({ size, variant, loading }));
 
 		// Spinner
 		const spinnerClass = cn(spinnerVariants({ size, variant }));

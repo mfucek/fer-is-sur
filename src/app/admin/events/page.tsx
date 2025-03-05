@@ -1,3 +1,3 @@
-import { EventDashboardPage } from '@/modules/dashboard/pages/event-dashboard-page';
+import { EventsDashboardPage } from '@/modules/dashboard/pages/events-dashboard-page';
 
-export default EventDashboardPage;
+export default EventsDashboardPage;
