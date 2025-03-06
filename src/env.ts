@@ -10,6 +10,7 @@ export const env = createEnv({
 		NODE_ENV: z
 			.enum(['development', 'test', 'production'])
 			.default('development'),
+		JWT_SECRET: z.string(),
 		// Prisma
 		DATABASE_URL: z.string().url(),
 		PULSE_API_KEY: z.string(),
@@ -37,6 +38,7 @@ export const env = createEnv({
 
 	runtimeEnv: {
 		NODE_ENV: process.env.NODE_ENV,
+		JWT_SECRET: process.env.JWT_SECRET,
 		// Prisma
 		DATABASE_URL: process.env.DATABASE_URL,
 		PULSE_API_KEY: process.env.PULSE_API_KEY,
