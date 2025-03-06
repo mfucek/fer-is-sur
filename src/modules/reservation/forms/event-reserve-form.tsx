@@ -7,9 +7,13 @@ import { Input } from '@/deps/shadcn/ui/input';
 import { FormLabel } from '@/global/components/form-label';
 import { Icon } from '@/global/components/icon';
 import { useEventReserveForm } from './use-event-reserve-form';
-export const EventReservationForm: FC<{ eventId: string }> = ({ eventId }) => {
+export const EventReservationForm: FC<{
+	eventId: string;
+	remainingSlots: number;
+	onReservationSubmit: (reservationId: string) => void;
+}> = ({ eventId, remainingSlots, onReservationSubmit }) => {
 	const { form, isCouponValid, handleFormSubmit, submitDisabled, globalError } =
-		useEventReserveForm(eventId);
+		useEventReserveForm(eventId, remainingSlots, onReservationSubmit);
 
 	return (
 		<form
@@ -18,34 +22,54 @@ export const EventReservationForm: FC<{ eventId: string }> = ({ eventId }) => {
 			onSubmit={handleFormSubmit}
 		>
 			<div className="rounded-2xl bg-section p-6 flex flex-col gap-3">
-				<FormLabel title="Email" error={form.formState.errors.email?.message}>
-					<Input placeholder="Upiši svoj email" {...form.register('email')} />
-				</FormLabel>
+				<div className="flex flex-col md:flex-row gap-3">
+					<FormLabel
+						title="Email"
+						error={form.formState.errors.email?.message}
+						description="Na ovaj email će biti poslan račun."
+					>
+						<Input placeholder="Upiši svoj email" {...form.register('email')} />
+					</FormLabel>
+
+					<FormLabel
+						title="Kupon"
+						description="Ako imaš kupon za popust, upiši ga ovdje"
+						error={form.formState.errors.couponCode?.message}
+					>
+						<div className="relative">
+							<Input placeholder="Kupon" {...form.register('couponCode')} />
+
+							{isCouponValid === true && (
+								<div className="absolute right-2 top-1/2 -translate-y-1/2 bg-success-medium rounded-full p-1">
+									<Icon icon="checkmark" className="size-4 bg-success" />
+								</div>
+							)}
+
+							{isCouponValid === false && (
+								<div className="absolute right-2 top-1/2 -translate-y-1/2 bg-danger-medium rounded-full p-1">
+									<Icon icon="close" className="size-4 bg-danger" />
+								</div>
+							)}
+						</div>
+					</FormLabel>
+				</div>
 
 				<FormLabel
-					title="Kupon"
-					description="Ako imaš kupon za popust, upiši ga ovdje"
-					error={form.formState.errors.couponCode?.message}
+					title="Broj osoba"
+					error={form.formState.errors.quantity?.message}
 				>
-					<div className="relative">
-						<Input placeholder="Kupon" {...form.register('couponCode')} />
-
-						{isCouponValid === true && (
-							<div className="absolute right-2 top-1/2 -translate-y-1/2 bg-success-medium rounded-full p-1">
-								<Icon icon="checkmark" className="size-4 bg-success" />
-							</div>
-						)}
-
-						{isCouponValid === false && (
-							<div className="absolute right-2 top-1/2 -translate-y-1/2 bg-danger-medium rounded-full p-1">
-								<Icon icon="close" className="size-4 bg-danger" />
-							</div>
-						)}
-					</div>
+					<Input
+						placeholder="Broj osoba"
+						{...form.register('quantity', {
+							valueAsNumber: true
+						})}
+					/>
 				</FormLabel>
 
 				{globalError && (
-					<div className="text-danger-medium body-2">{globalError}</div>
+					<div className="text-danger text-center body-2 bg-danger-weak rounded-lg p-2">
+						{globalError}
+					</div>
 				)}
 			</div>
 

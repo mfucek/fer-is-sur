@@ -1,0 +1,18 @@
+import { z } from 'zod';
+
+import { publicProcedure } from '@/deps/trpc/procedures';
+import { eventUpdateSchema } from '../../schemas/event-update-schema';
+
+export const updateProcedure = publicProcedure
+	.input(z.object({ event: eventUpdateSchema }))
+	.mutation(async ({ ctx, input }) => {
+		const { db } = ctx;
+		const { event } = input;
+
+		const updatedEvent = await db.event.update({
+			where: { id: event.id },
+			data: event
+		});
+
+		return updatedEvent;
+	});

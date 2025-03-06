@@ -11,11 +11,12 @@ export const wizardContext = createContext<{
 	totalSteps: 0
 });
 
-const WizardProvider: FC<{ children: React.ReactNode; totalSteps: number }> = ({
-	children,
-	totalSteps
-}) => {
-	const [currentStep, setCurrentStep] = useState(1);
+const WizardProvider: FC<{
+	children: React.ReactNode;
+	totalSteps: number;
+	initialStep?: number;
+}> = ({ children, totalSteps, initialStep = 1 }) => {
+	const [currentStep, setCurrentStep] = useState(initialStep);
 
 	return (
 		<wizardContext.Provider value={{ currentStep, setCurrentStep, totalSteps }}>
@@ -27,10 +28,11 @@ const WizardProvider: FC<{ children: React.ReactNode; totalSteps: number }> = ({
 export const Wizard: FC<
 	HTMLAttributes<HTMLDivElement> & {
 		totalSteps: number;
+		initialStep?: number;
 	}
-> = ({ children, className, totalSteps, ...props }) => {
+> = ({ children, className, totalSteps, initialStep, ...props }) => {
 	return (
-		<WizardProvider totalSteps={totalSteps}>
+		<WizardProvider totalSteps={totalSteps} initialStep={initialStep}>
 			<div className={cn('flex flex-row', className)} {...props}>
 				{children}
 			</div>

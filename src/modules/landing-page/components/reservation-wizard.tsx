@@ -3,13 +3,14 @@
 import { Button } from '@/deps/shadcn/ui/button';
 import { api } from '@/deps/trpc/react';
 import { Icon } from '@/global/components/icon';
+import { Spinner } from '@/global/components/spinner';
 import { Wizard, wizardContext, WizardStep } from '@/global/components/wizard';
-import { EventDTO } from '@/modules/event/api/dto/event-dto';
+import { EventDateDTO } from '@/modules/event/api/procedures/get-event-dates';
 import { EventCalendar } from '@/modules/event/components/event-calendar';
 import { EventReservationForm } from '@/modules/reservation/forms/event-reserve-form';
 import { format } from 'date-fns';
 import Image from 'next/image';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 
 const CouponCard = () => {
 	const { setCurrentStep } = useContext(wizardContext);
@@ -26,7 +27,7 @@ const CouponCard = () => {
 			<Button
 				variant={'solid-weak'}
 				size="md"
-				onClick={() => setCurrentStep(4)}
+				onClick={() => setCurrentStep(5)}
 			>
 				Kupi kupon
 			</Button>
@@ -38,7 +39,7 @@ const TimeSlotCard: FC<{
 	event: {
 		id: string;
 		date: Date;
-		capacity: number;
+		slots: number;
 	};
 }> = ({ event }) => {
 	const { setCurrentStep } = useContext(wizardContext);
@@ -54,7 +55,7 @@ const TimeSlotCard: FC<{
 			<div className="flex flex-col items-start flex-1">
 				<div className="button-lg">{format(event.date, 'HH:mm')}</div>
 				<div className="body-2 text-theme-strong">
-					{event.capacity} mjesta preostalo
+					{event.slots} mjesta preostalo
 				</div>
 			</div>
 		</Button>
@@ -62,16 +63,19 @@ const TimeSlotCard: FC<{
 };
 
 const TimeSlots: FC<{
-	events: {
-		id: string;
-		date: Date;
-		capacity: number;
-	}[];
+	events: EventDateDTO[];
 }> = ({ events }) => {
 	return (
 		<div className="flex flex-col gap-2">
 			{events.map((event, index) => (
-				<TimeSlotCard key={index} event={event} />
+				<TimeSlotCard
+					key={index}
+					event={{
+						id: event.id,
+						date: event.date,
+						slots: event.remainingSlots
+					}}
+				/>
 			))}
 		</div>
 	);
@@ -154,7 +158,7 @@ const EventDetails: FC<{
 };
 
 const OverviewWizardContent: FC<{
-	onEventSelect: (event: EventDTO) => void;
+	onEventSelect: (event: EventDateDTO) => void;
 }> = ({ onEventSelect }) => {
 	const { setCurrentStep } = useContext(wizardContext);
 
@@ -181,7 +185,7 @@ const useGetEventCover = (eventId?: string | null) => {
 };
 
 const DayEventsWizardContent: FC<{
-	selectedEvent: EventDTO | null;
+	selectedEvent: EventDateDTO | null;
 }> = ({ selectedEvent }) => {
 	const { coverUrl } = useGetEventCover(selectedEvent?.id);
 
@@ -204,10 +208,11 @@ const DayEventsWizardContent: FC<{
 };
 
 const EventReservationWizardContent: FC<{
-	selectedEvent: EventDTO | null;
-}> = ({ selectedEvent }) => {
+	selectedEvent: EventDateDTO | null;
+	setReservationId: (reservationId: string) => void;
+}> = ({ selectedEvent, setReservationId }) => {
 	const { coverUrl } = useGetEventCover(selectedEvent?.id);
-
+	const { setCurrentStep } = useContext(wizardContext);
 	if (!selectedEvent) return null;
 
 	const { title, location, date, description, price } = selectedEvent;
@@ -222,7 +227,14 @@ const EventReservationWizardContent: FC<{
 				time={date}
 				coverUrl={coverUrl}
 			/>
-			<EventReservationForm eventId={selectedEvent.id} />
+			<EventReservationForm
+				eventId={selectedEvent.id}
+				remainingSlots={selectedEvent.remainingSlots}
+				onReservationSubmit={(reservationId) => {
+					setReservationId(reservationId);
+					setCurrentStep(4);
+				}}
+			/>
 		</>
 	);
 };
@@ -236,10 +248,103 @@ const CouponWizardContent = () => {
 	);
 };
 
-export const ReservationWizard = () => {
-	const [selectedEvent, setSelectedEvent] = useState<EventDTO | null>(null);
+const EventPaymentStatusContent: FC<{
+	selectedEvent: EventDateDTO | null;
+	reservationId: string | null;
+}> = ({ selectedEvent, reservationId }) => {
+	const { data: reservation } = api.reservation.checkStatus.useQuery(
+		{ reservationId: reservationId! },
+		{ enabled: !!reservationId }
+	);
+
+	const utils = api.useUtils();
+
+	useEffect(() => {
+		const refetchReservation = async () => {
+			if (reservation && reservation.paymentStatus === 'PAID') {
+				controller.abort();
+				return;
+			}
+			await utils.reservation.checkStatus.invalidate();
+		};
+
+		const controller = new AbortController();
+		setTimeout(() => refetchReservation(), 5000, {
+			signal: controller.signal
+		});
+
+		return () => controller.abort();
+	}, []);
+
+	const IconInProgress = () => {
+		return (
+			<div className="size-18 rounded-full bg-info-weak relative">
+				<Spinner className="size-6 border-4 border-info" absolutelyCentered />
+			</div>
+		);
+	};
+
+	const IconSuccess = () => {
+		return (
+			<div className="p-4 rounded-full bg-success-weak">
+				<Icon icon="checkmark" className="size-10 bg-success" />
+			</div>
+		);
+	};
+
+	const IconFailed = () => {
+		return (
+			<div className="p-4 rounded-full bg-danger-weak">
+				<Icon icon="close" className="size-10 bg-danger" />
+			</div>
+		);
+	};
+
+	const ContentInProgress = () => {
+		return (
+			<>
+				<IconInProgress />
+				<div className="flex flex-col gap-1">
+					<p className="title-3 text-neutral-strong">Plaćanje u tijeku</p>
+					<p className="body-1 text-neutral">
+						Pratite uputstva na Stripe prozoru.
+					</p>
+				</div>
+			</>
+		);
+	};
+
+	const ContentSuccess = () => {
+		return (
+			<>
+				<IconSuccess />
+				<div className="flex flex-col gap-1 w-full items-center">
+					<p className="title-3 text-neutral-strong">Rezervacija uspješna!</p>
+					<p className="body-1 text-neutral container-xs">
+						Na email su Vam poslani račun i uputstva za eventualno otkazivanje.
+					</p>
+				</div>
+			</>
+		);
+	};
+
 	return (
-		<Wizard className="container-sm pad-md" totalSteps={2}>
+		<>
+			<WizardBackHeader backStep={1} title="Status" />
+			<div className="h-full flex flex-col items-center justify-center text-center gap-10">
+				{/* <ContentSuccess /> */}
+				<ContentInProgress />
+			</div>
+		</>
+	);
+};
+
+export const ReservationWizard = () => {
+	const [selectedEvent, setSelectedEvent] = useState<EventDateDTO | null>(null);
+	const [reservationId, setReservationId] = useState<string | null>(null);
+
+	return (
+		<Wizard className="container-sm pad-md" totalSteps={5} initialStep={4}>
 			<WizardStep step={1}>
 				<OverviewWizardContent onEventSelect={setSelectedEvent} />
 			</WizardStep>
@@ -249,10 +354,20 @@ export const ReservationWizard = () => {
 			</WizardStep>
 
 			<WizardStep step={3}>
-				<EventReservationWizardContent selectedEvent={selectedEvent} />
+				<EventReservationWizardContent
+					selectedEvent={selectedEvent}
+					setReservationId={setReservationId}
+				/>
 			</WizardStep>
 
 			<WizardStep step={4}>
+				<EventPaymentStatusContent
+					selectedEvent={selectedEvent}
+					reservationId={reservationId}
+				/>
+			</WizardStep>
+
+			<WizardStep step={5}>
 				<CouponWizardContent />
 			</WizardStep>
 		</Wizard>

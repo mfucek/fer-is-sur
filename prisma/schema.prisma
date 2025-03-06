@@ -37,7 +37,7 @@ model Event {
   CoverImage EventCover?
   Gallery    EventGallery?
 
-  Reservation Reservation[]
+  Reservations Reservation[]
 }
 
 model EventCover {
@@ -76,7 +76,8 @@ model Reservation {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  email String
+  email    String
+  quantity Int
 
   eventId String
   Event   Event  @relation(fields: [eventId], references: [id])

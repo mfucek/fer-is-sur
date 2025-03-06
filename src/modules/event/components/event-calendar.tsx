@@ -14,7 +14,7 @@ import {
 } from 'date-fns';
 import { FC, useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
-import { EventDTO } from '../api/dto/event-dto';
+import { EventDateDTO } from '../api/procedures/get-event-dates';
 
 const getCurrentMonth = () => {
 	const date = new Date();
@@ -24,7 +24,7 @@ const getCurrentMonth = () => {
 };
 
 export const EventCalendar: FC<{
-	onEventSelect: (event: EventDTO) => void;
+	onEventSelect: (event: EventDateDTO) => void;
 }> = ({ onEventSelect }) => {
 	const { isMobile } = useViewport();
 

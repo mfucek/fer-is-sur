@@ -75,7 +75,7 @@ export const HeroSection = () => {
 								icon="status-pending"
 							>
 								{daysUntilNextEvent > 0 &&
-									`Iduća radionica je za ${daysUntilNextEvent}`}
+									`Iduća radionica je za ${daysUntilNextEvent} dana`}
 								{daysUntilNextEvent === 1 &&
 									`Iduća radionica je za ${daysUntilNextEvent} dan`}
 								{daysUntilNextEvent === 0 && 'Iduća radionica je danas'}

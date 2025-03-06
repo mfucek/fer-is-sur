@@ -23,7 +23,7 @@ const badgeVariants = cva(
 				tertiary: 'bg-theme-weak text-theme-strong'
 			},
 			size: {
-				lg: 'h-[24px] px-[12px] gap-2 rounded-full caption',
+				lg: 'h-[24px] px-[12px] gap-2 rounded-full title-3',
 				md: 'h-[20px] px-[8px] gap-2 rounded-full caption',
 				sm: 'h-[12px] px-[6px] gap-2 rounded-full overline'
 			}
