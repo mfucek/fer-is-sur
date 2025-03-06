@@ -3,7 +3,7 @@ import { LandingHeading } from '../landing-heading';
 const TestemonialCard = () => {
 	return (
 		<div className="flex flex-col p-3 gap-3 rounded-2xl bg-section text-center items-center justify-center min-h-[160px] w-[320px] sm:w-auto shrink-0">
-			<p className="body-3 text-neutral">
+			<p className="body-2 text-neutral">
 				❤️ zakon je bilo! Definitivno preporucam svima da se iskusaju!
 			</p>
 			<p className="caption text-neutral-strong">@guchi.jogobela</p>

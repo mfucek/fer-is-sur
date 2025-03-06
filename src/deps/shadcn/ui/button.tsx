@@ -45,7 +45,7 @@ const buttonVariants = cva(
 					'border border-transparent bg-section text-theme hover:sm:bg-theme-weak hover:sm:text-theme'
 			},
 			size: {
-				lg: 'h-[52px] px-[20px] gap-[8px] button-lg rounded-[8px]',
+				lg: 'h-[60px] px-[24px] gap-[8px] button-lg rounded-[12px]',
 				md: 'h-[40px] px-[16px] gap-[6px] button-md rounded-[8px]',
 				sm: 'h-[32px] px-[12px] gap-[4px] button-md rounded-[6px]',
 				xs: 'h-[24px] px-[8px] gap-[4px] button-sm rounded-[6px]',

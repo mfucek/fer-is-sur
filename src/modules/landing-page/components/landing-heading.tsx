@@ -12,7 +12,7 @@ export const LandingHeading: FC<
 				{title}
 			</h2>
 			{description && (
-				<p className="container-xs pad-lg body-2 text-neutral-strong text-center">
+				<p className="container-xs pad-lg body-1 text-neutral-strong text-center">
 					{description}
 				</p>
 			)}

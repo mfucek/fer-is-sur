@@ -61,7 +61,7 @@
 
 /* Buttons */
 @utility button-lg {
-	@apply font-nunito text-[15px] font-bold leading-[20px];
+	@apply font-nunito text-[18px] font-bold leading-[24px];
 }
 @utility button-md {
 	@apply font-nunito text-[12px] font-bold leading-[16px] sm:text-[13px] sm:leading-[16px];

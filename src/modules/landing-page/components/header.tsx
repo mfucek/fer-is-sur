@@ -1,13 +1,30 @@
 'use client';
 
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
 import { Button } from '@/deps/shadcn/ui/button';
 import { cn } from '@/deps/shadcn/utils';
 import { Protected } from '@/modules/auth/components/protected';
 import { ThemeToggler } from '@/modules/theme/components/theme-toggler';
 import { navigateToId } from '@/utils/navigate-to-id';
-import Link from 'next/link';
 
 export const Header = () => {
+	const [showCTA, setShowCTA] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			setShowCTA(window.scrollY > window.innerHeight / 2);
+		};
+
+		const controller = new AbortController();
+		window.addEventListener('scroll', handleScroll, {
+			signal: controller.signal
+		});
+
+		return () => controller.abort();
+	}, []);
+
 	return (
 		<div
 			className={cn(
@@ -49,14 +66,25 @@ export const Header = () => {
 					{/* <div className="w-px bg-neutral-medium self-stretch my-3" /> */}
 
 					<div className="flex flex-row gap-2">
-						<Button
-							variant="solid-weak"
-							theme="accent"
-							size="md"
-							onClick={() => navigateToId('reserve')}
+						<div
+							className={cn(
+								'transition-all duration-700 overflow-hidden it',
+								showCTA ? 'w-auto' : 'w-0'
+							)}
+							style={{
+								// @ts-ignore
+								interpolateSize: 'allow-keywords'
+							}}
 						>
-							Rezerviraj termin
-						</Button>
+							<Button
+								variant="solid-weak"
+								theme="accent"
+								size="md"
+								onClick={() => navigateToId('reserve')}
+							>
+								Rezerviraj termin
+							</Button>
+						</div>
 
 						<Protected>
 							<Link href="/admin">

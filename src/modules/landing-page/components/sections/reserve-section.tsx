@@ -1,4 +1,4 @@
-import { ReservationWizard } from '../reservation-wizard';
+import { ReservationWizard } from '../wizards/reservation-wizard';
 
 export const ReserveSection = () => {
 	return (
