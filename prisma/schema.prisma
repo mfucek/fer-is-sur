@@ -87,6 +87,8 @@ model Reservation {
   reservationStatus ReservationStatus @default(PENDING)
   paymentStatus     PaymentStatus     @default(NOT_PAID)
 
+  paymentIntentId String?
+
   couponId String?
   Coupon   Coupon? @relation(fields: [couponId], references: [id])
 }

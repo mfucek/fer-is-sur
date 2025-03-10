@@ -8,6 +8,7 @@ import { cn } from '@/deps/shadcn/utils';
 import { TRPCReactProvider } from '@/deps/trpc/react';
 import { ThemeProvider } from '@/modules/theme/providers/theme-provider';
 import { ViewportSizeProvider } from '@/utils/use-viewport';
+import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
 	title: 'Crni Mag | Likovne radionice',
@@ -39,7 +40,10 @@ export default function RootLayout({
 				<ViewportSizeProvider>
 					<TRPCReactProvider>
 						<AnalyticsProvider>
-							<body className="min-h-screen">{children}</body>
+							<body className="min-h-screen">
+								{children}
+								<Toaster />
+							</body>
 						</AnalyticsProvider>
 					</TRPCReactProvider>
 				</ViewportSizeProvider>

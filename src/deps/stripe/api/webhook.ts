@@ -31,6 +31,8 @@ export const postHandler = async (request: Request) => {
 				// @ts-ignore
 				const reservationId = event.data.object.metadata.reservationId;
 
+				const paymentIntentId = event.data.object.payment_intent as string;
+
 				if (!reservationId) {
 					console.error('No reservation ID found');
 					break;
@@ -45,7 +47,8 @@ export const postHandler = async (request: Request) => {
 					},
 					data: {
 						reservationStatus: 'CONFIRMED',
-						paymentStatus: 'PAID'
+						paymentStatus: 'PAID',
+						paymentIntentId: paymentIntentId
 					}
 				});
 

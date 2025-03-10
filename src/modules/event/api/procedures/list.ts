@@ -52,3 +52,5 @@ export const listProcedure = authedProcedure
 
 		return events;
 	});
+
+export type EventListItem = Awaited<ReturnType<typeof listProcedure>>[number];

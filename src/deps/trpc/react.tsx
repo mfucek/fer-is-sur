@@ -1,14 +1,40 @@
 'use client';
 
 import { QueryClientProvider, type QueryClient } from '@tanstack/react-query';
-import { httpBatchLink, loggerLink } from '@trpc/client';
+import { httpBatchLink, loggerLink, TRPCLink } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
 import { useState } from 'react';
 import SuperJSON from 'superjson';
 
 import { type AppRouter } from '@/deps/trpc/root';
+import { observable } from '@trpc/server/observable';
+import { toast } from 'sonner';
 import { createQueryClient } from './query-client';
+
+export const sonnerLink: TRPCLink<AppRouter> = () => {
+	return ({ next, op }) => {
+		return observable((observer) => {
+			console.log('performing operation:', op);
+			const unsubscribe = next(op).subscribe({
+				next(value) {
+					observer.next(value);
+				},
+				error(err) {
+					toast.error('Error', {
+						description: err.message,
+						duration: 10000
+					});
+					observer.error(err);
+				},
+				complete() {
+					observer.complete();
+				}
+			});
+			return unsubscribe;
+		});
+	};
+};
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {
@@ -42,6 +68,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
 	const [trpcClient] = useState(() =>
 		api.createClient({
 			links: [
+				sonnerLink,
 				loggerLink({
 					enabled: (op) =>
 						process.env.NODE_ENV === 'development' ||

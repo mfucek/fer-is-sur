@@ -18,9 +18,36 @@ import { FC } from 'react';
 const EventReservationActions: FC<{ reservation: ReservationByEvent }> = ({
 	reservation
 }) => {
+	const { mutateAsync: refundReservation, isPending } =
+		api.reservation.refund.useMutation();
+	const utils = api.useUtils();
+
+	const isReservationConfirmed = reservation.reservationStatus === 'CONFIRMED';
+	const isReservationPending = reservation.reservationStatus === 'PENDING';
+
+	const handleRefund = async () => {
+		await refundReservation({ reservationId: reservation.id });
+		await utils.reservation.listByEvent.invalidate();
+	};
+
 	return (
 		<>
-			<Button variant="solid-weak" size="sm" singleIcon="trash" />
+			{/* <Button
+				variant={isReservationPending ? 'solid' : 'solid-weak'}
+				size="sm"
+				singleIcon="checkmark"
+				theme={isReservationPending ? 'success' : 'neutral'}
+				disabled={!isReservationPending}
+			/> */}
+
+			<Button
+				variant="solid-weak"
+				size="sm"
+				singleIcon="refund"
+				disabled={!isReservationConfirmed}
+				loading={isPending}
+				onClick={handleRefund}
+			/>
 		</>
 	);
 };
@@ -58,16 +85,21 @@ const EventReservationItem: FC<{ reservation: ReservationByEvent }> = ({
 				</Data>
 
 				<Data>
-					<Badge
-						variant="primary"
-						theme={
-							reservation.reservationStatus === ReservationStatus.CONFIRMED
-								? 'success'
-								: 'danger'
-						}
-					>
-						{reservation.reservationStatus}
-					</Badge>
+					{reservation.reservationStatus === 'CONFIRMED' && (
+						<Badge variant="primary" theme="success">
+							Confirmed
+						</Badge>
+					)}
+					{reservation.reservationStatus === 'CANCELLED' && (
+						<Badge variant="secondary" theme="danger">
+							Cancelled
+						</Badge>
+					)}
+					{reservation.reservationStatus === 'PENDING' && (
+						<Badge variant="tertiary" theme="neutral">
+							Pending
+						</Badge>
+					)}
 				</Data>
 
 				<Data>

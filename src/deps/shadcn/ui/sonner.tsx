@@ -15,7 +15,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 					description: 'group-[.toast]:text-neutral-strong',
 					actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-neutral',
 					cancelButton:
-						'group-[.toast]:bg-muted group-[.toast]:text-neutral-strong'
+						'group-[.toast]:bg-neutral-weak group-[.toast]:text-neutral-strong'
 				}
 			}}
 			{...props}

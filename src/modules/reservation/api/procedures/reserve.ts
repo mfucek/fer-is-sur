@@ -35,10 +35,9 @@ export const reserveProcedure = publicProcedure
 		// Capacity handling
 		const remainingCapacity =
 			event.capacity -
-			event.Reservations.reduce(
-				(acc, reservation) => acc + reservation.quantity,
-				0
-			);
+			event.Reservations.filter(
+				(reservation) => reservation.reservationStatus === 'CONFIRMED'
+			).reduce((acc, reservation) => acc + reservation.quantity, 0);
 
 		if (details.quantity > remainingCapacity) {
 			throw new TRPCError({

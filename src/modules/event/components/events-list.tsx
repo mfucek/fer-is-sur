@@ -13,7 +13,6 @@ import {
 	DialogTrigger,
 	type DialogContextType
 } from '@/deps/shadcn/ui/dialog';
-import { cn } from '@/deps/shadcn/utils';
 import { api } from '@/deps/trpc/react';
 import {
 	Actions,
@@ -28,6 +27,7 @@ import {
 import { Spinner } from '@/global/components/spinner';
 import { formatDate, isToday } from 'date-fns';
 import { type EventDTO } from '../api/dto/event-dto';
+import { EventListItem } from '../api/procedures/list';
 import { UpdateEventForm } from '../forms/update-event/update-event-form';
 import { EventReservationsList } from './event-reservations-list';
 
@@ -52,7 +52,7 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 		<>
 			<Dialog ref={dialogRef}>
 				<Button
-					variant="ghost"
+					variant="solid-weak"
 					singleIcon="edit"
 					size="sm"
 					onClick={() => {
@@ -68,6 +68,7 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 					<UpdateEventForm event={data} />
 				</DialogContent>
 			</Dialog>
+
 			<Button
 				variant="solid-weak"
 				theme="danger"
@@ -80,29 +81,49 @@ const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 	);
 };
 
-const EventRow: FC<{ item: EventDTO }> = ({ item }) => {
+const EventItem: FC<{ event: EventListItem }> = ({ event }) => {
 	return (
-		<div className="flex flex-col gap-1 w-full overflow-hidden">
-			{/* Title */}
-			<p className="title-3 overflow-hidden text-neutral">{item.title} </p>
+		<Item key={event.id}>
+			<Data strong>{event.title}</Data>
 
-			<div className="flex flex-row gap-2">
-				{/* Location */}
-				<span className="caption text-neutral-strong">{item.location}</span>
+			<Data>
+				{formatDate(event.date, 'dd. MM. yyyy.')} {event.location}
+			</Data>
 
-				{/* Date */}
-				<span
-					className={cn(
-						'caption',
-						item.date.getTime() > new Date().getTime()
-							? 'text-info'
-							: 'text-neutral-strong'
-					)}
-				>
-					{item.date ? item.date.toLocaleDateString() : 'No date'}
-				</span>
-			</div>
-		</div>
+			<Data>{event.price.toFixed(2)} EUR</Data>
+
+			<Data>
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button
+							variant="ghost"
+							size="sm"
+							className="body-3 font-bold -ml-3"
+						>
+							{event.reservations} / {event.capacity}
+						</Button>
+					</DialogTrigger>
+
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>Reservations</DialogTitle>
+							<DialogDescription>
+								View all reservations for this event.
+							</DialogDescription>
+						</DialogHeader>
+
+						<div className="pad-xl">
+							<EventReservationsList eventId={event.id} />
+						</div>
+
+						<DialogFooter>asd</DialogFooter>
+					</DialogContent>
+				</Dialog>
+			</Data>
+			<Actions>
+				<EventRowActions data={event} />
+			</Actions>
+		</Item>
 	);
 };
 
@@ -131,67 +152,20 @@ export const EventsList = () => {
 				<Labels>
 					<Label>Title</Label>
 					<Label>Date & Location</Label>
-					<Label>Price</Label>
+					<Label>Entry Price</Label>
 					<Label>Reservations</Label>
 					<ActionsLabel />
 				</Labels>
 
 				<Items>
 					{upcomingEvents.map((event) => (
-						<Item key={event.id}>
-							<Data>{event.title}</Data>
-							<Data>
-								{formatDate(event.date, 'dd. MM. yyyy.')} {event.location}
-							</Data>
-							<Data>{event.price.toFixed(2)} EUR</Data>
-							<Data>
-								<Dialog>
-									<DialogTrigger asChild>
-										<Button variant="ghost" size="sm" className="-ml-3">
-											{event.reservations} / {event.capacity}
-										</Button>
-									</DialogTrigger>
-
-									<DialogContent>
-										<DialogHeader>
-											<DialogTitle>Reservations</DialogTitle>
-											<DialogDescription>
-												View all reservations for this event.
-											</DialogDescription>
-										</DialogHeader>
-
-										<div className="pad-xl">
-											<EventReservationsList eventId={event.id} />
-										</div>
-
-										<DialogFooter>asd</DialogFooter>
-									</DialogContent>
-								</Dialog>
-							</Data>
-							<Actions>
-								<EventRowActions data={event} />
-							</Actions>
-						</Item>
+						<EventItem key={event.id} event={event} />
 					))}
 				</Items>
 
 				<Items>
 					{pastEvents.map((event) => (
-						<Item key={event.id}>
-							<Data>{event.title}</Data>
-							<Data>
-								{formatDate(event.date, 'dd. MM. yyyy.')} {event.location}
-							</Data>
-							<Data>{event.price.toFixed(2)} EUR</Data>
-							<Data>
-								<Button variant="ghost" size="sm" className="-ml-3">
-									{event.reservations} / {event.capacity}
-								</Button>
-							</Data>
-							<Actions>
-								<EventRowActions data={event} />
-							</Actions>
-						</Item>
+						<EventItem key={event.id} event={event} />
 					))}
 				</Items>
 			</List>

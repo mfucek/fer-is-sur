@@ -20,10 +20,9 @@ export const getEventDatesProcedure = publicProcedure
 		});
 
 		const events = eventsRaw.map((eventRaw) => {
-			const occupiedSlots = eventRaw.Reservations.reduce(
-				(acc, reservation) => acc + reservation.quantity,
-				0
-			);
+			const occupiedSlots = eventRaw.Reservations.filter(
+				(reservation) => reservation.reservationStatus === 'CONFIRMED'
+			).reduce((acc, reservation) => acc + reservation.quantity, 0);
 
 			return {
 				...eventRaw,

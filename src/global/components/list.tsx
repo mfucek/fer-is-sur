@@ -72,7 +72,7 @@ export const ActionsLabel = () => {
 
 export const Items: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<div className="flex flex-col gap-2 bg-section rounded-xl overflow-x-auto">
+		<div className="flex flex-col bg-section rounded-xl overflow-x-auto">
 			{children}
 		</div>
 	);
@@ -95,7 +95,7 @@ export const Data: FC<
 	return (
 		<div
 			className={cn(
-				'body-2 text-neutral flex-1 relative',
+				'body-3 text-neutral-strong flex-1 relative',
 				strong && 'text-neutral font-bold',
 				className
 			)}

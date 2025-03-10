@@ -8,33 +8,23 @@ export const EventPaymentStatusWizardStep: FC<{
 	selectedEvent: EventDateDTO | null;
 	reservationId: string | null;
 }> = ({ selectedEvent, reservationId }) => {
-	const { refetch } = api.reservation.checkStatus.useQuery(
-		{ reservationId: reservationId! },
-		{ enabled: false }
-	);
-
+	const [continueRefetching, setContinueRefetching] = useState(true);
 	const [isSuccess, setIsSuccess] = useState(false);
 
-	const refetchReservation = async () => {
-		const { data } = await refetch();
-
-		if (data?.paymentStatus === 'PAID') {
-			setIsSuccess(true);
-			return true;
+	const { data } = api.reservation.checkStatus.useQuery(
+		{ reservationId: reservationId! },
+		{
+			enabled: !!reservationId,
+			refetchInterval: continueRefetching ? 5000 : false
 		}
-
-		return false;
-	};
+	);
 
 	useEffect(() => {
-		if (isSuccess) {
-			return;
+		if (data && data.paymentStatus === 'PAID') {
+			setContinueRefetching(false);
+			setIsSuccess(true);
 		}
-
-		const interval = setInterval(refetchReservation, 5000);
-
-		return () => clearInterval(interval);
-	}, [isSuccess]);
+	}, [data]);
 
 	const IconInProgress = () => {
 		return (
@@ -48,14 +38,6 @@ export const EventPaymentStatusWizardStep: FC<{
 		return (
 			<div className="p-4 rounded-full bg-success-weak">
 				<Icon icon="checkmark" className="size-10 bg-success" />
-			</div>
-		);
-	};
-
-	const IconFailed = () => {
-		return (
-			<div className="p-4 rounded-full bg-danger-weak">
-				<Icon icon="close" className="size-10 bg-danger" />
 			</div>
 		);
 	};
@@ -91,7 +73,6 @@ export const EventPaymentStatusWizardStep: FC<{
 	return (
 		<>
 			<div className="h-full flex flex-col items-center justify-center text-center gap-10 bg-section rounded-2xl">
-				{/* <ContentSuccess /> */}
 				{isSuccess ? <ContentSuccess /> : <ContentInProgress />}
 			</div>
 		</>
