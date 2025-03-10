@@ -45,7 +45,6 @@ export const useEventReserveForm = (
 		isPending,
 		error
 	} = api.reservation.reserve.useMutation();
-	const utils = api.useUtils();
 
 	// Coupon checking
 	const { mutateAsync: checkCoupon } = api.coupon.checkCoupon.useMutation();
@@ -71,7 +70,7 @@ export const useEventReserveForm = (
 	// Form submission
 	const onValid: SubmitHandler<TEventReserveSchema> = async (data) => {
 		try {
-			const reservation = await reserve({
+			const { reservation, paymentUrl } = await reserve({
 				eventId,
 				details: {
 					email: data.email,
@@ -80,6 +79,9 @@ export const useEventReserveForm = (
 				}
 			});
 			onReservationSubmit(reservation.id);
+
+			// Open payment page in new window
+			window.open(paymentUrl, '_blank', 'popup=true');
 		} catch (e) {}
 	};
 

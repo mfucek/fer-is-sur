@@ -1,6 +1,10 @@
 import { createTRPCMiddleware } from '@/deps/trpc/trpc';
 import { TRPCError } from '@trpc/server';
-import { getSessionCookie, setSessionCookie } from '../api/session';
+import {
+	getSessionCookie,
+	removeSessionCookie,
+	setSessionCookie
+} from '../api/session';
 
 /* Middlewares */
 
@@ -22,6 +26,7 @@ export const sessionMiddleware = createTRPCMiddleware(async ({ ctx, next }) => {
 	});
 
 	if (!user) {
+		await removeSessionCookie();
 		throw new TRPCError({ code: 'UNAUTHORIZED' });
 	}
 
@@ -31,6 +36,7 @@ export const sessionMiddleware = createTRPCMiddleware(async ({ ctx, next }) => {
 	// add session to context
 	return next({ ctx: { ...ctx, session: newSession } });
 });
+
 export const optionalSessionMiddleware = createTRPCMiddleware(
 	async ({ ctx, next }) => {
 		const { db } = ctx;
@@ -50,6 +56,7 @@ export const optionalSessionMiddleware = createTRPCMiddleware(
 		});
 
 		if (!user) {
+			await removeSessionCookie();
 			return next({ ctx: { ...ctx, session: null } });
 		}
 

@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
+import { generateCheckoutSessionURL } from '@/deps/stripe/api/helpers';
 import { publicProcedure } from '@/deps/trpc/procedures';
 import { eventReserveSchema } from '../../schemas/event-reserve-schema';
 
@@ -123,6 +124,11 @@ export const reserveProcedure = publicProcedure
 		});
 
 		// generate stripe URL
+		const paymentUrl = await generateCheckoutSessionURL({
+			totalAmountCents: totalPriceCents,
+			quantity: details.quantity,
+			reservationId: reservation.id
+		});
 
-		return reservation;
+		return { reservation, paymentUrl };
 	});

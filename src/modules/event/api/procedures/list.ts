@@ -1,11 +1,11 @@
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
-import { publicProcedure } from '@/deps/trpc/procedures';
+import { authedProcedure } from '@/deps/trpc/procedures';
 import { dateRangeSchema } from '@/modules/event/schemas/date-range-schema';
 import { makeEventDTO } from '../dto/event-dto';
 
-export const listProcedure = publicProcedure
+export const listProcedure = authedProcedure
 	.input(
 		z
 			.object({

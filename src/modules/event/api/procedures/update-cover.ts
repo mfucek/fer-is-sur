@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { publicProcedure } from '@/deps/trpc/procedures';
+import { authedProcedure } from '@/deps/trpc/procedures';
 import { cleanUpOrphanedFiles } from '../helpers/clean-up-orphaned-files';
 
-export const updateCoverProcedure = publicProcedure
+export const updateCoverProcedure = authedProcedure
 	.input(z.object({ eventId: z.string(), fileKey: z.string().nullable() }))
 	.mutation(async ({ ctx, input }) => {
 		const { db } = ctx;

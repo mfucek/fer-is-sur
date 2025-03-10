@@ -2,36 +2,39 @@ import { api } from '@/deps/trpc/react';
 import { Icon } from '@/global/components/icon';
 import { Spinner } from '@/global/components/spinner';
 import { EventDateDTO } from '@/modules/event/api/procedures/get-event-dates';
-import { FC, useEffect } from 'react';
-import { WizardBackHeader } from '../wizard-back-header';
+import { FC, useEffect, useState } from 'react';
 
 export const EventPaymentStatusWizardStep: FC<{
 	selectedEvent: EventDateDTO | null;
 	reservationId: string | null;
 }> = ({ selectedEvent, reservationId }) => {
-	const { data: reservation } = api.reservation.checkStatus.useQuery(
+	const { refetch } = api.reservation.checkStatus.useQuery(
 		{ reservationId: reservationId! },
-		{ enabled: !!reservationId }
+		{ enabled: false }
 	);
 
-	const utils = api.useUtils();
+	const [isSuccess, setIsSuccess] = useState(false);
+
+	const refetchReservation = async () => {
+		const { data } = await refetch();
+
+		if (data?.paymentStatus === 'PAID') {
+			setIsSuccess(true);
+			return true;
+		}
+
+		return false;
+	};
 
 	useEffect(() => {
-		const refetchReservation = async () => {
-			if (reservation && reservation.paymentStatus === 'PAID') {
-				controller.abort();
-				return;
-			}
-			await utils.reservation.checkStatus.invalidate();
-		};
+		if (isSuccess) {
+			return;
+		}
 
-		const controller = new AbortController();
-		setTimeout(() => refetchReservation(), 5000, {
-			signal: controller.signal
-		});
+		const interval = setInterval(refetchReservation, 5000);
 
-		return () => controller.abort();
-	}, []);
+		return () => clearInterval(interval);
+	}, [isSuccess]);
 
 	const IconInProgress = () => {
 		return (
@@ -87,10 +90,9 @@ export const EventPaymentStatusWizardStep: FC<{
 
 	return (
 		<>
-			<WizardBackHeader backStep={1} title="Status" />
-			<div className="h-full flex flex-col items-center justify-center text-center gap-10">
+			<div className="h-full flex flex-col items-center justify-center text-center gap-10 bg-section rounded-2xl">
 				{/* <ContentSuccess /> */}
-				<ContentInProgress />
+				{isSuccess ? <ContentSuccess /> : <ContentInProgress />}
 			</div>
 		</>
 	);
