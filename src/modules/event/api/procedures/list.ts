@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 import { authedProcedure } from '@/deps/trpc/procedures';
 import { dateRangeSchema } from '@/modules/event/schemas/date-range-schema';
-import { makeEventDTO } from '../dto/event-dto';
 
 export const listProcedure = authedProcedure
 	.input(
@@ -30,9 +29,26 @@ export const listProcedure = authedProcedure
 			where,
 			orderBy: {
 				date: 'desc'
+			},
+			include: {
+				Reservations: true
 			}
 		});
-		const events = eventsRaw.map(makeEventDTO);
+
+		const events = eventsRaw.map((event) => ({
+			id: event.id,
+			createdAt: event.createdAt,
+			updatedAt: event.updatedAt,
+			date: event.date,
+			location: event.location,
+			title: event.title,
+			description: event.description,
+			capacity: event.capacity,
+			price: event.price,
+			reservations: event.Reservations.filter(
+				(reservation) => reservation.reservationStatus === 'CONFIRMED'
+			).reduce((acc, reservation) => acc + reservation.quantity, 0)
+		}));
 
 		return events;
 	});

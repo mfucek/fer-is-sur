@@ -21,7 +21,7 @@ const ModalOverlay = React.forwardRef<
 	<ModalPrimitive.Overlay
 		ref={ref}
 		className={cn(
-			'fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+			'fixed inset-0 z-50 bg-overlay data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
 			className
 		)}
 		{...props}
@@ -38,7 +38,7 @@ const ModalContent = React.forwardRef<
 		<ModalPrimitive.Content
 			ref={ref}
 			className={cn(
-				'fixed left-[50%] top-[50%] z-50 grid container-md translate-x-[-50%] translate-y-[-50%] border border-neutral-medium bg-section shadow-lg duration-200 sm:rounded-xl',
+				'fixed left-[50%] top-[50%] z-50 grid container-md translate-x-[-50%] translate-y-[-50%] border border-neutral-weak bg-foreground backdrop-blur-sm shadow-lg duration-200 sm:rounded-xl',
 				'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
 				'data-[state=closed]:animate-out data-[state=open]:animate-in',
 				'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',

@@ -24,8 +24,8 @@ const badgeVariants = cva(
 			},
 			size: {
 				lg: 'h-[24px] px-[12px] gap-2 rounded-full title-3',
-				md: 'h-[20px] px-[8px] gap-2 rounded-full caption',
-				sm: 'h-[12px] px-[6px] gap-2 rounded-full overline'
+				md: 'h-[20px] px-[8px] gap-1 rounded-full caption',
+				sm: 'h-[12px] px-[6px] gap-1 rounded-full overline'
 			}
 		},
 		defaultVariants: {
@@ -48,7 +48,7 @@ const iconVariants = cva('shrink-0', {
 		},
 		variant: {
 			primary: 'bg-theme-contrast',
-			secondary: 'bg-theme-strong',
+			secondary: 'bg-theme',
 			tertiary: 'bg-theme-strong'
 		},
 		size: {
@@ -59,7 +59,7 @@ const iconVariants = cva('shrink-0', {
 	},
 	defaultVariants: {
 		variant: 'primary',
-		theme: 'accent'
+		theme: 'neutral'
 	}
 });
 
@@ -75,7 +75,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
 			variant = 'primary',
 			size = 'md',
 			children,
-			theme = 'accent',
+			theme = 'neutral',
 			icon,
 			...props
 		},

@@ -7,17 +7,29 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
 	DialogHeader,
 	DialogTitle,
+	DialogTrigger,
 	type DialogContextType
 } from '@/deps/shadcn/ui/dialog';
 import { cn } from '@/deps/shadcn/utils';
 import { api } from '@/deps/trpc/react';
-import { SectionList } from '@/global/components/section-list';
+import {
+	Actions,
+	ActionsLabel,
+	Data,
+	Item,
+	Items,
+	Label,
+	Labels,
+	List
+} from '@/global/components/list';
 import { Spinner } from '@/global/components/spinner';
-import { isToday } from 'date-fns';
+import { formatDate, isToday } from 'date-fns';
 import { type EventDTO } from '../api/dto/event-dto';
 import { UpdateEventForm } from '../forms/update-event/update-event-form';
+import { EventReservationsList } from './event-reservations-list';
 
 const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
 	const utils = api.useUtils();
@@ -94,21 +106,6 @@ const EventRow: FC<{ item: EventDTO }> = ({ item }) => {
 	);
 };
 
-const EventSectionList: FC<{ data: EventDTO[]; title: string }> = ({
-	data,
-	title
-}) => {
-	return (
-		<SectionList
-			data={data}
-			rows={(item) => <EventRow item={item} />}
-			description={data.length + ' events'}
-			actions={(item) => <EventRowActions data={item} />}
-			title={title}
-		/>
-	);
-};
-
 export const EventsList = () => {
 	const { data, isLoading } = api.event.list.useQuery();
 
@@ -130,8 +127,74 @@ export const EventsList = () => {
 
 	return (
 		<>
-			<EventSectionList data={upcomingEvents} title="Upcoming Events" />
-			<EventSectionList data={pastEvents} title="Past Events" />
+			<List>
+				<Labels>
+					<Label>Title</Label>
+					<Label>Date & Location</Label>
+					<Label>Price</Label>
+					<Label>Reservations</Label>
+					<ActionsLabel />
+				</Labels>
+
+				<Items>
+					{upcomingEvents.map((event) => (
+						<Item key={event.id}>
+							<Data>{event.title}</Data>
+							<Data>
+								{formatDate(event.date, 'dd. MM. yyyy.')} {event.location}
+							</Data>
+							<Data>{event.price.toFixed(2)} EUR</Data>
+							<Data>
+								<Dialog>
+									<DialogTrigger asChild>
+										<Button variant="ghost" size="sm" className="-ml-3">
+											{event.reservations} / {event.capacity}
+										</Button>
+									</DialogTrigger>
+
+									<DialogContent>
+										<DialogHeader>
+											<DialogTitle>Reservations</DialogTitle>
+											<DialogDescription>
+												View all reservations for this event.
+											</DialogDescription>
+										</DialogHeader>
+
+										<div className="pad-xl">
+											<EventReservationsList eventId={event.id} />
+										</div>
+
+										<DialogFooter>asd</DialogFooter>
+									</DialogContent>
+								</Dialog>
+							</Data>
+							<Actions>
+								<EventRowActions data={event} />
+							</Actions>
+						</Item>
+					))}
+				</Items>
+
+				<Items>
+					{pastEvents.map((event) => (
+						<Item key={event.id}>
+							<Data>{event.title}</Data>
+							<Data>
+								{formatDate(event.date, 'dd. MM. yyyy.')} {event.location}
+							</Data>
+							<Data>{event.price.toFixed(2)} EUR</Data>
+							<Data>
+								<Button variant="ghost" size="sm" className="-ml-3">
+									{event.reservations} / {event.capacity}
+								</Button>
+							</Data>
+							<Actions>
+								<EventRowActions data={event} />
+							</Actions>
+						</Item>
+					))}
+				</Items>
+			</List>
 		</>
 	);
 };

@@ -19,20 +19,25 @@ export const DashboardPage = () => {
 					icon="calendar-done"
 					href="/admin/events"
 				/>
-				<DashboardCard
+				{/* <DashboardCard
 					label="Articles"
 					icon="file-textual"
 					href="/admin/articles"
-				/>
-				<DashboardCard
+				/> */}
+				{/* <DashboardCard
 					label="Reservations"
 					icon="users"
 					href="/admin/reservations"
-				/>
+				/> */}
 				<DashboardCard
 					label="Coupons"
 					icon="markup-minimum"
 					href="/admin/coupons"
+				/>
+				<DashboardCard
+					label="Reports"
+					icon="file-textual"
+					href="/admin/reports"
 				/>
 			</div>
 		</>

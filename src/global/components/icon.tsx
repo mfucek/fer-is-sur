@@ -99,7 +99,8 @@ const icons = {
 	crown: '/assets/icons/crown.svg',
 	help: '/assets/icons/help.svg',
 	cloud: '/assets/icons/cloud.svg',
-	'cloud-slash': '/assets/icons/cloud-slash.svg'
+	'cloud-slash': '/assets/icons/cloud-slash.svg',
+	refund: '/assets/icons/refund.svg'
 };
 
 export type IconName = keyof typeof icons;

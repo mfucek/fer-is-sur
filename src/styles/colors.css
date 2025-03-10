@@ -5,7 +5,8 @@
 @theme {
 	--color-section: #ffffff;
 	--color-background: #eeeeee;
-	--color-foreground: #ffffffc0;
+	--color-foreground: #ff0000;
+	--color-overlay: #000000c0;
 
 	--color-neutral: #000000;
 	--color-neutral-strong: #747474;
@@ -50,7 +51,8 @@
 	.dark {
 		--color-section: #121110;
 		--color-background: #000000;
-		--color-foreground: #000000c0;
+		--color-foreground: #080808c0;
+		--color-overlay: #000000c0;
 
 		--color-neutral: #ffffff;
 		--color-neutral-strong: #89898b;

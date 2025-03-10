@@ -2,6 +2,7 @@ import { cn } from '@/deps/shadcn/utils';
 import {
 	createContext,
 	FC,
+	HTMLAttributes,
 	PropsWithChildren,
 	useContext,
 	useEffect,
@@ -41,8 +42,19 @@ export const List: FC<PropsWithChildren> = ({ children }) => {
 export const Labels: FC<PropsWithChildren> = ({ children }) => {
 	return <div className="flex flex-row gap-2 px-3 md:px-4">{children}</div>;
 };
-export const Label: FC<PropsWithChildren> = ({ children }) => {
-	return <div className="caption text-neutral-strong w-full">{children}</div>;
+export const Label: FC<HTMLAttributes<HTMLDivElement>> = ({
+	children,
+	className,
+	...props
+}) => {
+	return (
+		<div
+			className={cn('caption text-neutral-strong w-full', className)}
+			{...props}
+		>
+			{children}
+		</div>
+	);
 };
 export const ActionsLabel = () => {
 	const { size } = useActionsSizeContext();
@@ -50,7 +62,7 @@ export const ActionsLabel = () => {
 		<div
 			className="caption text-neutral-strong text-right shrink-0"
 			style={{
-				width: size ? Math.min(size, 48) : 48
+				width: size ? Math.max(size, 48) : 48
 			}}
 		>
 			Actions
@@ -60,7 +72,9 @@ export const ActionsLabel = () => {
 
 export const Items: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<div className="flex flex-col gap-2 bg-section rounded-xl">{children}</div>
+		<div className="flex flex-col gap-2 bg-section rounded-xl overflow-x-auto">
+			{children}
+		</div>
 	);
 };
 export const Item: FC<PropsWithChildren> = ({ children }) => {

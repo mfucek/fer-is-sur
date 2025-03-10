@@ -11,9 +11,26 @@ export const listByEventProcedure = publicProcedure
 	.query(async ({ ctx, input }) => {
 		const { db } = ctx;
 
-		const reservations = await db.reservation.findMany({
-			where: { eventId: input.eventId }
+		const reservationsRaw = await db.reservation.findMany({
+			where: { eventId: input.eventId },
+			include: {
+				Coupon: true
+			}
 		});
+
+		const reservations = reservationsRaw.map((reservation) => ({
+			id: reservation.id,
+			email: reservation.email,
+			quantity: reservation.quantity,
+			totalPrice: reservation.totalPrice,
+			reservationStatus: reservation.reservationStatus,
+			paymentStatus: reservation.paymentStatus,
+			coupon: reservation.Coupon
+		}));
 
 		return reservations;
 	});
+
+export type ReservationByEvent = Awaited<
+	ReturnType<typeof listByEventProcedure>
+>[number];
