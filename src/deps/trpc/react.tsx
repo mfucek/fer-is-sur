@@ -15,7 +15,6 @@ import { createQueryClient } from './query-client';
 export const sonnerLink: TRPCLink<AppRouter> = () => {
 	return ({ next, op }) => {
 		return observable((observer) => {
-			console.log('performing operation:', op);
 			const unsubscribe = next(op).subscribe({
 				next(value) {
 					observer.next(value);
