@@ -7,7 +7,7 @@ export const ReserveSection = () => {
 				<h2 className="container-md display-3 text-neutral text-center">
 					Želiš sudjelovati?
 				</h2>
-				<p className="container-xs body-2 text-neutral-strong text-center">
+				<p className="container-xs body-1 text-neutral-strong text-center">
 					Rezerviraj jedan od dostupnih termina!
 				</p>
 			</div>
