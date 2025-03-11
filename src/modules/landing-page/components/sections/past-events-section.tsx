@@ -5,7 +5,7 @@ import { EventSection } from '../event-section';
 import { LandingHeading } from '../landing-heading';
 
 export const PastEventsSection = () => {
-	const { data: events } = api.event.listShowcase.useQuery();
+	const { data: events } = api.event.showcase.list.useQuery();
 
 	return (
 		<>

@@ -7,13 +7,13 @@ import { type SubmitErrorHandler, useForm } from 'react-hook-form';
 import { useDialog } from '@/deps/shadcn/ui/dialog';
 import { api } from '@/deps/trpc/react';
 import { type FileStagingContextType } from '@/modules/file/contexts/file-staging';
-import { type EventDTO } from '../../api/dto/event-dto';
+import { GetEventDTO } from '../../api/procedures/get';
 import {
 	eventUpdateSchema,
 	type TEventUpdateSchema
 } from '../../schemas/event-update-schema';
 
-export const useUpdateEventForm = (event: EventDTO) => {
+export const useUpdateEventForm = (event: GetEventDTO) => {
 	const form = useForm<TEventUpdateSchema>({
 		resolver: zodResolver(eventUpdateSchema)
 	});
@@ -21,18 +21,18 @@ export const useUpdateEventForm = (event: EventDTO) => {
 
 	const { closeDialog } = useDialog();
 
-	const { data: gallery } = api.event.getGallery.useQuery({
+	const { data: gallery } = api.event.gallery.get.useQuery({
 		eventId: event.id
 	});
 
-	const { data: cover } = api.event.getCover.useQuery({
+	const { data: cover } = api.event.cover.get.useQuery({
 		eventId: event.id
 	});
 
 	const utils = api.useUtils();
 	const { mutateAsync: updateEvent } = api.event.update.useMutation();
-	const { mutateAsync: updateGallery } = api.event.updateGallery.useMutation();
-	const { mutateAsync: updateCover } = api.event.updateCover.useMutation();
+	const { mutateAsync: updateGallery } = api.event.gallery.update.useMutation();
+	const { mutateAsync: updateCover } = api.event.cover.update.useMutation();
 
 	useEffect(() => {
 		if (event) {
@@ -85,7 +85,7 @@ export const useUpdateEventForm = (event: EventDTO) => {
 				fileKeys: allFiles.filter((file) => file.key).map((file) => file.key!)
 			});
 
-			await utils.event.getGallery.invalidate({ eventId: event.id });
+			await utils.event.gallery.get.invalidate({ eventId: event.id });
 
 			const coverFile = coverFileStagingRef.current.files[0];
 
@@ -113,7 +113,7 @@ export const useUpdateEventForm = (event: EventDTO) => {
 				}
 			}
 
-			await utils.event.getCover.invalidate({ eventId: event.id });
+			await utils.event.cover.get.invalidate({ eventId: event.id });
 		} catch (error) {
 			console.error(error);
 		} finally {

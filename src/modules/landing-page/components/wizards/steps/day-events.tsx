@@ -30,7 +30,7 @@ export const DayEventsWizardStep: FC<{
 	);
 };
 export const useGetEventCover = (eventId?: string | null) => {
-	const { data: cover } = api.event.getCover.useQuery(
+	const { data: cover } = api.event.cover.get.useQuery(
 		{ eventId: eventId! },
 		{ enabled: !!eventId }
 	);

@@ -1,7 +1,6 @@
 import { publicProcedure } from '@/deps/trpc/procedures';
 import { getFileDownloadUrl } from '@/modules/file/helpers/get-download-url';
 import { type Prisma } from '@prisma/client';
-import { makeEventDTO } from '../dto/event-dto';
 
 export const listShowcaseProcedure = publicProcedure.query(async ({ ctx }) => {
 	const { db } = ctx;
@@ -82,7 +81,15 @@ export const listShowcaseProcedure = publicProcedure.query(async ({ ctx }) => {
 	};
 
 	const events = eventsRaw.map((eventRaw) => ({
-		...makeEventDTO(eventRaw),
+		id: eventRaw.id,
+		createdAt: eventRaw.createdAt,
+		updatedAt: eventRaw.updatedAt,
+		date: eventRaw.date,
+		location: eventRaw.location,
+		title: eventRaw.title,
+		description: eventRaw.description,
+		capacity: eventRaw.capacity,
+		price: eventRaw.price,
 		cover: keyToUrl(eventRaw.CoverImage?.Image?.key),
 		gallery: keysToUrls(eventRaw.Gallery?.Images.map((image) => image.key))
 	}));

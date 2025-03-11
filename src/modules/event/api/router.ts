@@ -18,11 +18,17 @@ export const eventRouter = createTRPCRouter({
 	create: createProcedure,
 	update: updateProcedure,
 	delete: deleteProcedure,
-	updateGallery: updateGalleryProcedure,
-	getGallery: getGalleryProcedure,
-	updateCover: updateCoverProcedure,
-	getCover: getCoverProcedure,
-	listShowcase: listShowcaseProcedure,
+	gallery: createTRPCRouter({
+		update: updateGalleryProcedure,
+		get: getGalleryProcedure
+	}),
+	cover: createTRPCRouter({
+		get: getCoverProcedure,
+		update: updateCoverProcedure
+	}),
+	showcase: createTRPCRouter({
+		list: listShowcaseProcedure
+	}),
 	getEventDates: getEventDatesProcedure,
 	getDaysUntilNextEvent: getDaysUntilNextEventProcedure
 });

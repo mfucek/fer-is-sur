@@ -26,12 +26,11 @@ import {
 } from '@/global/components/list';
 import { Spinner } from '@/global/components/spinner';
 import { formatDate, isToday } from 'date-fns';
-import { type EventDTO } from '../api/dto/event-dto';
 import { EventListItem } from '../api/procedures/list';
 import { UpdateEventForm } from '../forms/update-event/update-event-form';
 import { EventReservationsList } from './event-reservations-list';
 
-const EventRowActions: FC<{ data: EventDTO }> = ({ data }) => {
+const EventRowActions: FC<{ data: EventListItem }> = ({ data }) => {
 	const utils = api.useUtils();
 	const { mutateAsync: deleteEvent, isPending } =
 		api.event.delete.useMutation();

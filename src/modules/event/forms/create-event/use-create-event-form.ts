@@ -25,8 +25,8 @@ export const useCreateEventForm = () => {
 	// TRPC
 	const utils = api.useUtils();
 	const { mutateAsync: createEvent } = api.event.create.useMutation();
-	const { mutateAsync: updateGallery } = api.event.updateGallery.useMutation();
-	const { mutateAsync: updateCover } = api.event.updateCover.useMutation();
+	const { mutateAsync: updateGallery } = api.event.gallery.update.useMutation();
+	const { mutateAsync: updateCover } = api.event.cover.update.useMutation();
 	const [isSaving, setIsSaving] = useState(false);
 
 	// File staging refs

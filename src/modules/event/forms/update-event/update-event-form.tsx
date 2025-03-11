@@ -7,11 +7,11 @@ import { Textarea } from '@/deps/shadcn/ui/textarea';
 import { FormLabel } from '@/global/components/form-label';
 import { FilesPreview } from '@/modules/file/components/files-preview';
 import { FileStagingProvider } from '@/modules/file/contexts/file-staging';
-import { type EventDTO } from '../../api/dto/event-dto';
+import { GetEventDTO } from '../../api/procedures/get';
 import { CoverPreview } from '../../components/cover-preview';
 import { useUpdateEventForm } from './use-update-event-form';
 
-export const UpdateEventForm = ({ event }: { event: EventDTO }) => {
+export const UpdateEventForm = ({ event }: { event: GetEventDTO }) => {
 	const {
 		form,
 		galleryFileStagingRef,
