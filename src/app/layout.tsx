@@ -4,21 +4,19 @@ import { GeistSans } from 'geist/font/sans';
 import { type Metadata } from 'next';
 import { Toaster } from 'sonner';
 
-import { isStaging } from '@/constants';
 import { AnalyticsProvider } from '@/deps/posthog';
 import { cn } from '@/deps/shadcn/utils';
 import { TRPCReactProvider } from '@/deps/trpc/react';
+import { environmentPrefix } from '@/modules/metadata/constants';
 import { ThemeProvider } from '@/modules/theme/providers/theme-provider';
 import { ViewportSizeProvider } from '@/utils/use-viewport';
 
-const stagingPrefix = isStaging ? '[STG] ' : '';
-
 export const metadata: Metadata = {
-	title: stagingPrefix + 'Crni Mag - likovne radionice',
+	title: environmentPrefix() + 'Crni Mag - likovne radionice',
 	description: 'Malo drugačije likovne radionice 🎨',
 	icons: [{ rel: 'icon', url: '/favicon.png' }],
 	openGraph: {
-		title: stagingPrefix + 'Crni Mag Likovne Radionice',
+		title: environmentPrefix() + 'Crni Mag Likovne Radionice',
 		description: 'Malo drugačije likovne radionice 🎨',
 		url: 'https://www.crni-mag.studio',
 		type: 'website',

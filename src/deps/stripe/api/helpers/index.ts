@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 
+import { isDevelopment } from '@/constants';
 import { env } from '@/env';
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
@@ -37,7 +38,7 @@ export const generateCheckoutSessionURL = async ({
 			}
 		],
 		submit_type: 'book',
-		success_url: env.STRIPE_URL,
+		success_url: isDevelopment ? 'http://localhost:3000' : env.STRIPE_URL,
 		locale: 'hr',
 		ui_mode: 'hosted',
 		metadata: {

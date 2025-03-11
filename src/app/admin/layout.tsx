@@ -1,12 +1,10 @@
 import { Metadata } from 'next';
 
-import { isStaging } from '@/constants';
 import { DashboardLayout } from '@/modules/dashboard/layouts/dashboard-layout';
-
-const stagingPrefix = isStaging ? '[STG] ' : '';
+import { environmentPrefix } from '@/modules/metadata/constants';
 
 export const metadata: Metadata = {
-	title: stagingPrefix + 'Dashboard - Crni Mag',
+	title: environmentPrefix() + 'Dashboard - Crni Mag',
 	description: 'Admin dashboard for Crni Mag Likovne Radionice'
 };
 
