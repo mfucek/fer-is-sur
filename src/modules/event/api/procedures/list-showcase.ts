@@ -97,6 +97,6 @@ export const listShowcaseProcedure = publicProcedure.query(async ({ ctx }) => {
 	return events;
 });
 
-export type ListShowcaseItem = Awaited<
+export type ListShowcaseItemDTO = Awaited<
 	ReturnType<typeof listShowcaseProcedure>
 >[number];

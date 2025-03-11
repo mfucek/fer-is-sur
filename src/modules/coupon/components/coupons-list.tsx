@@ -17,9 +17,9 @@ import {
 	List
 } from '@/global/components/list';
 import { Spinner } from '@/global/components/spinner';
-import { ListCouponsItem } from '../api/procedures/list';
+import { ListCouponsItemDTO } from '../api/procedures/list';
 
-const CouponRowActions: FC<{ data: ListCouponsItem }> = ({ data }) => {
+const CouponRowActions: FC<{ data: ListCouponsItemDTO }> = ({ data }) => {
 	const utils = api.useUtils();
 	const { mutateAsync: deleteCoupon, isPending } =
 		api.coupon.delete.useMutation();
@@ -87,8 +87,8 @@ export const CouponsList = () => {
 
 						const usesString =
 							coupon.maxUses === 0
-								? `${coupon._count.Reservations} (Unlimited)`
-								: `${coupon._count.Reservations} / ${coupon.maxUses}`;
+								? `${coupon.uses} (Unlimited)`
+								: `${coupon.uses} / ${coupon.maxUses}`;
 
 						return (
 							<Item key={coupon.id}>

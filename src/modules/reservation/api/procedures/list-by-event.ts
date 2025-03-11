@@ -31,6 +31,6 @@ export const listByEventProcedure = publicProcedure
 		return reservations;
 	});
 
-export type ReservationByEvent = Awaited<
+export type ReservationListByEventDTO = Awaited<
 	ReturnType<typeof listByEventProcedure>
 >[number];

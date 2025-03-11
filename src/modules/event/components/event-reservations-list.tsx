@@ -11,13 +11,13 @@ import {
 	Labels,
 	List
 } from '@/global/components/list';
-import { ReservationByEvent } from '@/modules/reservation/api/procedures/list-by-event';
+import { ReservationListByEventDTO } from '@/modules/reservation/api/procedures/list-by-event';
 import { ReservationStatus } from '@prisma/client';
 import { FC } from 'react';
 
-const EventReservationActions: FC<{ reservation: ReservationByEvent }> = ({
-	reservation
-}) => {
+const EventReservationActions: FC<{
+	reservation: ReservationListByEventDTO;
+}> = ({ reservation }) => {
 	const { mutateAsync: refundReservation, isPending } =
 		api.reservation.refund.useMutation();
 	const utils = api.useUtils();
@@ -52,7 +52,7 @@ const EventReservationActions: FC<{ reservation: ReservationByEvent }> = ({
 	);
 };
 
-const EventReservationItem: FC<{ reservation: ReservationByEvent }> = ({
+const EventReservationItem: FC<{ reservation: ReservationListByEventDTO }> = ({
 	reservation
 }) => {
 	return (

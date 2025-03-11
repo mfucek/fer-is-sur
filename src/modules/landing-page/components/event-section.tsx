@@ -1,12 +1,12 @@
 import { type FC } from 'react';
 
 import { cn } from '@/deps/shadcn/utils';
-import { ListShowcaseItem } from '@/modules/event/api/procedures/list-showcase';
+import { ListShowcaseItemDTO } from '@/modules/event/api/procedures/list-showcase';
 import { formatDate } from 'date-fns';
 import Image from 'next/image';
 
 export const EventSection: FC<{
-	event: ListShowcaseItem;
+	event: ListShowcaseItemDTO;
 	side?: 'left' | 'right';
 }> = ({ event, side = 'left' }) => {
 	const Details = () => (
