@@ -9,11 +9,13 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 export const generateCheckoutSessionURL = async ({
 	reservationId,
 	totalAmountCents,
-	quantity
+	quantity,
+	imageUrl
 }: {
 	reservationId: string;
 	totalAmountCents: number;
 	quantity: number;
+	imageUrl?: string | null;
 }) => {
 	const amountPerItem = (totalAmountCents / quantity).toString();
 
@@ -28,10 +30,7 @@ export const generateCheckoutSessionURL = async ({
 					product_data: {
 						name: 'Event Reservation',
 						description: 'Event Reservation',
-						images: [
-							env.STRIPE_URL + '/cover.png',
-							env.STRIPE_URL + '/favicon.png'
-						]
+						images: [imageUrl ?? env.STRIPE_URL + '/cover.png']
 					}
 				},
 				quantity: quantity

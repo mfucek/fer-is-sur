@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { generateCheckoutSessionURL } from '@/deps/stripe/api/helpers';
 import { publicProcedure } from '@/deps/trpc/procedures';
+import { getFileDownloadUrl } from '@/modules/file/helpers/get-download-url';
 import { eventReserveSchema } from '../../schemas/event-reserve-schema';
 
 export const reserveProcedure = publicProcedure
@@ -122,11 +123,26 @@ export const reserveProcedure = publicProcedure
 			}
 		});
 
+		const coverImage = await db.eventCover.findFirst({
+			where: {
+				eventId: eventId
+			},
+			include: {
+				Image: true
+			}
+		});
+
+		let imageUrl: string | null = null;
+		if (coverImage && coverImage.Image) {
+			imageUrl = await getFileDownloadUrl(coverImage.Image.key);
+		}
+
 		// generate stripe URL
 		const paymentUrl = await generateCheckoutSessionURL({
 			totalAmountCents: totalPriceCents,
 			quantity: details.quantity,
-			reservationId: reservation.id
+			reservationId: reservation.id,
+			imageUrl: imageUrl
 		});
 
 		return { reservation, paymentUrl };
