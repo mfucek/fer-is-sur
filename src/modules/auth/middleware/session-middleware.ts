@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import {
 	getSessionCookie,
 	removeSessionCookie,
+	Session,
 	setSessionCookie
 } from '../api/session';
 
@@ -45,7 +46,7 @@ export const optionalSessionMiddleware = createTRPCMiddleware(
 		const session = await getSessionCookie();
 
 		if (!session) {
-			return next({ ctx: { ...ctx, session: null } });
+			return next({ ctx: { ...ctx, session: null as Session | null } });
 		}
 
 		// check for user in db
@@ -57,13 +58,13 @@ export const optionalSessionMiddleware = createTRPCMiddleware(
 
 		if (!user) {
 			await removeSessionCookie();
-			return next({ ctx: { ...ctx, session: null } });
+			return next({ ctx: { ...ctx, session: null as Session | null } });
 		}
 
 		// renew session
 		const newSession = await setSessionCookie(user);
 
 		// add session to context
-		return next({ ctx: { ...ctx, session: newSession } });
+		return next({ ctx: { ...ctx, session: newSession as Session | null } });
 	}
 );

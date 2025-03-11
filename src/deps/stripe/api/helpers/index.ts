@@ -38,7 +38,7 @@ export const generateCheckoutSessionURL = async ({
 			}
 		],
 		submit_type: 'book',
-		success_url: 'https://crni-mag.studio',
+		success_url: env.STRIPE_URL,
 		locale: 'hr',
 		ui_mode: 'hosted',
 		metadata: {

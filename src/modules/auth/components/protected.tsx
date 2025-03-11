@@ -3,9 +3,9 @@ import { FC, PropsWithChildren } from 'react';
 export const Protected: FC<PropsWithChildren> = ({ children }) => {
 	const { data: me } = api.auth.me.useQuery();
 
-	if (!me) {
+	if (!me || me.session === null) {
 		return null;
 	}
 
-	return children;
+	if (me.session) return children;
 };
