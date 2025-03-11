@@ -35,12 +35,17 @@ export const Header = () => {
 			)}
 		>
 			<div className="container-xl pt-6 pb-8 flex justify-between items-center">
-				<h1
-					className="title-2 tracking-[1.8px] font-black text-neutral sm:hover:text-accent clickable transition-all"
+				<div
+					className="flex flex-row items-center group clickable"
 					onClick={() => navigateToId('hero')}
 				>
-					CRNI MAG
-				</h1>
+					<h1 className="title-2 tracking-[1.8px] font-black text-neutral sm:group-hover:text-accent transition-all">
+						CRNI MAG
+					</h1>
+					<div className="text-accent ml-2 rounded-md px-1.5 py-0.5 bg-accent-medium caption">
+						STG
+					</div>
+				</div>
 				<div className="flex flex-row gap-4 items-center">
 					<div className="flex-row items-center hidden sm:flex">
 						<Button
