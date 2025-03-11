@@ -11,18 +11,18 @@ import { ViewportSizeProvider } from '@/utils/use-viewport';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
-	title: 'Crni Mag | Likovne radionice',
+	title: 'Crni Mag - likovne radionice',
 	description: 'Malo drugačije likovne radionice 🎨',
 	icons: [{ rel: 'icon', url: '/favicon.png' }],
 	openGraph: {
-		title: 'Crni Mag',
+		title: 'Crni Mag Likovne Radionice',
 		description: 'Malo drugačije likovne radionice 🎨',
-		url: 'https://www.crnimag.hr',
+		url: 'https://www.crni-mag.studio',
 		type: 'website',
-		siteName: 'crnimag.hr',
+		siteName: 'crni-mag.studio',
 		images: [
 			{
-				url: 'https://www.crnimag.hr/cover.png',
+				url: 'https://www.crni-mag.studio/cover.png',
 				width: 1200,
 				height: 630
 			}
