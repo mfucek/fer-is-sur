@@ -69,6 +69,3 @@ export const GET = async (req: NextRequest) => {
 		return new Response(error as string, { status: 400 });
 	}
 };
-
-export const alt = 'About Acme';
-export const contentType = 'image/png';
