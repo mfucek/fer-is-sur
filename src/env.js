@@ -19,6 +19,10 @@ export const env = createEnv({
 		CLOUDFLARE_ACCESS_KEY: z.string(),
 		CLOUDFLARE_ACCOUNT_ID: z.string(),
 		CLOUDFLARE_R2_BUCKET_NAME: z.string(),
+		// Nodemailer
+		NODEMAILER_HOST: z.string(),
+		NODEMAILER_USER: z.string(),
+		NODEMAILER_PASSWORD: z.string(),
 		// Stripe
 		STRIPE_URL: z.string(),
 		STRIPE_SECRET_KEY: z.string(),
@@ -41,6 +45,10 @@ export const env = createEnv({
 		CLOUDFLARE_ACCESS_KEY: process.env.CLOUDFLARE_ACCESS_KEY,
 		CLOUDFLARE_ACCOUNT_ID: process.env.CLOUDFLARE_ACCOUNT_ID,
 		CLOUDFLARE_R2_BUCKET_NAME: process.env.CLOUDFLARE_R2_BUCKET_NAME,
+		// Nodemailer
+		NODEMAILER_HOST: process.env.NODEMAILER_HOST,
+		NODEMAILER_USER: process.env.NODEMAILER_USER,
+		NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
 		// Stripe
 		STRIPE_URL: process.env.STRIPE_URL,
 		STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,

@@ -1,4 +1,4 @@
-import { iconNames } from '@/global/components/icon';
+import { IconName, iconNames } from '@/global/components/icon';
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 import { readFile } from 'node:fs/promises';
@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { z } from 'zod';
 
 async function getSvgWithCustomFill(
-	icon: string,
+	icon: IconName,
 	fillColor: string
 ): Promise<string> {
 	const iconPath = join(
@@ -26,7 +26,7 @@ async function getSvgWithCustomFill(
 const paramsSchema = z.object({
 	size: z.number().min(1).max(1000),
 	color: z.string(),
-	backgroundColor: z.string(),
+	bg: z.string(),
 	icon: z.enum(iconNames as [string, ...string[]])
 });
 
@@ -35,12 +35,14 @@ export const GET = async (req: NextRequest) => {
 		const params = paramsSchema.parse({
 			size: parseInt(req.nextUrl.searchParams.get('size') ?? '24'),
 			color: req.nextUrl.searchParams.get('color') ?? '#000000',
-			backgroundColor:
-				req.nextUrl.searchParams.get('backgroundColor') ?? '#ffffff',
+			bg: req.nextUrl.searchParams.get('bg') ?? '#ffffff',
 			icon: req.nextUrl.searchParams.get('icon') ?? 'status-info'
 		});
 
-		const iconSrc = await getSvgWithCustomFill(params.icon, params.color);
+		const iconSrc = await getSvgWithCustomFill(
+			params.icon as IconName,
+			params.color
+		);
 
 		console.log(req.nextUrl.searchParams);
 
@@ -50,7 +52,7 @@ export const GET = async (req: NextRequest) => {
 					style={{
 						display: 'flex',
 						alignItems: 'center',
-						backgroundColor: params.backgroundColor,
+						backgroundColor: params.bg,
 						justifyContent: 'center',
 						width: '100%',
 						height: '100%'
@@ -69,3 +71,5 @@ export const GET = async (req: NextRequest) => {
 		return new Response(error as string, { status: 400 });
 	}
 };
+
+export const dynamic = 'force-dynamic';
