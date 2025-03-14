@@ -1,7 +1,5 @@
-'use client';
-
 import { cn } from '@/deps/shadcn/utils';
-import React, { type FC } from 'react';
+import React from 'react';
 
 const icons = {
 	'add-circle': '/assets/icons/add-circle.svg',
@@ -103,6 +101,8 @@ const icons = {
 	refund: '/assets/icons/refund.svg'
 };
 
+export const iconNames = Object.keys(icons);
+
 export type IconName = keyof typeof icons;
 
 export const Icon: React.FC<{
@@ -126,14 +126,4 @@ export const Icon: React.FC<{
 			}}
 		/>
 	);
-};
-
-type a = {
-	b: 1;
-	c: 'c';
-	d: 3;
-};
-
-const fn: FC<a> = ({ b, c, d }) => {
-	return <div>{b}</div>;
 };
