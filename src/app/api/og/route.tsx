@@ -36,15 +36,13 @@ export const GET = async (req: NextRequest) => {
 			size: parseInt(req.nextUrl.searchParams.get('size') ?? '24'),
 			color: req.nextUrl.searchParams.get('color') ?? '#000000',
 			bg: req.nextUrl.searchParams.get('bg') ?? '#ffffff',
-			icon: req.nextUrl.searchParams.get('icon') ?? 'status-info'
+			icon: req.nextUrl.searchParams.get('icon')
 		});
 
 		const iconSrc = await getSvgWithCustomFill(
 			params.icon as IconName,
 			params.color
 		);
-
-		console.log(req.nextUrl.searchParams);
 
 		return new ImageResponse(
 			(

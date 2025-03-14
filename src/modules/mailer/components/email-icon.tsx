@@ -10,7 +10,7 @@ export const Icon: React.FC<{
 }> = ({ icon, size, color, backgroundColor }) => {
 	return (
 		<img
-			src={`${env.STRIPE_URL}/api/og?size=${size}&color=${color}&bg=${backgroundColor}&icon=${icon}`}
+			src={`${env.STRIPE_URL}/api/og?size=${size}&color=${color?.replace('#', '%23')}&bg=${backgroundColor?.replace('#', '%23')}&icon=${icon}`}
 			width={size}
 			height={size}
 		/>
