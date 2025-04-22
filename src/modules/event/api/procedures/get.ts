@@ -29,7 +29,7 @@ export const getProcedure = publicProcedure
 			title: eventRaw.title,
 			description: eventRaw.description,
 			capacity: eventRaw.capacity,
-			price: eventRaw.price
+			price: eventRaw.price / 100
 		};
 
 		return event;

@@ -58,11 +58,7 @@ export const reserveProcedure = publicProcedure
 					code: details.couponCode.toUpperCase()
 				},
 				include: {
-					_count: {
-						select: {
-							Reservations: true
-						}
-					}
+					Reservations: true
 				}
 			});
 
@@ -80,13 +76,23 @@ export const reserveProcedure = publicProcedure
 				});
 			}
 
-			if (
-				coupon.maxUses !== 0 &&
-				coupon.maxUses <= coupon._count.Reservations
-			) {
+			const couponUses = coupon.Reservations.filter(
+				(reservation) => reservation.reservationStatus === 'CONFIRMED'
+			).length;
+			const remainingUses =
+				coupon.maxUses === 0 ? Infinity : coupon.maxUses - couponUses;
+
+			if (remainingUses <= 0) {
 				throw new TRPCError({
 					code: 'BAD_REQUEST',
-					message: 'The coupon has reached its maximum usage.'
+					message: 'Kupon je već iskorišten.'
+				});
+			}
+
+			if (remainingUses < details.quantity) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: `Kupon vrijedi za ${remainingUses} primjena, a želite rezervirati ${details.quantity} mjesta.`
 				});
 			}
 
@@ -96,25 +102,27 @@ export const reserveProcedure = publicProcedure
 			amountDiscount = coupon.discountAmount ?? 0;
 		}
 
-		const totalPriceCents =
-			Math.max(
-				0,
-				(event.price * details.quantity * (100 - percentDiscount)) / 100 -
-					amountDiscount
-			) * 100;
+		const undiscountedTotalPriceCents = event.price * details.quantity;
 
-		console.log(
-			event.price,
-			percentDiscount,
-			amountDiscount,
-			details.quantity,
-			totalPriceCents
+		const discountedTotalPriceCents = Math.max(
+			0,
+			(undiscountedTotalPriceCents * (100 - percentDiscount)) / 100 -
+				amountDiscount
 		);
+
+		console.log('event.price', event.price);
+
+		console.log('undiscountedTotalPriceCents', undiscountedTotalPriceCents);
+
+		console.log('percentDiscount', percentDiscount);
+		console.log('amountDiscount', amountDiscount);
+		console.log('details.quantity', details.quantity);
+		console.log('discountedTotalPriceCents', discountedTotalPriceCents);
 
 		const reservation = await db.reservation.create({
 			data: {
 				eventId: eventId,
-				totalPrice: totalPriceCents,
+				totalPrice: discountedTotalPriceCents,
 				...(couponId ? { couponId: couponId } : {}),
 				paymentStatus: 'NOT_PAID',
 				reservationStatus: 'PENDING',
@@ -139,7 +147,9 @@ export const reserveProcedure = publicProcedure
 
 		// generate stripe URL
 		const paymentUrl = await generateCheckoutSessionURL({
-			totalAmountCents: totalPriceCents,
+			title: event.title,
+			undiscountedPrice: undiscountedTotalPriceCents,
+			finalPrice: discountedTotalPriceCents,
 			quantity: details.quantity,
 			reservationId: reservation.id,
 			imageUrl: imageUrl

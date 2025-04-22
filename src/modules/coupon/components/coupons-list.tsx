@@ -34,7 +34,7 @@ const CouponRowActions: FC<{ data: ListCouponsItemDTO }> = ({ data }) => {
 		}
 	};
 
-	const isDisabled = data.creatorByEmail !== null;
+	const isDisabled = data.creatorByEmail !== null || data.uses > 0;
 
 	return (
 		<>

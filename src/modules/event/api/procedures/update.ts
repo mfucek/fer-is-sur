@@ -11,7 +11,10 @@ export const updateProcedure = authedProcedure
 
 		const updatedEvent = await db.event.update({
 			where: { id: event.id },
-			data: event
+			data: {
+				...event,
+				...(event.price ? { price: event.price * 100 } : {})
+			}
 		});
 
 		return updatedEvent;

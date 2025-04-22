@@ -1,4 +1,5 @@
 import { api } from '@/deps/trpc/react';
+import { env } from '@/env';
 import { useDebouncedEffect } from '@/utils/use-debounced-effect';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -81,7 +82,14 @@ export const useEventReserveForm = (
 			onReservationSubmit(reservation.id);
 
 			// Open payment page in new window
-			window.open(paymentUrl, '_blank', 'popup=true');
+			const tab = window.open(paymentUrl, '_blank', 'popup=true');
+
+			const interval = setInterval(() => {
+				if (tab?.location.href.startsWith(`${env.NEXT_PUBLIC_URL}/success`)) {
+					tab.close();
+					clearInterval(interval);
+				}
+			}, 1000);
 		} catch (e) {}
 	};
 

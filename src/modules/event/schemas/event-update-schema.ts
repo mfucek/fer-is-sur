@@ -7,6 +7,6 @@ export const eventUpdateSchema = z.object({
 	location: z.string().min(1, 'Location is required').optional(),
 	date: z.date().optional(),
 	capacity: z.number().optional(),
-	price: z.number().optional()
+	price: z.number().min(1).step(0.01).optional()
 });
 export type TEventUpdateSchema = z.infer<typeof eventUpdateSchema>;

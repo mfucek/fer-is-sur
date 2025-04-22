@@ -9,7 +9,7 @@ export const purchaseCouponProcedure = publicProcedure
 
 		const finalCode = await generateLegalVoucherCode(ctx.db);
 
-		const coupon = await ctx.db.coupon.create({
+		const couponRaw = await ctx.db.coupon.create({
 			data: {
 				code: finalCode.toUpperCase(),
 				creatorByEmail: email,
@@ -18,6 +18,16 @@ export const purchaseCouponProcedure = publicProcedure
 				expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) // 1 year
 			}
 		});
+
+		const coupon = {
+			id: couponRaw.id,
+			code: couponRaw.code,
+			discountAmount: couponRaw.discountAmount
+				? couponRaw.discountAmount / 100
+				: null,
+			maxUses: couponRaw.maxUses,
+			expiresAt: couponRaw.expiresAt
+		};
 
 		return coupon;
 	});

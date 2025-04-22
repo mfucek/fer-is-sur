@@ -6,7 +6,11 @@ export const couponCreateSchema = z.object({
 		.number()
 		.max(100, 'Discount percent must be less than 100')
 		.optional(),
-	discountAmount: z.number().min(0, 'Discount amount is required').optional(),
+	discountAmount: z
+		.number()
+		.min(0, 'Discount amount is required')
+		.step(0.01)
+		.optional(),
 	maxUses: z.number().optional(),
 	expiresAt: z.date().optional()
 });

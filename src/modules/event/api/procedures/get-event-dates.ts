@@ -26,7 +26,8 @@ export const getEventDatesProcedure = publicProcedure
 
 			return {
 				...eventRaw,
-				remainingSlots: eventRaw.capacity - occupiedSlots
+				remainingSlots: eventRaw.capacity - occupiedSlots,
+				price: eventRaw.price / 100
 			};
 		});
 

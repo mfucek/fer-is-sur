@@ -13,7 +13,7 @@ export const listProcedure = authedProcedure.query(async ({ ctx }) => {
 		createdAt: coupon.createdAt,
 		expiresAt: coupon.expiresAt,
 		discountPercent: coupon.discountPercent,
-		discountAmount: coupon.discountAmount,
+		discountAmount: coupon.discountAmount ? coupon.discountAmount / 100 : null,
 		maxUses: coupon.maxUses,
 		uses: coupon.Reservations.filter(
 			(reservation) => reservation.reservationStatus === 'CONFIRMED'

@@ -6,6 +6,6 @@ export const eventCreateSchema = z.object({
 	location: z.string().min(1, 'Location is required'),
 	date: z.date(),
 	capacity: z.number().min(1, 'Capacity is required'),
-	price: z.number().min(1, 'Price is required')
+	price: z.number().min(1, 'Price is required').step(0.01)
 });
 export type TEventCreateSchema = z.infer<typeof eventCreateSchema>;

@@ -12,8 +12,8 @@ export const sendConfirmationMail = async (
 	event: Event,
 	coupon?: Coupon
 ) => {
+	const eventCost = (event.price / 100) * reservation.quantity;
 	const amountPaid = reservation.totalPrice / 100;
-	const eventCost = event.price * reservation.quantity;
 
 	const discountAmount = eventCost - amountPaid;
 
@@ -37,7 +37,7 @@ export const sendConfirmationMail = async (
 						reservation.quantity === 1
 							? '1 osoba'
 							: `${reservation.quantity} osobe`,
-					price: event.price
+					price: eventCost
 				}),
 				discountAmount > 0 && coupon
 					? billingItem({

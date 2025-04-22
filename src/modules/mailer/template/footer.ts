@@ -179,13 +179,9 @@ export const footer = () => {
 																				mso-text-raise: 3px;
 																			"
 																		>
-																			Conjure, vl.
-																			Filip
-																			Smrekar -
-																			Palmoti&#x107;eva
-																			5, 10000
-																			Zagreb,
-																			Croatia
+																			Conjure, vl. Filip Smrekar - Palmotićeva 5, 10000 Zagreb, Croatia
+																			<br />
+																			PDV nije obračunat temeljem čl. 90. Zakona o PDV-u
 																		</p>
 																	</td>
 																</tr>
@@ -391,7 +387,9 @@ export const footer = () => {
 																					mso-line-height-rule: exactly;
 																				"
 																				target="_blank"
-																				>Unsubscribe</a
+																				>
+																					Odjavi me
+																				</a
 																			>&nbsp;
 																			&#x2022;&nbsp;
 																			<a
@@ -426,8 +424,9 @@ export const footer = () => {
 																					mso-line-height-rule: exactly;
 																				"
 																				target="_blank"
-																				>Contact
-																				us</a
+																				>
+																					Kontaktirajte nas
+																				</a
 																			>
 																		</p>
 																	</td>

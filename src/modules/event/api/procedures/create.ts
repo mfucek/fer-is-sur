@@ -16,7 +16,7 @@ export const createProcedure = publicProcedure
 				location: event.location,
 				date: event.date,
 				capacity: event.capacity,
-				price: event.price
+				price: event.price * 100
 			}
 		});
 

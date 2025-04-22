@@ -1,46 +1,53 @@
 import Stripe from 'stripe';
 
-import { isDevelopment } from '@/constants';
 import { env } from '@/env';
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 	apiVersion: '2025-02-24.acacia'
 });
 
+const fallbackImageUrl = env.NEXT_PUBLIC_STRIPE_URL + '/cover.png';
+
 export const generateCheckoutSessionURL = async ({
+	title,
 	reservationId,
-	totalAmountCents,
+	undiscountedPrice,
+	finalPrice,
 	quantity,
 	imageUrl
 }: {
+	title: string;
 	reservationId: string;
-	totalAmountCents: number;
+	undiscountedPrice: number;
+	finalPrice: number;
 	quantity: number;
 	imageUrl?: string | null;
 }) => {
-	const amountPerItem = (totalAmountCents / quantity).toString();
+	const quantityString = quantity === 1 ? '1 osobu' : `${quantity} osobe`;
+
+	const discountAmount = undiscountedPrice - finalPrice;
+	const discountAmountString =
+		discountAmount > 0 ? ` - Popust: ${discountAmount / 100} EUR` : '';
 
 	const session = await stripe.checkout.sessions.create({
 		mode: 'payment',
 		line_items: [
 			{
 				price_data: {
-					unit_amount_decimal: amountPerItem,
-					tax_behavior: 'inclusive',
+					unit_amount_decimal: finalPrice.toString(),
+					tax_behavior: 'exclusive',
 					currency: 'eur',
 					product_data: {
-						name: 'Event Reservation',
-						description: 'Event Reservation',
-						images: [imageUrl ?? env.NEXT_PUBLIC_STRIPE_URL + '/cover.png']
+						name: `Rezervacija - ${title}`,
+						description: `Rezervacija za likovnu radionicu za ${quantityString}${discountAmountString}`,
+						images: [imageUrl ?? fallbackImageUrl]
 					}
 				},
-				quantity: quantity
+				quantity: 1
 			}
 		],
 		submit_type: 'book',
-		success_url: isDevelopment
-			? 'http://localhost:3000'
-			: env.NEXT_PUBLIC_STRIPE_URL,
+		success_url: `${env.NEXT_PUBLIC_URL}/success?reservationId=${reservationId}`,
 		locale: 'hr',
 		ui_mode: 'hosted',
 		metadata: {

@@ -44,7 +44,7 @@ export const listProcedure = authedProcedure
 			title: event.title,
 			description: event.description,
 			capacity: event.capacity,
-			price: event.price,
+			price: event.price / 100,
 			reservations: event.Reservations.filter(
 				(reservation) => reservation.reservationStatus === 'CONFIRMED'
 			).reduce((acc, reservation) => acc + reservation.quantity, 0)

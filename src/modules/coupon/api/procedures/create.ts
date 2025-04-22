@@ -15,7 +15,7 @@ export const createCouponProcedure = authedProcedure
 			finalCode = await generateLegalVoucherCode(ctx.db);
 		}
 
-		const coupon = await ctx.db.coupon.create({
+		const couponRaw = await ctx.db.coupon.create({
 			data: {
 				code: finalCode.toUpperCase(),
 				discountPercent,
@@ -24,6 +24,17 @@ export const createCouponProcedure = authedProcedure
 				expiresAt
 			}
 		});
+
+		const coupon = {
+			id: couponRaw.id,
+			code: couponRaw.code,
+			discountPercent: couponRaw.discountPercent,
+			discountAmount: couponRaw.discountAmount
+				? couponRaw.discountAmount / 100
+				: null,
+			maxUses: couponRaw.maxUses,
+			expiresAt: couponRaw.expiresAt
+		};
 
 		return coupon;
 	});
