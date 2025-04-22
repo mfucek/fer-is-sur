@@ -89,13 +89,6 @@ export const reserveProcedure = publicProcedure
 				});
 			}
 
-			if (remainingUses < details.quantity) {
-				throw new TRPCError({
-					code: 'BAD_REQUEST',
-					message: `Kupon vrijedi za ${remainingUses} primjena, a želite rezervirati ${details.quantity} mjesta.`
-				});
-			}
-
 			couponId = coupon.id;
 
 			percentDiscount = coupon.discountPercent ?? 0;
