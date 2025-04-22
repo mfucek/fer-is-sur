@@ -29,7 +29,7 @@ export const reserveProcedure = publicProcedure
 		if (!event) {
 			throw new TRPCError({
 				code: 'NOT_FOUND',
-				message: 'Event not found'
+				message: 'Događaj nije pronađen.'
 			});
 		}
 
@@ -65,14 +65,14 @@ export const reserveProcedure = publicProcedure
 			if (!coupon) {
 				throw new TRPCError({
 					code: 'NOT_FOUND',
-					message: 'Coupon not found.'
+					message: 'Kupon nije pronađen.'
 				});
 			}
 
 			if (coupon.expiresAt && coupon.expiresAt < new Date()) {
 				throw new TRPCError({
 					code: 'BAD_REQUEST',
-					message: 'The coupon has expired.'
+					message: 'Kupon je istekao.'
 				});
 			}
 

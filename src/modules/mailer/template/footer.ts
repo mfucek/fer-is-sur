@@ -283,12 +283,10 @@ export const footer = () => {
 																					color: #3478df;
 																					mso-line-height-rule: exactly;
 																				"
-																				>info@crni-mag.studio</span
 																			>
-																			ili
-																			telefona:
-																			+385 99 4777
-																			367.
+																				info@crni-mag.studio
+																			</span>
+																			ili telefona: +385 99 2448 559.
 																		</p>
 																	</td>
 																</tr>
@@ -406,8 +404,9 @@ export const footer = () => {
 																					mso-line-height-rule: exactly;
 																				"
 																				target="_blank"
-																				>Privacy
-																				policy</a
+																				>
+																					Privatnost
+																				</a
 																			>&nbsp;
 																			&#x2022;&nbsp;
 																			<a
