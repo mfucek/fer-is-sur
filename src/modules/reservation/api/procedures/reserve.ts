@@ -55,7 +55,7 @@ export const reserveProcedure = publicProcedure
 		if (details.couponCode) {
 			const coupon = await db.coupon.findFirst({
 				where: {
-					code: details.couponCode
+					code: details.couponCode.toUpperCase()
 				},
 				include: {
 					_count: {

@@ -1,3 +1,4 @@
+import { writeFile } from 'fs/promises';
 import { extractSrcFromImgTags } from './extract-src-from-img-tags';
 import { formatHTML } from './format-html';
 import { inlineTailwindColors } from './inline-tailwind-colors';
@@ -17,12 +18,12 @@ export const renderToString = async (content: JSX.Element) => {
 
 	html = formatHTML(html);
 	console.log('formatted html');
-	// await writeFile('/tmp/formatted-html.html', html);
+	await writeFile('/tmp/formatted-html.html', html);
 
 	const { html: htmlWithCids, cidSrcMap } = extractSrcFromImgTags(html);
 	html = htmlWithCids;
 	console.log('extracted srcs');
-	// await writeFile('/tmp/extracted-srcs.html', html);
+	await writeFile('/tmp/extracted-srcs.html', html);
 
 	const attachments = Object.entries(cidSrcMap).map(([cid, src]) => {
 		console.log({

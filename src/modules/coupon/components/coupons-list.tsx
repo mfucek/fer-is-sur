@@ -34,6 +34,8 @@ const CouponRowActions: FC<{ data: ListCouponsItemDTO }> = ({ data }) => {
 		}
 	};
 
+	const isDisabled = data.creatorByEmail !== null;
+
 	return (
 		<>
 			<Button
@@ -43,6 +45,7 @@ const CouponRowActions: FC<{ data: ListCouponsItemDTO }> = ({ data }) => {
 				singleIcon="trash"
 				size="sm"
 				loading={isPending}
+				disabled={isDisabled}
 			/>
 		</>
 	);
@@ -56,6 +59,7 @@ export const CouponsList = () => {
 			<Labels>
 				<Label>Code</Label>
 				<Label>Discount</Label>
+				<Label>Created by</Label>
 				<Label>Expires</Label>
 				<Label>Uses</Label>
 				<ActionsLabel />
@@ -95,6 +99,7 @@ export const CouponsList = () => {
 								<Content>
 									<Data strong>{coupon.code}</Data>
 									<Data>{discountString}</Data>
+									<Data>{coupon.creatorByEmail ? 'Customer' : 'Admin'}</Data>
 									<Data className={cn(!isExpired && 'text-neutral')}>
 										{expiryString}
 									</Data>

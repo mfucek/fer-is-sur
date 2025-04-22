@@ -7,7 +7,6 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -114,8 +113,6 @@ const EventItem: FC<{ event: EventListItemDTO }> = ({ event }) => {
 						<div className="pad-xl">
 							<EventReservationsList eventId={event.id} />
 						</div>
-
-						<DialogFooter>asd</DialogFooter>
 					</DialogContent>
 				</Dialog>
 			</Data>

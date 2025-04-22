@@ -1,14 +1,11 @@
 'use client';
 
-import { Button } from '@/deps/shadcn/ui/button';
-import { api } from '@/deps/trpc/react';
 import { ChangePasswordButton } from '../../auth/components/change-password-button';
 import { LogOutButton } from '../../auth/components/log-out-button';
 import { DashboardCard } from '../components/dashboard-card';
 import { DashboardHeader } from '../components/dashboard-header';
 
 export const DashboardPage = () => {
-	const { mutateAsync } = api.sendMail.useMutation();
 	return (
 		<>
 			<div className="container-md pad-sm">
@@ -29,11 +26,6 @@ export const DashboardPage = () => {
 					icon="file-textual"
 					href="/admin/articles"
 				/> */}
-				{/* <DashboardCard
-					label="Reservations"
-					icon="users"
-					href="/admin/reservations"
-				/> */}
 				<DashboardCard
 					label="Coupons"
 					icon="markup-minimum"
@@ -44,9 +36,8 @@ export const DashboardPage = () => {
 					icon="file-textual"
 					href="/admin/reports"
 				/>
+				<DashboardCard label="Users" icon="users" href="/admin/users" />
 			</div>
-
-			<Button onClick={() => mutateAsync()}>Send Mail</Button>
 		</>
 	);
 };

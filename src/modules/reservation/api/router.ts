@@ -1,5 +1,7 @@
 import { createTRPCRouter } from '@/deps/trpc/trpc';
+import { cancelProcedure } from './procedures/cancel';
 import { checkStatusProcedure } from './procedures/check-status';
+import { getByIdProcedure } from './procedures/get-by-id';
 import { listProcedure } from './procedures/list';
 import { listByCouponProcedure } from './procedures/list-by-coupon';
 import { listByEventProcedure } from './procedures/list-by-event';
@@ -12,5 +14,7 @@ export const reservationRouter = createTRPCRouter({
 	listByEvent: listByEventProcedure,
 	reserve: reserveProcedure,
 	checkStatus: checkStatusProcedure,
-	refund: refundReservationProcedure
+	refund: refundReservationProcedure,
+	getById: getByIdProcedure,
+	cancel: cancelProcedure
 });

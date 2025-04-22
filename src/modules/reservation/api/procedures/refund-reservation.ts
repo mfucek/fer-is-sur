@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { refundPayment } from '@/deps/stripe/api/helpers';
 import { authedProcedure } from '@/deps/trpc/procedures';
+import { sendCancellationMail } from '@/modules/mailer/api/helpers/send-cancellation-mail';
 import { TRPCError } from '@trpc/server';
 
 export const refundReservationProcedure = authedProcedure
@@ -17,6 +18,9 @@ export const refundReservationProcedure = authedProcedure
 		const reservation = await db.reservation.findUnique({
 			where: {
 				id: reservationId
+			},
+			include: {
+				Event: true
 			}
 		});
 
@@ -48,9 +52,9 @@ export const refundReservationProcedure = authedProcedure
 			});
 		}
 
-		if (reservation.paymentIntentId) {
-			await refundPayment(reservation.paymentIntentId, reservation.totalPrice);
-		}
+		await refundPayment(reservation.paymentIntentId, reservation.totalPrice);
+
+		await sendCancellationMail(reservation, reservation.Event);
 
 		await db.reservation.update({
 			where: {

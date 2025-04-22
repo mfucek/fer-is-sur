@@ -17,7 +17,8 @@ export const listProcedure = authedProcedure.query(async ({ ctx }) => {
 		maxUses: coupon.maxUses,
 		uses: coupon.Reservations.filter(
 			(reservation) => reservation.reservationStatus === 'CONFIRMED'
-		).reduce((acc, reservation) => acc + reservation.quantity, 0)
+		).reduce((acc, reservation) => acc + reservation.quantity, 0),
+		creatorByEmail: coupon.creatorByEmail
 	}));
 
 	return coupons;

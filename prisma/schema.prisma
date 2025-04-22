@@ -108,7 +108,8 @@ enum PaymentStatus {
 model Coupon {
   id String @id @default(cuid())
 
-  code String
+  code           String
+  creatorByEmail String?
 
   createdAt DateTime  @default(now())
   expiresAt DateTime?

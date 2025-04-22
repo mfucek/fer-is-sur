@@ -6,11 +6,12 @@ import { FC } from 'react';
 
 export const EventDetails: FC<{
 	title: string;
+	subTitle?: string;
 	location?: string;
 	price?: number;
 	time?: Date;
 	coverUrl?: string | null;
-}> = ({ title, location, price, time, coverUrl }) => {
+}> = ({ title, location, price, time, coverUrl, subTitle }) => {
 	return (
 		<div className="px-6 gap-6 flex flex-row items-center">
 			{/* Event cover image */}
@@ -28,7 +29,7 @@ export const EventDetails: FC<{
 			{/* Event details */}
 			<div className="gap-6 flex flex-col">
 				<div className="flex flex-col gap-1">
-					<p className="caption text-neutral-strong">Tema</p>
+					<p className="caption text-neutral-strong">{subTitle ?? 'Tema'}</p>
 					<p className="title-1 text-neutral">{title}</p>
 				</div>
 				<div className="flex flex-col gap-1">

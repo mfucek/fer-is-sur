@@ -11,6 +11,12 @@ export const HeroSection = () => {
 	const { data: daysUntilNextEvent } =
 		api.event.getDaysUntilNextEvent.useQuery();
 
+	let daysUntilNextEventString = '';
+	if (daysUntilNextEvent === 0) daysUntilNextEventString = 'danas';
+	if (daysUntilNextEvent === 1) daysUntilNextEventString = 'sutra';
+	if (daysUntilNextEvent && daysUntilNextEvent > 1)
+		daysUntilNextEventString = `za ${daysUntilNextEvent} dana`;
+
 	return (
 		<div
 			className="flex-page justify-center relative h-[70vh] md:h-auto"
@@ -64,23 +70,17 @@ export const HeroSection = () => {
 					</Particles>
 
 					{/* Days until next event */}
-					{daysUntilNextEvent !== null &&
-						daysUntilNextEvent !== undefined &&
-						daysUntilNextEvent >= 0 && (
-							<Badge
-								variant="secondary"
-								theme="neutral"
-								size="lg"
-								className="w-fit pointer-events-none"
-								icon="status-pending"
-							>
-								{daysUntilNextEvent > 0 &&
-									`Iduća radionica je za ${daysUntilNextEvent} dana`}
-								{daysUntilNextEvent === 1 &&
-									`Iduća radionica je za ${daysUntilNextEvent} dan`}
-								{daysUntilNextEvent === 0 && 'Iduća radionica je danas'}
-							</Badge>
-						)}
+					{daysUntilNextEvent !== null && daysUntilNextEvent !== undefined && (
+						<Badge
+							variant="secondary"
+							theme="neutral"
+							size="lg"
+							className="w-fit pointer-events-none"
+							icon="status-pending"
+						>
+							{`Iduća radionica je ${daysUntilNextEventString}`}
+						</Badge>
+					)}
 				</div>
 			</div>
 		</div>

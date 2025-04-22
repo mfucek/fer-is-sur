@@ -31,14 +31,16 @@ export const generateCheckoutSessionURL = async ({
 					product_data: {
 						name: 'Event Reservation',
 						description: 'Event Reservation',
-						images: [imageUrl ?? env.STRIPE_URL + '/cover.png']
+						images: [imageUrl ?? env.NEXT_PUBLIC_STRIPE_URL + '/cover.png']
 					}
 				},
 				quantity: quantity
 			}
 		],
 		submit_type: 'book',
-		success_url: isDevelopment ? 'http://localhost:3000' : env.STRIPE_URL,
+		success_url: isDevelopment
+			? 'http://localhost:3000'
+			: env.NEXT_PUBLIC_STRIPE_URL,
 		locale: 'hr',
 		ui_mode: 'hosted',
 		metadata: {

@@ -24,18 +24,20 @@ export const env = createEnv({
 		NODEMAILER_USER: z.string(),
 		NODEMAILER_PASSWORD: z.string(),
 		// Stripe
-		STRIPE_URL: z.string(),
 		STRIPE_SECRET_KEY: z.string(),
 		STRIPE_WEBHOOK_SECRET: z.string()
 	},
 
 	client: {
-		NEXT_PUBLIC_DEPLOYMENT: z.enum(['staging', 'production'])
-		// NEXT_PUBLIC_VERSION: z.string()
+		NEXT_PUBLIC_URL: z.string(),
+		NEXT_PUBLIC_DEPLOYMENT: z.enum(['staging', 'production']),
+		// Stripe
+		NEXT_PUBLIC_STRIPE_URL: z.string()
 	},
 
 	runtimeEnv: {
 		NODE_ENV: process.env.NODE_ENV,
+		NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
 		JWT_SECRET: process.env.JWT_SECRET,
 		// Prisma
 		DATABASE_URL: process.env.DATABASE_URL,
@@ -50,7 +52,7 @@ export const env = createEnv({
 		NODEMAILER_USER: process.env.NODEMAILER_USER,
 		NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD,
 		// Stripe
-		STRIPE_URL: process.env.STRIPE_URL,
+		NEXT_PUBLIC_STRIPE_URL: process.env.NEXT_PUBLIC_STRIPE_URL,
 		STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
 		STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 		NEXT_PUBLIC_DEPLOYMENT: process.env.NEXT_PUBLIC_DEPLOYMENT

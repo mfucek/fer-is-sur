@@ -3,17 +3,20 @@ import Stripe from 'stripe';
 
 import { db } from '@/deps/db';
 import { env } from '@/env';
+import { sendConfirmationMail } from '@/modules/mailer/api/helpers/send-confirmation-mail';
 
 const webhookSecret = env.STRIPE_WEBHOOK_SECRET;
 
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+	apiVersion: '2025-02-24.acacia'
+});
+
 export const postHandler = async (request: Request) => {
+	console.log('\n\nSTRIPE WEBHOOK\n\n');
+
 	try {
 		const body = await request.text();
 		const sig = request.headers.get('stripe-signature')!;
-
-		const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-			apiVersion: '2025-02-24.acacia'
-		});
 
 		const event = await stripe.webhooks.constructEventAsync(
 			body,
@@ -28,8 +31,7 @@ export const postHandler = async (request: Request) => {
 				break;
 			}
 			case 'checkout.session.completed': {
-				// @ts-ignore
-				const reservationId = event.data.object.metadata.reservationId;
+				const reservationId = event.data.object.metadata!.reservationId;
 
 				const paymentIntentId = event.data.object.payment_intent as string;
 
@@ -49,18 +51,21 @@ export const postHandler = async (request: Request) => {
 						reservationStatus: 'CONFIRMED',
 						paymentStatus: 'PAID',
 						paymentIntentId: paymentIntentId
+					},
+					include: {
+						Event: true,
+						Coupon: true
 					}
 				});
 
-				break;
-			}
-			case 'checkout.session.async_payment_succeeded': {
-				break;
-			}
-			case 'checkout.session.async_payment_failed': {
-				break;
-			}
-			case 'checkout.session.expired': {
+				console.log('[SEND EMAIL]');
+
+				await sendConfirmationMail(
+					reservation,
+					reservation.Event,
+					reservation.Coupon ?? undefined
+				);
+
 				break;
 			}
 			default: {

@@ -7,8 +7,13 @@ export const getDaysUntilNextEventProcedure = publicProcedure.query(
 		const { db } = ctx;
 
 		const nearestEvent = await db.event.findFirst({
+			where: {
+				date: {
+					gt: new Date()
+				}
+			},
 			orderBy: {
-				date: 'desc'
+				date: 'asc'
 			}
 		});
 
@@ -16,7 +21,8 @@ export const getDaysUntilNextEventProcedure = publicProcedure.query(
 			return null;
 		}
 
-		const daysUntilNextEvent = differenceInDays(nearestEvent.date, new Date());
+		const daysUntilNextEvent =
+			differenceInDays(nearestEvent.date, new Date()) + 1;
 
 		return daysUntilNextEvent;
 	}
