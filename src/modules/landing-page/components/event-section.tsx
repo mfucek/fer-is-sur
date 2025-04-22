@@ -39,7 +39,7 @@ export const EventSection: FC<{
 					src={event.cover}
 					alt="Event Cover"
 					className="object-cover"
-					sizes="100vw"
+					sizes="50vw"
 					priority
 					fill
 				/>
@@ -83,7 +83,7 @@ export const EventSection: FC<{
 											src={url}
 											alt="Event Gallery"
 											className="object-cover"
-											sizes="100vw"
+											sizes="50vw"
 											fill
 										/>
 									)}

@@ -9,6 +9,11 @@ const config = {
 	// experimental: {
 	// 	dynamicIO: true
 	// },
+	logging: {
+		incomingRequests: {
+			ignore: [/\api\/trpc/]
+		}
+	},
 	async rewrites() {
 		return [
 			{
