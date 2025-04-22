@@ -26,6 +26,13 @@ export const cancelProcedure = publicProcedure
 			});
 		}
 
+		if (reservation.reservationStatus === 'CANCELLED') {
+			throw new TRPCError({
+				code: 'BAD_REQUEST',
+				message: 'Reservation already cancelled'
+			});
+		}
+
 		if (reservation.paymentStatus === 'PAID' && reservation.paymentIntentId) {
 			await refundPayment(reservation.paymentIntentId, reservation.totalPrice);
 			await sendCancellationMail(reservation, reservation.Event);

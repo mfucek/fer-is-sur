@@ -91,7 +91,7 @@ export const CouponsList = () => {
 
 						const usesString =
 							coupon.maxUses === 0
-								? `${coupon.uses} (Unlimited)`
+								? `${coupon.uses} / Unlimited`
 								: `${coupon.uses} / ${coupon.maxUses}`;
 
 						return (

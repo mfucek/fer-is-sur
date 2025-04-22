@@ -26,12 +26,6 @@ export const FooterSection = () => {
 						Impressum
 					</Link>
 					<Link
-						href="/legal/terms-of-use"
-						className="body-3 text-neutral button-sm hover:underline"
-					>
-						Uvjeti korištenja
-					</Link>
-					<Link
 						href="/legal/privacy-policy"
 						className="body-3 text-neutral button-sm hover:underline"
 					>

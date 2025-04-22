@@ -27,7 +27,7 @@ export const CancelPage: FC<PageProps> = async ({ params }) => {
 
 	return (
 		<div className="flex-page">
-			<div className="flex-page py-20 gap-10" id="reserve">
+			<div className="flex-page py-20 gap-10 pad-lg" id="reserve">
 				<div className="flex flex-col gap-2 flex-page">
 					<h2 className="container-md display-3 text-neutral text-center">
 						Otkazivanje rezervacije
@@ -52,11 +52,19 @@ export const CancelPage: FC<PageProps> = async ({ params }) => {
 					/>
 				</div>
 
-				<form action={handleCancel}>
-					<Button variant="solid-weak" theme="danger">
-						Otkaži rezervaciju
-					</Button>
-				</form>
+				{reservation.reservationStatus === 'CANCELLED' && (
+					<div className="text-info text-center body-2 bg-info-weak rounded-lg p-2 w-full container-sm">
+						Ova rezervacija je već otkazana.
+					</div>
+				)}
+
+				{reservation.paymentStatus === 'PAID' && (
+					<form action={handleCancel}>
+						<Button variant="solid-weak" theme="danger">
+							Otkaži rezervaciju
+						</Button>
+					</form>
+				)}
 			</div>
 		</div>
 	);

@@ -38,7 +38,9 @@ export const getByIdProcedure = publicProcedure
 			createdAt: reservationRaw.createdAt,
 			email: reservationRaw.email,
 			quantity: reservationRaw.quantity,
-			totalPrice: reservationRaw.totalPrice
+			totalPrice: reservationRaw.totalPrice,
+			reservationStatus: reservationRaw.reservationStatus,
+			paymentStatus: reservationRaw.paymentStatus
 		};
 
 		const coverImageKey = reservationRaw.Event.CoverImage?.Image?.key;

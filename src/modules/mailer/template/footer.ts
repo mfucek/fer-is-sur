@@ -1,3 +1,6 @@
+import { env } from '@/env';
+import { companyInfo } from '../constants/company-info';
+
 // footer
 export const footer = () => {
 	return `<tr>
@@ -284,9 +287,9 @@ export const footer = () => {
 																					mso-line-height-rule: exactly;
 																				"
 																			>
-																				info@crni-mag.studio
+																				${companyInfo.contactEmail}
 																			</span>
-																			ili telefona: +385 99 2448 559.
+																			ili telefona: ${companyInfo.contactPhone}.
 																		</p>
 																	</td>
 																</tr>
@@ -373,7 +376,7 @@ export const footer = () => {
 																		>
 																			<a
 																				class="t433"
-																				href="https://tabular.email"
+																				href="${env.NEXT_PUBLIC_URL}/unsubscribe"
 																				style="
 																					margin: 0;
 																					margin: 0;
@@ -392,7 +395,7 @@ export const footer = () => {
 																			&#x2022;&nbsp;
 																			<a
 																				class="t434"
-																				href="https://tabular.email"
+																				href="${env.NEXT_PUBLIC_URL}/legal/impressum"
 																				style="
 																					margin: 0;
 																					margin: 0;
@@ -405,13 +408,32 @@ export const footer = () => {
 																				"
 																				target="_blank"
 																				>
-																					Privatnost
+																					Impressum
+																				</a
+																			>&nbsp;
+																			&#x2022;&nbsp;
+																			<a
+																				class="t434"
+																				href="${env.NEXT_PUBLIC_URL}/legal/privacy-policy"
+																				style="
+																					margin: 0;
+																					margin: 0;
+																					font-weight: 700;
+																					font-style: normal;
+																					text-decoration: none;
+																					direction: ltr;
+																					color: #888888;
+																					mso-line-height-rule: exactly;
+																				"
+																				target="_blank"
+																				>
+																					Politika Privatnosti
 																				</a
 																			>&nbsp;
 																			&#x2022;&nbsp;
 																			<a
 																				class="t435"
-																				href="https://tabular.email"
+																				href="mailto:${companyInfo.contactEmail}"
 																				style="
 																					margin: 0;
 																					margin: 0;

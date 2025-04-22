@@ -1,36 +1,28 @@
+import { companyInfo } from '@/modules/mailer/constants/company-info';
+
 export const LegalImpressumPage = () => {
 	return (
-		<div className="container-sm py-40 text-neutral">
+		<div className="container-sm pad-xl py-40 text-neutral">
 			<h1 className="display-3 mb-12">Impressum</h1>
 
-			<div className="flex flex-row gap-4 mb-6">
-				<p className="w-full title-2">Ime</p>
-				<p className="w-full body-1">Conjure, vl. Filip Smrekar</p>
-			</div>
+			<div className="grid grid-cols-2 gap-4 gap-y-6">
+				<p className="title-2 w-full break-words">Obrt</p>
+				<p className="body-1 w-full break-words">{companyInfo.fullLegalName}</p>
 
-			<div className="flex flex-row gap-4 mb-6">
-				<p className="w-full title-2">Adresa</p>
-				<p className="w-full body-1">Palmotićeva 5, 10000 Zagreb, Croatia</p>
-			</div>
+				<p className="title-2 w-full break-words">Adresa</p>
+				<p className="body-1 w-full break-words">{companyInfo.address}</p>
 
-			<div className="flex flex-row gap-4 mb-6">
-				<p className="w-full title-2">OIB</p>
-				<p className="w-full body-1">00669787535</p>
-			</div>
+				<p className="title-2 w-full break-words">OIB</p>
+				<p className="body-1 w-full break-words">{companyInfo.companyOIB}</p>
 
-			<div className="flex flex-row gap-4 mb-6">
-				<p className="w-full title-2">IBAN</p>
-				<p className="w-full body-1">HR4924020061140548814</p>
-			</div>
+				<p className="title-2 w-full break-words">IBAN</p>
+				<p className="body-1 w-full break-words">{companyInfo.companyIBAN}</p>
 
-			<div className="flex flex-row gap-4 mb-6">
-				<p className="w-full title-2">SWIFT</p>
-				<p className="w-full body-1">ESBCHR22</p>
-			</div>
+				<p className="title-2 w-full break-words">SWIFT</p>
+				<p className="body-1 w-full break-words">{companyInfo.companySWIFT}</p>
 
-			<div className="flex flex-row gap-4 mb-6">
-				<p className="w-full title-2">Banka</p>
-				<p className="w-full body-1">Erste&Steiermarkische Bank dd Rijeka</p>
+				<p className="title-2 w-full break-words">Banka</p>
+				<p className="body-1 w-full break-words">{companyInfo.companyBank}</p>
 			</div>
 		</div>
 	);
