@@ -713,8 +713,9 @@ export const reservationDetails = (
 																																						mso-line-height-rule: exactly;
 																																						mso-text-raise: 2px;
 																																					"
-																																					>Otka&#x17E;i
-																																					rezervaciju</a
+																																					>
+																																						Otkaži rezervaciju
+																																					</a
 																																				>
 																																			</td>
 																																		</tr>
@@ -966,8 +967,9 @@ export const reservationDetails = (
 																																							mso-line-height-rule: exactly;
 																																							mso-text-raise: 2px;
 																																						"
-																																						>Otka&#x17E;i
-																																						rezervaciju</a
+																																						>
+																																							Otkaži rezervaciju
+																																						</a
 																																					>
 																																				</td>
 																																			</tr>

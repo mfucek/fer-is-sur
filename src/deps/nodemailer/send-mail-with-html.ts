@@ -16,7 +16,7 @@ export const sendMailWithHTML = async ({
 				? '[STG] '
 				: '';
 
-	await fetch('http://localhost:3000/api/nodemailer/send', {
+	await fetch(`${env.NEXT_PUBLIC_URL}/api/nodemailer/send`, {
 		method: 'POST',
 		body: JSON.stringify({
 			subject: prefix + subject,
