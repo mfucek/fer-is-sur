@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { publicProcedure } from '@/deps/trpc/procedures';
+import { authedProcedure } from '@/deps/trpc/procedures';
 import { eventCreateSchema } from '../../schemas/event-create-schema';
 
-export const createProcedure = publicProcedure
+export const createProcedure = authedProcedure
 	.input(z.object({ event: eventCreateSchema }))
 	.mutation(async ({ ctx, input }) => {
 		const { db } = ctx;

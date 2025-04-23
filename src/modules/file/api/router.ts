@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-import { publicProcedure } from '@/deps/trpc/procedures';
+import { authedProcedure, publicProcedure } from '@/deps/trpc/procedures';
 import { createTRPCRouter } from '@/deps/trpc/trpc';
 import { nanoid } from 'nanoid';
 import { getFileDownloadUrl } from '../helpers/get-download-url';
 import { getFileUploadUrl } from '../helpers/get-file-upload-url';
 
 export const fileRouter = createTRPCRouter({
-	makeUploadUrl: publicProcedure.mutation(async ({ ctx }) => {
+	makeUploadUrl: authedProcedure.mutation(async ({ ctx }) => {
 		const key = nanoid();
 		const url = await getFileUploadUrl(key);
 		return { url, key };
