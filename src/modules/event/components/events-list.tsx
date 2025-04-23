@@ -29,14 +29,14 @@ import { EventListItemDTO } from '../api/procedures/list';
 import { UpdateEventForm } from '../forms/update-event/update-event-form';
 import { EventReservationsList } from './event-reservations-list';
 
-const EventRowActions: FC<{ data: EventListItemDTO }> = ({ data }) => {
+const EventRowActions: FC<{ event: EventListItemDTO }> = ({ event }) => {
 	const utils = api.useUtils();
 	const { mutateAsync: deleteEvent, isPending } =
 		api.event.delete.useMutation();
 
 	const handleDelete = async () => {
 		try {
-			await deleteEvent({ id: data.id });
+			await deleteEvent({ id: event.id });
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -63,7 +63,7 @@ const EventRowActions: FC<{ data: EventListItemDTO }> = ({ data }) => {
 						<DialogDescription>Edit an existing event.</DialogDescription>
 					</DialogHeader>
 
-					<UpdateEventForm event={data} />
+					<UpdateEventForm event={event} />
 				</DialogContent>
 			</Dialog>
 
@@ -117,27 +117,27 @@ const EventItem: FC<{ event: EventListItemDTO }> = ({ event }) => {
 				</Dialog>
 			</Data>
 			<Actions>
-				<EventRowActions data={event} />
+				<EventRowActions event={event} />
 			</Actions>
 		</Item>
 	);
 };
 
 export const EventsList = () => {
-	const { data, isLoading } = api.event.list.useQuery();
+	const { data: events, isLoading } = api.event.list.useQuery();
 
-	if (!data || isLoading)
+	if (!events || isLoading)
 		return (
 			<div className="flex items-center justify-center">
 				<Spinner />
 			</div>
 		);
 
-	const pastEvents = data.filter(
+	const pastEvents = events.filter(
 		(event) =>
 			event.date.getTime() < new Date().getTime() && !isToday(event.date)
 	);
-	const upcomingEvents = data.filter(
+	const upcomingEvents = events.filter(
 		(event) =>
 			event.date.getTime() >= new Date().getTime() || isToday(event.date)
 	);

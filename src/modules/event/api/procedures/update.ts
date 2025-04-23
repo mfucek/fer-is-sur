@@ -9,13 +9,26 @@ export const updateProcedure = authedProcedure
 		const { db } = ctx;
 		const { event } = input;
 
-		const updatedEvent = await db.event.update({
+		const eventRaw = await db.event.update({
 			where: { id: event.id },
 			data: {
 				...event,
 				...(event.price ? { price: event.price * 100 } : {})
 			}
 		});
+
+		const updatedEvent = {
+			id: eventRaw.id,
+			createdAt: eventRaw.createdAt,
+			updatedAt: eventRaw.updatedAt,
+			date: eventRaw.date,
+			location: eventRaw.location,
+			title: eventRaw.title,
+			description: eventRaw.description,
+			capacity: eventRaw.capacity,
+			price: eventRaw.price / 100,
+			externalReservationUrl: eventRaw.externalReservationUrl
+		};
 
 		return updatedEvent;
 	});

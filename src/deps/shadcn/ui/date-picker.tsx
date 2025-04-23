@@ -1,7 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import { useState, type FC } from 'react';
+import { useRef, useState, type FC } from 'react';
 
 import { Calendar } from '@/deps/shadcn/ui/calendar';
 import {
@@ -12,6 +12,7 @@ import {
 import { cn } from '@/deps/shadcn/utils';
 import { Icon } from '@/global/components/icon';
 import { Button } from './button';
+import { inputVariants } from './input';
 
 export const DatePicker: FC<{
 	value?: Date;
@@ -25,12 +26,43 @@ export const DatePicker: FC<{
 
 	const isEmpty = !value && !internalDate;
 
-	const handleChange = (date: Date | undefined) => {
-		setInternalDate(date);
-		onChange?.(date);
+	const shownDate = value ?? internalDate;
+
+	const handleDateChange = (date: Date | undefined) => {
+		const newDate = date;
+
+		if (!newDate) {
+			setInternalDate(undefined);
+			onChange?.(undefined);
+			return;
+		}
+
+		newDate.setHours(shownDate?.getHours() ?? 0);
+		newDate.setMinutes(shownDate?.getMinutes() ?? 0);
+
+		setInternalDate(newDate);
+		onChange?.(newDate);
 	};
 
-	const shownDate = value ?? internalDate;
+	const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const time = e.target.value;
+		const [hourRaw, minuteRaw] = time.split(':');
+
+		const hour = parseInt(hourRaw!) % 24;
+		const minute = parseInt(minuteRaw!) % 60;
+
+		if (isNaN(hour) || isNaN(minute)) return;
+
+		const newDate = shownDate ? new Date(shownDate) : new Date();
+
+		newDate.setHours(hour);
+		newDate.setMinutes(minute);
+
+		setInternalDate(newDate);
+		onChange?.(newDate);
+	};
+
+	const timeRef = useRef<HTMLInputElement>(null);
 
 	return (
 		<Popover>
@@ -53,19 +85,41 @@ export const DatePicker: FC<{
 						className={cn('bg-neutral-strong size-4')}
 					/>
 					{shownDate ? (
-						<span className="input">{format(shownDate, 'PPP')}</span>
+						<span className="input">
+							{format(shownDate, 'dd. MM. yyyy. HH:mm')}
+						</span>
 					) : (
 						<span className="input">Pick a date</span>
 					)}
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-auto p-0" align="start">
+			<PopoverContent
+				className="w-auto p-0 flex flex-col items-center"
+				align="start"
+			>
 				<Calendar
 					mode="single"
-					selected={value ?? internalDate}
-					onSelect={handleChange}
+					selected={shownDate}
+					onSelect={handleDateChange}
 					initialFocus
 				/>
+				<div className="flex flex-row pb-3 px-3 items-center w-full">
+					<div
+						onClick={() => timeRef.current?.showPicker()}
+						className={cn(
+							inputVariants(),
+							'w-full flex flex-row items-center justify-center'
+						)}
+					>
+						<input
+							ref={timeRef}
+							type="time"
+							value={format(shownDate || new Date(), 'HH:mm')}
+							className="[&::-webkit-calendar-picker-indicator]:hidden"
+							onChange={handleTimeChange}
+						/>
+					</div>
+				</div>
 			</PopoverContent>
 		</Popover>
 	);

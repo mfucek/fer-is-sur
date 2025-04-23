@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@/deps/shadcn/ui/button';
+import { cn } from '@/deps/shadcn/utils';
 import { api } from '@/deps/trpc/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 export const DashboardHeader = ({
 	title,
@@ -18,9 +19,32 @@ export const DashboardHeader = ({
 
 	const { data: me } = api.auth.me.useQuery();
 
+	const containerRef = useRef<HTMLDivElement>(null);
+	const actionsRef = useRef<HTMLDivElement>(null);
+
+	const [actionsLargerThanContainer, setActionsLargerThanContainer] =
+		useState(false);
+
+	useEffect(() => {
+		const checkActionsLargerThanContainer = () => {
+			if (actionsRef.current && containerRef.current) {
+				setActionsLargerThanContainer(
+					actionsRef.current.offsetWidth > containerRef.current.offsetWidth
+				);
+			}
+		};
+
+		checkActionsLargerThanContainer();
+
+		window.addEventListener('resize', checkActionsLargerThanContainer);
+
+		return () =>
+			window.removeEventListener('resize', checkActionsLargerThanContainer);
+	}, []);
+
 	return (
-		<div className="flex flex-row items-center w-full min-h-[52px]">
-			<div className="flex flex-row items-center gap-2 flex-1">
+		<div className="flex flex-row items-center justify-between gap-4 min-h-[52px] overflow-hidden">
+			<div className="flex flex-row items-center gap-2 shrink-0">
 				{!isOnDashboardHome && (
 					<Link href="/admin">
 						<Button variant="ghost" size="lg" singleIcon="arrow-back" />
@@ -30,7 +54,17 @@ export const DashboardHeader = ({
 			</div>
 
 			{children && (
-				<div className="shrink-0 flex flex-row gap-2">{children}</div>
+				<div
+					className={cn(
+						'relative flex-1 flex flex-row gap-2 overflow-x-scroll',
+						!actionsLargerThanContainer && 'justify-end'
+					)}
+					ref={containerRef}
+				>
+					<div className="flex flex-row gap-2 w-fit" ref={actionsRef}>
+						{children}
+					</div>
+				</div>
 			)}
 		</div>
 	);

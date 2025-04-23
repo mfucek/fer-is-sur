@@ -43,6 +43,7 @@ export const useUpdateEventForm = (event: GetEventDTO) => {
 			setValue('date', event.date);
 			setValue('capacity', event.capacity);
 			setValue('price', event.price);
+			setValue('externalReservationUrl', event.externalReservationUrl ?? '');
 		}
 	}, []);
 
