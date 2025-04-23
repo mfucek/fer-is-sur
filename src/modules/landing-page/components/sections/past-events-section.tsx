@@ -12,7 +12,7 @@ export const PastEventsSection = () => {
 			<div className="flex flex-col w-full gap-20 py-20">
 				<LandingHeading
 					title="Slikarske Radionice"
-					description={`Cool motivi, dobro društvo, loše fore, stručno vodstvo, ugodna atmosfera rezultat svega toga je osmijeh na licu i remek-djelo na Vašem zidu.\n\nNije potrebno nikakvo predznanje, a za slikarske materijale ćemo se pobrinuti mi.`}
+					description={`Cool motivi, dobro društvo, loše fore, stručno vodstvo, ugodna atmosfera rezultat svega toga je osmijeh na licu i remek-djelo na Vašem zidu.\nNije potrebno nikakvo predznanje, a za slikarske materijale ćemo se pobrinuti mi.`}
 				/>
 
 				<div className="flex flex-col gap-20 w-full items-center">
