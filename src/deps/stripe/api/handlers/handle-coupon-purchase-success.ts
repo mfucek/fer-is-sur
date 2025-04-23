@@ -26,9 +26,11 @@ export const handleCouponPurchaseSuccess = async ({
 		}
 	});
 
-	console.log('[SEND EMAIL]');
+	console.log(`✅ Created coupon - ${coupon.code}`);
 
 	await sendCouponPurchasedMail({ coupon: coupon });
+
+	console.log('✉️ Sent coupon purchased mail');
 
 	if (recipientEmail) {
 		await sendCouponGiftedMail({
@@ -36,5 +38,7 @@ export const handleCouponPurchaseSuccess = async ({
 			recipientEmail: recipientEmail,
 			message: recepientMessage
 		});
+
+		console.log('✉️ Sent coupon gifted mail');
 	}
 };

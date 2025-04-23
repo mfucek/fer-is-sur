@@ -16,6 +16,11 @@ export const sendMailWithHTML = async ({
 				? '[STG] '
 				: '';
 
+	console.log(
+		'Sending email through endpoint:',
+		`${env.NEXT_PUBLIC_URL}/api/nodemailer/send`
+	);
+
 	await fetch(`${env.NEXT_PUBLIC_URL}/api/nodemailer/send`, {
 		method: 'POST',
 		body: JSON.stringify({

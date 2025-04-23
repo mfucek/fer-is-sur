@@ -8,9 +8,6 @@ export const handleEventReservationSuccess = async ({
 	reservationId: string;
 	paymentIntentId: string;
 }) => {
-	console.log('reservationId: ', reservationId);
-	console.log('updating reservation');
-
 	const reservation = await db.reservation.update({
 		where: {
 			id: reservationId
@@ -26,11 +23,13 @@ export const handleEventReservationSuccess = async ({
 		}
 	});
 
-	console.log('[SEND EMAIL]');
+	console.log('✅ Updated reseration status');
 
 	await sendReservationCreatedMail(
 		reservation,
 		reservation.Event,
 		reservation.Coupon ?? undefined
 	);
+
+	console.log('✉️ Sent reservation creation confirmation mail');
 };
