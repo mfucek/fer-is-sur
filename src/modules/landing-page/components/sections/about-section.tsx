@@ -16,7 +16,7 @@ export const AboutSection = () => {
 		<div className="flex-page gap-20 py-20" id="about">
 			<LandingHeading
 				title="O nama"
-				description="Studio postoji vec 53 godine i namjenjen je pocetnicima koje interesira nauciti slikati. Ovo je neki tekst o povijesti studija bla bla. Poanta je da u par natuknica posjetitelj dobije confidence da se rezervira."
+				description={`Bok, mi smo Filip i Vjeran, akademski slikari. Volimo slikati i vrlo smo strastveni kada su u pitanju likovi iz stripova, crtića, filmova, video igara...\n\nSve to želimo podijeliti s Vama i usput Vam dokazati da slikanje i nije tako teško, pogotovo uz naše stručno vodstvo. Kakvu god ideju imate, zajedno ju možemo naslikati u sklopu naših radionica ili privatnih eventova.`}
 			/>
 
 			<div className="w-full pad-lg md:container-lg flex flex-row overflow-x-scroll sm:grid sm:grid-cols-2 md:grid-cols-3 gap-2 scrollbar-hidden">
