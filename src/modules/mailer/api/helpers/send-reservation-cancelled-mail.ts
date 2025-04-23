@@ -2,14 +2,14 @@ import { db } from '@/deps/db';
 import { sendMailWithHTML } from '@/deps/nodemailer/send-mail-with-html';
 import { env } from '@/env';
 import { getFileDownloadUrl } from '@/modules/file/helpers/get-download-url';
-import { cancellationSuggestionsCard } from '@/modules/mailer/template/cancellationSuggestionsCard';
+import { eventSuggestionsCard } from '@/modules/mailer/template/event-suggestions-card';
 import { footer } from '@/modules/mailer/template/footer';
-import { reservationCancelledCard } from '@/modules/mailer/template/reservationCancelledCard';
+import { reservationCancelledCard } from '@/modules/mailer/template/reservation-cancelled-card';
 import { suggestion } from '@/modules/mailer/template/suggestion';
 import { wrapper } from '@/modules/mailer/template/wrapper';
 import { Event, Reservation } from '@prisma/client';
 
-export const sendCancellationMail = async (
+export const sendReservationCancelledMail = async (
 	reservation: Reservation,
 	event: Event
 ) => {
@@ -43,7 +43,11 @@ export const sendCancellationMail = async (
 				location: event.location,
 				date: event.date
 			}),
-			cancellationSuggestionsCard(
+			eventSuggestionsCard(
+				{
+					message:
+						'Žao nam je što ste odlučili ne sudjelovati na radionici. Ako ponovo budete u prilici sudjelovati bacite oko na nadolazeće radionice.'
+				},
 				...(await Promise.all(
 					upcomingEvents.map(async (event) => {
 						const remainingSpots =
@@ -61,7 +65,7 @@ export const sendCancellationMail = async (
 							date: event.date,
 							remainingSpots,
 							imgSrc,
-							reservationUrl: env.NEXT_PUBLIC_URL
+							reservationUrl: `${env.NEXT_PUBLIC_URL}#reserve`
 						});
 					})
 				))

@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-import { db } from '@/deps/db';
 import { env } from '@/env';
-import { sendConfirmationMail } from '@/modules/mailer/api/helpers/send-confirmation-mail';
+import { handleCouponPurchaseSuccess } from './handlers/handle-coupon-purchase-success';
+import { handleEventReservationSuccess } from './handlers/handle-event-reservation-success';
 
 const webhookSecret = env.STRIPE_WEBHOOK_SECRET;
 
@@ -12,7 +12,7 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 });
 
 export const postHandler = async (request: Request) => {
-	console.log('\n\nSTRIPE WEBHOOK\n\n');
+	console.log('\nSTRIPE WEBHOOK\n');
 
 	try {
 		const body = await request.text();
@@ -31,41 +31,37 @@ export const postHandler = async (request: Request) => {
 				break;
 			}
 			case 'checkout.session.completed': {
-				const reservationId = event.data.object.metadata!.reservationId;
-
 				const paymentIntentId = event.data.object.payment_intent as string;
 
-				if (!reservationId) {
-					console.error('No reservation ID found');
+				const metadata = event.data.object.metadata!;
+
+				const { reservationId } = metadata;
+
+				if (reservationId) {
+					await handleEventReservationSuccess({
+						reservationId: reservationId,
+						paymentIntentId: paymentIntentId
+					});
 					break;
 				}
 
-				console.log('reservationId: ', reservationId);
-				console.log('updating reservation');
+				const { creatorEmail, recipientEmail, amountCents, recepientMessage } =
+					metadata;
 
-				const reservation = await db.reservation.update({
-					where: {
-						id: reservationId
-					},
-					data: {
-						reservationStatus: 'CONFIRMED',
-						paymentStatus: 'PAID',
-						paymentIntentId: paymentIntentId
-					},
-					include: {
-						Event: true,
-						Coupon: true
-					}
-				});
+				if (creatorEmail && amountCents) {
+					await handleCouponPurchaseSuccess({
+						creatorEmail: creatorEmail,
+						amountCents: Number(amountCents),
+						recipientEmail: recipientEmail,
+						recepientMessage: recepientMessage
+					});
+					break;
+				}
 
-				console.log('[SEND EMAIL]');
-
-				await sendConfirmationMail(
-					reservation,
-					reservation.Event,
-					reservation.Coupon ?? undefined
+				console.error(
+					'[error] Unhandled case for following object: ',
+					event.data.object
 				);
-
 				break;
 			}
 			default: {

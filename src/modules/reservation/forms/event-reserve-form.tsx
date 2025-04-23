@@ -7,6 +7,7 @@ import { Input } from '@/deps/shadcn/ui/input';
 import { FormLabel } from '@/global/components/form-label';
 import { Icon } from '@/global/components/icon';
 import { useEventReserveForm } from './use-event-reserve-form';
+
 export const EventReservationForm: FC<{
 	eventId: string;
 	remainingSlots: number;

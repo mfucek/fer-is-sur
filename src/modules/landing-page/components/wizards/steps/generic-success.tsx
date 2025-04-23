@@ -1,11 +1,9 @@
-import { FC, useContext, useEffect, useState } from 'react';
-
 import { Button } from '@/deps/shadcn/ui/button';
-import { api } from '@/deps/trpc/react';
+import { env } from '@/env';
 import { Icon } from '@/global/components/icon';
 import { Spinner } from '@/global/components/spinner';
 import { wizardContext } from '@/global/components/wizard';
-import { EventDateDTO } from '@/modules/event/api/procedures/get-event-dates';
+import { useContext } from 'react';
 
 const IconInProgress = () => {
 	return (
@@ -37,9 +35,7 @@ const ContentInProgress = () => {
 	);
 };
 
-const ContentSuccess = () => {
-	const { setCurrentStep } = useContext(wizardContext);
-
+export const ContentSuccess = () => {
 	return (
 		<>
 			<IconSuccess />
@@ -53,40 +49,37 @@ const ContentSuccess = () => {
 			<Button
 				variant="outline"
 				theme="neutral"
-				onClick={() => setCurrentStep(1)}
+				onClick={() =>
+					(window.location.href = `${env.NEXT_PUBLIC_URL}#reserve`)
+				}
 			>
-				Nazad na kalendar
+				Istraži druge termine
 			</Button>
 		</>
 	);
 };
 
-export const EventPaymentStatusWizardStep: FC<{
-	selectedEvent: EventDateDTO | null;
-	reservationId: string | null;
-}> = ({ selectedEvent, reservationId }) => {
-	const [continueRefetching, setContinueRefetching] = useState(true);
-	const [isSuccess, setIsSuccess] = useState(false);
-
-	const { data } = api.reservation.checkStatus.useQuery(
-		{ reservationId: reservationId! },
-		{
-			enabled: !!reservationId,
-			refetchInterval: continueRefetching ? 5000 : false
-		}
-	);
-
-	useEffect(() => {
-		if (data && data.paymentStatus === 'PAID') {
-			setContinueRefetching(false);
-			setIsSuccess(true);
-		}
-	}, [data]);
+export const GenericSuccessWizardStep = () => {
+	const { setCurrentStep } = useContext(wizardContext);
 
 	return (
 		<>
 			<div className="h-full flex flex-col items-center justify-center text-center gap-10 bg-section rounded-2xl">
-				{isSuccess ? <ContentSuccess /> : <ContentInProgress />}
+				<IconSuccess />
+				<div className="flex flex-col gap-1 w-full items-center">
+					<p className="title-3 text-neutral-strong">Zahtjev za plaćanje</p>
+					<p className="body-1 text-neutral container-xs text-center">
+						Pratite uputstva na Stripe prozoru.
+					</p>
+				</div>
+
+				<Button
+					variant="outline"
+					theme="neutral"
+					onClick={() => setCurrentStep(1)}
+				>
+					Nazad na kalendar
+				</Button>
 			</div>
 		</>
 	);

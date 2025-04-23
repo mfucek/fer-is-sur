@@ -1,6 +1,6 @@
-import { refundPayment } from '@/deps/stripe/api/helpers';
+import { refundPayment } from '@/deps/stripe/api/helpers/refund-payment';
 import { publicProcedure } from '@/deps/trpc/procedures';
-import { sendCancellationMail } from '@/modules/mailer/api/helpers/send-cancellation-mail';
+import { sendReservationCancelledMail } from '@/modules/mailer/api/helpers/send-reservation-cancelled-mail';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
@@ -35,7 +35,7 @@ export const cancelProcedure = publicProcedure
 
 		if (reservation.paymentStatus === 'PAID' && reservation.paymentIntentId) {
 			await refundPayment(reservation.paymentIntentId, reservation.totalPrice);
-			await sendCancellationMail(reservation, reservation.Event);
+			await sendReservationCancelledMail(reservation, reservation.Event);
 
 			await db.reservation.update({
 				where: {

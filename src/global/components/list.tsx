@@ -39,9 +39,19 @@ export const List: FC<PropsWithChildren> = ({ children }) => {
 		</ActionsSizeProvider>
 	);
 };
+
+export const Annotation: FC<PropsWithChildren> = ({ children }) => {
+	return (
+		<div className="px-3 md:px-4 mt-2 caption text-neutral-strong">
+			{children}
+		</div>
+	);
+};
+
 export const Labels: FC<PropsWithChildren> = ({ children }) => {
 	return <div className="flex flex-row gap-2 px-3 md:px-4">{children}</div>;
 };
+
 export const Label: FC<HTMLAttributes<HTMLDivElement>> = ({
 	children,
 	className,
@@ -56,6 +66,7 @@ export const Label: FC<HTMLAttributes<HTMLDivElement>> = ({
 		</div>
 	);
 };
+
 export const ActionsLabel = () => {
 	const { size } = useActionsSizeContext();
 	return (
@@ -77,6 +88,7 @@ export const Items: FC<PropsWithChildren> = ({ children }) => {
 		</div>
 	);
 };
+
 export const Item: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<div className="flex flex-row items-center gap-2 px-3 md:px-4 py-4">
@@ -84,11 +96,13 @@ export const Item: FC<PropsWithChildren> = ({ children }) => {
 		</div>
 	);
 };
+
 export const Content: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<div className="flex flex-row items-center gap-2 flex-1">{children}</div>
 	);
 };
+
 export const Data: FC<
 	PropsWithChildren & { strong?: boolean; className?: string }
 > = ({ children, strong, className }) => {
@@ -104,6 +118,7 @@ export const Data: FC<
 		</div>
 	);
 };
+
 export const Actions: FC<PropsWithChildren> = ({ children }) => {
 	const { setSize } = useActionsSizeContext();
 

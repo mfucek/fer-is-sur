@@ -3,8 +3,9 @@ import { formatPrice } from '@/utils/format-price';
 export const reservationDetails = (
 	{
 		totalPrice,
-		cancellationUrl
-	}: { totalPrice: number; cancellationUrl: string },
+		cancellationUrl,
+		message
+	}: { totalPrice: number; cancellationUrl?: string; message: string },
 	...children: string[]
 ) => {
 	return `<tr>
@@ -112,10 +113,7 @@ export const reservationDetails = (
 																				mso-text-raise: 2px;
 																			"
 																		>
-																			Hvala na
-																			povjerenju,
-																			veselimo se
-																			druzenju!
+																			${message}
 																		</p>
 																	</td>
 																</tr>
@@ -456,384 +454,146 @@ export const reservationDetails = (
 												</div>
 											</td>
 										</tr>
-										<tr>
-											<td align="center">
-												<table
-													class="t157"
-													role="presentation"
-													cellpadding="0"
-													cellspacing="0"
-													style="
-														margin-left: auto;
-														margin-right: auto;
-													"
-												>
-													<tr>
-														<td
-															width="592"
-															class="t156"
-															style="width: 600px"
-														>
-															<table
-																class="t155"
-																role="presentation"
-																cellpadding="0"
-																cellspacing="0"
-																width="100%"
-																style="
-																	width: 100%;
-																"
+										${
+											cancellationUrl &&
+											`<tr>
+												<td align="center">
+													<table
+														class="t157"
+														role="presentation"
+														cellpadding="0"
+														cellspacing="0"
+														style="
+															margin-left: auto;
+															margin-right: auto;
+														"
+													>
+														<tr>
+															<td
+																width="592"
+																class="t156"
+																style="width: 600px"
 															>
-																<tr>
-																	<td
-																		class="t154"
-																		style="
-																			padding: 0
-																				12px 12px
-																				12px;
-																		"
-																	>
-																		<table
-																			role="presentation"
-																			width="100%"
-																			cellpadding="0"
-																			cellspacing="0"
+																<table
+																	class="t155"
+																	role="presentation"
+																	cellpadding="0"
+																	cellspacing="0"
+																	width="100%"
+																	style="
+																		width: 100%;
+																	"
+																>
+																	<tr>
+																		<td
+																			class="t154"
 																			style="
-																				width: 100% !important;
+																				padding: 0
+																					12px 12px
+																					12px;
 																			"
 																		>
-																			<tr>
-																				<td>
-																					<table
-																						class="t138 hm"
-																						role="presentation"
-																						cellpadding="0"
-																						cellspacing="0"
-																					>
-																						<tr>
-																							<td
-																								width="568"
-																								class="t137 hm"
-																								style="
-																									background-color: #f5f5f5;
-																									overflow: hidden;
-																									width: 600px;
-																									border-radius: 8px
-																										8px
-																										8px
-																										8px;
-																								"
-																							>
-																								<table
-																									class="t136 hm"
-																									role="presentation"
-																									cellpadding="0"
-																									cellspacing="0"
-																									width="100%"
+																			<table
+																				role="presentation"
+																				width="100%"
+																				cellpadding="0"
+																				cellspacing="0"
+																				style="
+																					width: 100% !important;
+																				"
+																			>
+																				<tr>
+																					<td>
+																						<table
+																							class="t138 hm"
+																							role="presentation"
+																							cellpadding="0"
+																							cellspacing="0"
+																						>
+																							<tr>
+																								<td
+																									width="568"
+																									class="t137 hm"
 																									style="
-																										width: 100%;
+																										background-color: #f5f5f5;
+																										overflow: hidden;
+																										width: 600px;
+																										border-radius: 8px
+																											8px
+																											8px
+																											8px;
 																									"
 																								>
-																									<tr>
-																										<td
-																											class="t135 hm"
-																											style="
-																												padding: 24px
-																													24px
-																													24px
-																													24px;
-																											"
-																										>
-																											<div
-																												class="t134 hm"
+																									<table
+																										class="t136 hm"
+																										role="presentation"
+																										cellpadding="0"
+																										cellspacing="0"
+																										width="100%"
+																										style="
+																											width: 100%;
+																										"
+																									>
+																										<tr>
+																											<td
+																												class="t135 hm"
 																												style="
-																													width: 100%;
-																													text-align: center;
+																													padding: 24px
+																														24px
+																														24px
+																														24px;
 																												"
 																											>
 																												<div
-																													class="t133 hm"
+																													class="t134 hm"
 																													style="
-																														display: inline-block;
+																														width: 100%;
+																														text-align: center;
 																													"
 																												>
-																													<table
-																														class="t132 hm"
-																														role="presentation"
-																														cellpadding="0"
-																														cellspacing="0"
-																														align="center"
-																														valign="middle"
-																													>
-																														<tr
-																															class="t131 hm"
-																														>
-																															<td></td>
-																															<td
-																																class="t126"
-																																valign="middle"
-																															>
-																																<table
-																																	role="presentation"
-																																	width="100%"
-																																	cellpadding="0"
-																																	cellspacing="0"
-																																	class="t125"
-																																	style="
-																																		width: auto;
-																																	"
-																																>
-																																	<tr>
-																																		<td
-																																			class="t123"
-																																		>
-																																			<p
-																																				class="t122"
-																																				style="
-																																					margin: 0;
-																																					margin: 0;
-																																					font-family:
-																																						Nunito
-																																							Sans,
-																																						BlinkMacSystemFont,
-																																						Segoe
-																																							UI,
-																																						Helvetica
-																																							Neue,
-																																						Arial,
-																																						sans-serif;
-																																					line-height: 22px;
-																																					font-weight: 500;
-																																					font-style: normal;
-																																					font-size: 14px;
-																																					text-decoration: none;
-																																					text-transform: none;
-																																					letter-spacing: -0.56px;
-																																					direction: ltr;
-																																					color: #747474;
-																																					text-align: left;
-																																					mso-line-height-rule: exactly;
-																																					mso-text-raise: 2px;
-																																				"
-																																			>
-																																				Otkazivanje
-																																				je
-																																				mogu&#x107;e
-																																				unutar
-																																				48h
-																																				do
-																																				vremena
-																																				radionice.
-																																				Ukoliko
-																																				imate
-																																				&#x17E;elju
-																																				otkazati,
-																																				ljubazno
-																																				Vas
-																																				molimo
-																																				da
-																																				pratite
-																																				uputstva
-																																				na
-																																				ovom
-																																				linku.
-																																			</p>
-																																		</td>
-																																		<td
-																																			class="t124"
-																																			style="
-																																				width: 24px;
-																																			"
-																																			width="24"
-																																		></td>
-																																	</tr>
-																																</table>
-																															</td>
-																															<td
-																																class="t130"
-																																width="30%"
-																																valign="middle"
-																															>
-																																<table
-																																	role="presentation"
-																																	width="100%"
-																																	cellpadding="0"
-																																	cellspacing="0"
-																																	class="t129"
-																																	style="
-																																		width: 100%;
-																																	"
-																																>
-																																	<tr>
-																																		<td
-																																			class="t128"
-																																			style="
-																																				overflow: hidden;
-																																				background-color: #dedede;
-																																				text-align: center;
-																																				line-height: 22px;
-																																				mso-line-height-rule: exactly;
-																																				mso-text-raise: 2px;
-																																				padding: 8px
-																																					12px
-																																					8px
-																																					12px;
-																																				border-radius: 8px
-																																					8px
-																																					8px
-																																					8px;
-																																			"
-																																		>
-																																			<a
-																																				href="${cancellationUrl}"
-																																				class="t127"
-																																				style="
-																																					display: block;
-																																					margin: 0;
-																																					margin: 0;
-																																					font-family:
-																																						Nunito
-																																							Sans,
-																																						BlinkMacSystemFont,
-																																						Segoe
-																																							UI,
-																																						Helvetica
-																																							Neue,
-																																						Arial,
-																																						sans-serif;
-																																					line-height: 22px;
-																																					font-weight: 700;
-																																					font-style: normal;
-																																					font-size: 14px;
-																																					text-decoration: none;
-																																					text-transform: none;
-																																					direction: ltr;
-																																					color: #000000;
-																																					text-align: center;
-																																					mso-line-height-rule: exactly;
-																																					mso-text-raise: 2px;
-																																				"
-																																				>Otka&#x17E;i
-																																				rezervaciju</a
-																																			>
-																																		</td>
-																																	</tr>
-																																</table>
-																															</td>
-																															<td></td>
-																														</tr>
-																													</table>
-																												</div>
-																											</div>
-																										</td>
-																									</tr>
-																								</table>
-																							</td>
-																						</tr>
-																					</table>
-																				</td>
-																			</tr>
-																			<!--[if !mso]>-->
-																			<tr>
-																				<td
-																					align="center"
-																				>
-																					<table
-																						class="t152 hd"
-																						role="presentation"
-																						cellpadding="0"
-																						cellspacing="0"
-																						style="
-																							margin-left: auto;
-																							margin-right: auto;
-																						"
-																					>
-																						<tr>
-																							<td
-																								width="568"
-																								class="t151 hd"
-																								style="
-																									background-color: #e9e9e9;
-																									overflow: hidden;
-																									width: 600px;
-																									border-radius: 8px
-																										8px
-																										8px
-																										8px;
-																								"
-																							>
-																								<table
-																									class="t150 hd"
-																									role="presentation"
-																									cellpadding="0"
-																									cellspacing="0"
-																									width="100%"
-																									style="
-																										width: 100%;
-																									"
-																								>
-																									<tr>
-																										<td
-																											class="t149 hd"
-																										>
-																											<table
-																												role="presentation"
-																												width="100%"
-																												cellpadding="0"
-																												cellspacing="0"
-																												style="
-																													width: 100% !important;
-																												"
-																											>
-																												<tr>
-																													<td
-																														align="center"
+																													<div
+																														class="t133 hm"
+																														style="
+																															display: inline-block;
+																														"
 																													>
 																														<table
-																															class="t143"
+																															class="t132 hm"
 																															role="presentation"
 																															cellpadding="0"
 																															cellspacing="0"
-																															style="
-																																margin-left: auto;
-																																margin-right: auto;
-																																max-width: 568px;
-																															"
+																															align="center"
+																															valign="middle"
 																														>
-																															<tr>
+																															<tr
+																																class="t131 hm"
+																															>
+																																<td></td>
 																																<td
-																																	class="t142"
-																																	style="
-																																		width: auto;
-																																	"
+																																	class="t126"
+																																	valign="middle"
 																																>
 																																	<table
-																																		class="t141"
 																																		role="presentation"
+																																		width="100%"
 																																		cellpadding="0"
 																																		cellspacing="0"
+																																		class="t125"
 																																		style="
 																																			width: auto;
-																																			max-width: 568px;
 																																		"
 																																	>
 																																		<tr>
 																																			<td
-																																				class="t140"
-																																				style="
-																																					padding: 0
-																																						0
-																																						24px
-																																						0;
-																																				"
+																																				class="t123"
 																																			>
 																																				<p
-																																					class="t139"
+																																					class="t122"
 																																					style="
 																																						margin: 0;
 																																						margin: 0;
 																																						font-family:
-																																							Albert
+																																							Nunito
 																																								Sans,
 																																							BlinkMacSystemFont,
 																																							Segoe
@@ -879,54 +639,37 @@ export const reservationDetails = (
 																																					linku.
 																																				</p>
 																																			</td>
+																																			<td
+																																				class="t124"
+																																				style="
+																																					width: 24px;
+																																				"
+																																				width="24"
+																																			></td>
 																																		</tr>
 																																	</table>
 																																</td>
-																															</tr>
-																														</table>
-																													</td>
-																												</tr>
-																												<tr>
-																													<td
-																														align="left"
-																													>
-																														<table
-																															class="t148"
-																															role="presentation"
-																															cellpadding="0"
-																															cellspacing="0"
-																															style="
-																																margin-right: auto;
-																															"
-																														>
-																															<tr>
 																																<td
-																																	width="400"
-																																	class="t147"
-																																	style="
-																																		background-color: #dedede;
-																																		overflow: hidden;
-																																		width: 400px;
-																																		border-radius: 8px
-																																			8px
-																																			8px
-																																			8px;
-																																	"
+																																	class="t130"
+																																	width="30%"
+																																	valign="middle"
 																																>
 																																	<table
-																																		class="t146"
 																																		role="presentation"
+																																		width="100%"
 																																		cellpadding="0"
 																																		cellspacing="0"
-																																		width="100%"
+																																		class="t129"
 																																		style="
 																																			width: 100%;
 																																		"
 																																	>
 																																		<tr>
 																																			<td
-																																				class="t145"
+																																				class="t128"
 																																				style="
+																																					overflow: hidden;
+																																					background-color: #dedede;
 																																					text-align: center;
 																																					line-height: 22px;
 																																					mso-line-height-rule: exactly;
@@ -935,11 +678,15 @@ export const reservationDetails = (
 																																						12px
 																																						8px
 																																						12px;
+																																					border-radius: 8px
+																																						8px
+																																						8px
+																																						8px;
 																																				"
 																																			>
 																																				<a
 																																					href="${cancellationUrl}"
-																																					class="t144"
+																																					class="t127"
 																																					style="
 																																						display: block;
 																																						margin: 0;
@@ -973,29 +720,283 @@ export const reservationDetails = (
 																																		</tr>
 																																	</table>
 																																</td>
+																																<td></td>
 																															</tr>
 																														</table>
-																													</td>
-																												</tr>
-																											</table>
-																										</td>
-																									</tr>
-																								</table>
-																							</td>
-																						</tr>
-																					</table>
-																				</td>
-																			</tr>
-																			<!--<![endif]-->
-																		</table>
-																	</td>
-																</tr>
-															</table>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
+																													</div>
+																												</div>
+																											</td>
+																										</tr>
+																									</table>
+																								</td>
+																							</tr>
+																						</table>
+																					</td>
+																				</tr>
+																				<!--[if !mso]>-->
+																				<tr>
+																					<td
+																						align="center"
+																					>
+																						<table
+																							class="t152 hd"
+																							role="presentation"
+																							cellpadding="0"
+																							cellspacing="0"
+																							style="
+																								margin-left: auto;
+																								margin-right: auto;
+																							"
+																						>
+																							<tr>
+																								<td
+																									width="568"
+																									class="t151 hd"
+																									style="
+																										background-color: #e9e9e9;
+																										overflow: hidden;
+																										width: 600px;
+																										border-radius: 8px
+																											8px
+																											8px
+																											8px;
+																									"
+																								>
+																									<table
+																										class="t150 hd"
+																										role="presentation"
+																										cellpadding="0"
+																										cellspacing="0"
+																										width="100%"
+																										style="
+																											width: 100%;
+																										"
+																									>
+																										<tr>
+																											<td
+																												class="t149 hd"
+																											>
+																												<table
+																													role="presentation"
+																													width="100%"
+																													cellpadding="0"
+																													cellspacing="0"
+																													style="
+																														width: 100% !important;
+																													"
+																												>
+																													<tr>
+																														<td
+																															align="center"
+																														>
+																															<table
+																																class="t143"
+																																role="presentation"
+																																cellpadding="0"
+																																cellspacing="0"
+																																style="
+																																	margin-left: auto;
+																																	margin-right: auto;
+																																	max-width: 568px;
+																																"
+																															>
+																																<tr>
+																																	<td
+																																		class="t142"
+																																		style="
+																																			width: auto;
+																																		"
+																																	>
+																																		<table
+																																			class="t141"
+																																			role="presentation"
+																																			cellpadding="0"
+																																			cellspacing="0"
+																																			style="
+																																				width: auto;
+																																				max-width: 568px;
+																																			"
+																																		>
+																																			<tr>
+																																				<td
+																																					class="t140"
+																																					style="
+																																						padding: 0
+																																							0
+																																							24px
+																																							0;
+																																					"
+																																				>
+																																					<p
+																																						class="t139"
+																																						style="
+																																							margin: 0;
+																																							margin: 0;
+																																							font-family:
+																																								Albert
+																																									Sans,
+																																								BlinkMacSystemFont,
+																																								Segoe
+																																									UI,
+																																								Helvetica
+																																									Neue,
+																																								Arial,
+																																								sans-serif;
+																																							line-height: 22px;
+																																							font-weight: 500;
+																																							font-style: normal;
+																																							font-size: 14px;
+																																							text-decoration: none;
+																																							text-transform: none;
+																																							letter-spacing: -0.56px;
+																																							direction: ltr;
+																																							color: #747474;
+																																							text-align: left;
+																																							mso-line-height-rule: exactly;
+																																							mso-text-raise: 2px;
+																																						"
+																																					>
+																																						Otkazivanje
+																																						je
+																																						mogu&#x107;e
+																																						unutar
+																																						48h
+																																						do
+																																						vremena
+																																						radionice.
+																																						Ukoliko
+																																						imate
+																																						&#x17E;elju
+																																						otkazati,
+																																						ljubazno
+																																						Vas
+																																						molimo
+																																						da
+																																						pratite
+																																						uputstva
+																																						na
+																																						ovom
+																																						linku.
+																																					</p>
+																																				</td>
+																																			</tr>
+																																		</table>
+																																	</td>
+																																</tr>
+																															</table>
+																														</td>
+																													</tr>
+																													<tr>
+																														<td
+																															align="left"
+																														>
+																															<table
+																																class="t148"
+																																role="presentation"
+																																cellpadding="0"
+																																cellspacing="0"
+																																style="
+																																	margin-right: auto;
+																																"
+																															>
+																																<tr>
+																																	<td
+																																		width="400"
+																																		class="t147"
+																																		style="
+																																			background-color: #dedede;
+																																			overflow: hidden;
+																																			width: 400px;
+																																			border-radius: 8px
+																																				8px
+																																				8px
+																																				8px;
+																																		"
+																																	>
+																																		<table
+																																			class="t146"
+																																			role="presentation"
+																																			cellpadding="0"
+																																			cellspacing="0"
+																																			width="100%"
+																																			style="
+																																				width: 100%;
+																																			"
+																																		>
+																																			<tr>
+																																				<td
+																																					class="t145"
+																																					style="
+																																						text-align: center;
+																																						line-height: 22px;
+																																						mso-line-height-rule: exactly;
+																																						mso-text-raise: 2px;
+																																						padding: 8px
+																																							12px
+																																							8px
+																																							12px;
+																																					"
+																																				>
+																																					<a
+																																						href="${cancellationUrl}"
+																																						class="t144"
+																																						style="
+																																							display: block;
+																																							margin: 0;
+																																							margin: 0;
+																																							font-family:
+																																								Nunito
+																																									Sans,
+																																								BlinkMacSystemFont,
+																																								Segoe
+																																									UI,
+																																								Helvetica
+																																									Neue,
+																																								Arial,
+																																								sans-serif;
+																																							line-height: 22px;
+																																							font-weight: 700;
+																																							font-style: normal;
+																																							font-size: 14px;
+																																							text-decoration: none;
+																																							text-transform: none;
+																																							direction: ltr;
+																																							color: #000000;
+																																							text-align: center;
+																																							mso-line-height-rule: exactly;
+																																							mso-text-raise: 2px;
+																																						"
+																																						>Otka&#x17E;i
+																																						rezervaciju</a
+																																					>
+																																				</td>
+																																			</tr>
+																																		</table>
+																																	</td>
+																																</tr>
+																															</table>
+																														</td>
+																													</tr>
+																												</table>
+																											</td>
+																										</tr>
+																									</table>
+																								</td>
+																							</tr>
+																						</table>
+																					</td>
+																				</tr>
+																				<!--<![endif]-->
+																			</table>
+																		</td>
+																	</tr>
+																</table>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>`
+										}
 									</table>
 								</td>
 							</tr>

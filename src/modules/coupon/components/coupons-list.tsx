@@ -8,6 +8,7 @@ import { api } from '@/deps/trpc/react';
 import {
 	Actions,
 	ActionsLabel,
+	Annotation,
 	Content,
 	Data,
 	Item,
@@ -51,6 +52,45 @@ const CouponRowActions: FC<{ data: ListCouponsItemDTO }> = ({ data }) => {
 	);
 };
 
+const CouponItem: FC<{ coupon: ListCouponsItemDTO }> = ({ coupon }) => {
+	const isExpired =
+		coupon.expiresAt && coupon.expiresAt.getTime() < new Date().getTime();
+
+	const discountString = coupon.discountPercent
+		? `${coupon.discountPercent}%`
+		: coupon.discountAmount
+			? `${coupon.discountAmount} EUR`
+			: 'No discount';
+
+	const expiryString = coupon.expiresAt
+		? coupon.expiresAt.toLocaleDateString()
+		: 'Never';
+
+	const usesString =
+		coupon.maxUses === 0
+			? `${coupon.uses} / Unlimited`
+			: `${coupon.uses} / ${coupon.maxUses}`;
+
+	return (
+		<Item key={coupon.id}>
+			<Content>
+				<Data strong>{coupon.code}</Data>
+				<Data>{discountString}</Data>
+				<Data>{coupon.creatorByEmail ? 'Customer' : 'Admin'}</Data>
+				<Data className={cn(!isExpired && 'text-neutral')}>{expiryString}</Data>
+				<Data>
+					<Button variant="ghost" size="sm" className="-ml-3">
+						{usesString}
+					</Button>
+				</Data>
+			</Content>
+			<Actions>
+				<CouponRowActions data={coupon} />
+			</Actions>
+		</Item>
+	);
+};
+
 export const CouponsList = () => {
 	const { data, isLoading } = api.coupon.list.useQuery();
 
@@ -64,58 +104,36 @@ export const CouponsList = () => {
 				<Label>Uses</Label>
 				<ActionsLabel />
 			</Labels>
-			<Items>
-				{(!data || isLoading) && (
-					<Item>
-						<Data>
-							<Spinner absolutelyCentered />
-						</Data>
-					</Item>
-				)}
 
-				{data &&
-					data.map((coupon) => {
-						const isExpired =
-							coupon.expiresAt &&
-							coupon.expiresAt.getTime() < new Date().getTime();
+			{(!data || isLoading) && (
+				<Item>
+					<Data>
+						<Spinner absolutelyCentered />
+					</Data>
+				</Item>
+			)}
 
-						const discountString = coupon.discountPercent
-							? `${coupon.discountPercent}%`
-							: coupon.discountAmount
-								? `${coupon.discountAmount} EUR`
-								: 'No discount';
+			{data && (
+				<Items>
+					{data
+						.filter((coupon) => !coupon.creatorByEmail)
+						.map((coupon) => {
+							return <CouponItem key={coupon.id} coupon={coupon} />;
+						})}
+				</Items>
+			)}
 
-						const expiryString = coupon.expiresAt
-							? coupon.expiresAt.toLocaleDateString()
-							: 'Never';
+			<Annotation>User-generated coupons</Annotation>
 
-						const usesString =
-							coupon.maxUses === 0
-								? `${coupon.uses} / Unlimited`
-								: `${coupon.uses} / ${coupon.maxUses}`;
-
-						return (
-							<Item key={coupon.id}>
-								<Content>
-									<Data strong>{coupon.code}</Data>
-									<Data>{discountString}</Data>
-									<Data>{coupon.creatorByEmail ? 'Customer' : 'Admin'}</Data>
-									<Data className={cn(!isExpired && 'text-neutral')}>
-										{expiryString}
-									</Data>
-									<Data>
-										<Button variant="ghost" size="sm" className="-ml-3">
-											{usesString}
-										</Button>
-									</Data>
-								</Content>
-								<Actions>
-									<CouponRowActions data={coupon} />
-								</Actions>
-							</Item>
-						);
-					})}
-			</Items>
+			{data && (
+				<Items>
+					{data
+						.filter((coupon) => coupon.creatorByEmail)
+						.map((coupon) => {
+							return <CouponItem key={coupon.id} coupon={coupon} />;
+						})}
+				</Items>
+			)}
 		</List>
 	);
 };

@@ -1,13 +1,13 @@
 import { sendMailWithHTML } from '@/deps/nodemailer/send-mail-with-html';
 import { env } from '@/env';
-import { billingItem } from '@/modules/mailer/template/billingItem';
+import { billingItem } from '@/modules/mailer/template/billing-item';
 import { footer } from '@/modules/mailer/template/footer';
-import { reservationDetails } from '@/modules/mailer/template/reservationDetails';
-import { reservationSuccessCard } from '@/modules/mailer/template/reservationSuccessCard';
+import { reservationDetails } from '@/modules/mailer/template/reservation-details';
+import { reservationSuccessCard } from '@/modules/mailer/template/reservation-success-card';
 import { wrapper } from '@/modules/mailer/template/wrapper';
 import { Coupon, Event, Reservation } from '@prisma/client';
 
-export const sendConfirmationMail = async (
+export const sendReservationCreatedMail = async (
 	reservation: Reservation,
 	event: Event,
 	coupon?: Coupon
@@ -29,7 +29,8 @@ export const sendConfirmationMail = async (
 			reservationDetails(
 				{
 					totalPrice: reservation.totalPrice / 100,
-					cancellationUrl: `${env.NEXT_PUBLIC_URL}/cancel/${reservation.id}`
+					cancellationUrl: `${env.NEXT_PUBLIC_URL}/cancel/${reservation.id}`,
+					message: 'Hvala na povjerenju, veselimo se druzenju!'
 				},
 				billingItem({
 					title: 'Rezervacija termina',

@@ -1,14 +1,9 @@
-import Stripe from 'stripe';
-
 import { env } from '@/env';
-
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-	apiVersion: '2025-02-24.acacia'
-});
+import { stripe } from '../../stripe';
 
 const fallbackImageUrl = env.NEXT_PUBLIC_STRIPE_URL + '/cover.png';
 
-export const generateCheckoutSessionURL = async ({
+export const generateEventCheckoutSessionURL = async ({
 	title,
 	reservationId,
 	undiscountedPrice,
@@ -60,18 +55,4 @@ export const generateCheckoutSessionURL = async ({
 	}
 
 	return session.url;
-};
-
-export const refundPayment = async (
-	paymentIntentId: string,
-	amount: number
-) => {
-	const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-
-	const refund = await stripe.refunds.create({
-		payment_intent: paymentIntentId,
-		amount: amount
-	});
-
-	return refund;
 };

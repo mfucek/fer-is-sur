@@ -1,5 +1,6 @@
 import { api } from '@/deps/trpc/react';
 import { env } from '@/env';
+import { openTemporaryTab } from '@/utils/open-temporary-tab';
 import { useDebouncedEffect } from '@/utils/use-debounced-effect';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -42,7 +43,7 @@ export const useEventReserveForm = (
 
 	// TRPC
 	const {
-		mutateAsync: reserve,
+		mutateAsync: reserveEvent,
 		isPending,
 		error
 	} = api.reservation.reserve.useMutation();
@@ -71,7 +72,7 @@ export const useEventReserveForm = (
 	// Form submission
 	const onValid: SubmitHandler<TEventReserveSchema> = async (data) => {
 		try {
-			const { reservation, paymentUrl } = await reserve({
+			const { reservation, paymentUrl } = await reserveEvent({
 				eventId,
 				details: {
 					email: data.email,
@@ -81,15 +82,7 @@ export const useEventReserveForm = (
 			});
 			onReservationSubmit(reservation.id);
 
-			// Open payment page in new window
-			const tab = window.open(paymentUrl, '_blank', 'popup=true');
-
-			const interval = setInterval(() => {
-				if (tab?.location.href.startsWith(`${env.NEXT_PUBLIC_URL}/success`)) {
-					tab.close();
-					clearInterval(interval);
-				}
-			}, 1000);
+			openTemporaryTab(paymentUrl, `${env.NEXT_PUBLIC_URL}/success`);
 		} catch (e) {}
 	};
 

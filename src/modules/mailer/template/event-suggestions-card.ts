@@ -1,4 +1,7 @@
-export const cancellationSuggestionsCard = (...children: string[]) => {
+export const eventSuggestionsCard = (
+	{ message }: { message: string },
+	...children: string[]
+) => {
 	return `<tr>
 		<td align="center">
 			<table
@@ -107,23 +110,7 @@ export const cancellationSuggestionsCard = (...children: string[]) => {
 																				mso-text-raise: 2px;
 																			"
 																		>
-																			&#x17D;ao
-																			nam je
-																			&#x161;to
-																			ste
-																			odlu&#x10D;ili
-																			ne
-																			sudjelovati
-																			na
-																			radionici.
-																			Ako ponovo
-																			budete u
-																			prilici
-																			sudjelovati
-																			bacite oko
-																			na
-																			nadolaze&#x107;e
-																			radionice.
+																			${message}
 																		</p>
 																	</td>
 																</tr>
