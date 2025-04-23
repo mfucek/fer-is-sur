@@ -38,6 +38,17 @@ export const UpdateEventForm = ({ event }: { event: GetEventDTO }) => {
 						<FormLabel title="Description" error={errors.description?.message}>
 							<Textarea {...register('description')} disabled={isSaving} />
 						</FormLabel>
+
+						<FormLabel
+							title="External Reservation URL"
+							error={errors.externalReservationUrl?.message}
+						>
+							<Input
+								{...register('externalReservationUrl')}
+								type="text"
+								disabled={isSaving}
+							/>
+						</FormLabel>
 					</div>
 				</div>
 

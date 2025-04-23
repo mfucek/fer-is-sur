@@ -29,7 +29,8 @@ export const getProcedure = publicProcedure
 			title: eventRaw.title,
 			description: eventRaw.description,
 			capacity: eventRaw.capacity,
-			price: eventRaw.price / 100
+			price: eventRaw.price / 100,
+			externalReservationUrl: eventRaw.externalReservationUrl
 		};
 
 		return event;

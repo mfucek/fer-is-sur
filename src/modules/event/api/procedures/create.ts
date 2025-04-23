@@ -16,7 +16,8 @@ export const createProcedure = authedProcedure
 				location: event.location,
 				date: event.date,
 				capacity: event.capacity,
-				price: event.price * 100
+				price: event.price * 100,
+				externalReservationUrl: event.externalReservationUrl
 			}
 		});
 

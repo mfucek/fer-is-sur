@@ -37,6 +37,8 @@ model Event {
   CoverImage EventCover?
   Gallery    EventGallery?
 
+  externalReservationUrl String?
+
   Reservations Reservation[]
 }
 

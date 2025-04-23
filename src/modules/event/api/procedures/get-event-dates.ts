@@ -25,9 +25,17 @@ export const getEventDatesProcedure = publicProcedure
 			).reduce((acc, reservation) => acc + reservation.quantity, 0);
 
 			return {
-				...eventRaw,
-				remainingSlots: eventRaw.capacity - occupiedSlots,
-				price: eventRaw.price / 100
+				id: eventRaw.id,
+				createdAt: eventRaw.createdAt,
+				updatedAt: eventRaw.updatedAt,
+				date: eventRaw.date,
+				location: eventRaw.location,
+				title: eventRaw.title,
+				description: eventRaw.description,
+				capacity: eventRaw.capacity,
+				price: eventRaw.price / 100,
+				externalReservationUrl: eventRaw.externalReservationUrl,
+				remainingSlots: eventRaw.capacity - occupiedSlots
 			};
 		});
 

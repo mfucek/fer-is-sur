@@ -91,7 +91,8 @@ export const listShowcaseProcedure = publicProcedure.query(async ({ ctx }) => {
 		capacity: eventRaw.capacity,
 		price: eventRaw.price / 100,
 		cover: keyToUrl(eventRaw.CoverImage?.Image?.key),
-		gallery: keysToUrls(eventRaw.Gallery?.Images.map((image) => image.key))
+		gallery: keysToUrls(eventRaw.Gallery?.Images.map((image) => image.key)),
+		externalReservationUrl: eventRaw.externalReservationUrl
 	}));
 
 	return events;

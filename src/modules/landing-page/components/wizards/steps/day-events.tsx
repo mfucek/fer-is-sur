@@ -29,6 +29,7 @@ export const DayEventsWizardStep: FC<{
 		</>
 	);
 };
+
 export const useGetEventCover = (eventId?: string | null) => {
 	const { data: cover } = api.event.cover.get.useQuery(
 		{ eventId: eventId! },
@@ -37,6 +38,7 @@ export const useGetEventCover = (eventId?: string | null) => {
 
 	return { coverUrl: cover?.url || null };
 };
+
 export const TimeSlots: FC<{
 	events: EventDateDTO[];
 }> = ({ events }) => {
@@ -48,7 +50,8 @@ export const TimeSlots: FC<{
 					event={{
 						id: event.id,
 						date: event.date,
-						slots: event.remainingSlots
+						slots: event.remainingSlots,
+						externalReservationUrl: event.externalReservationUrl
 					}}
 				/>
 			))}
@@ -61,22 +64,39 @@ export const TimeSlotCard: FC<{
 		id: string;
 		date: Date;
 		slots: number;
+		externalReservationUrl: string | null;
 	};
 }> = ({ event }) => {
 	const { setCurrentStep } = useContext(wizardContext);
+
+	// https://www.test.com/test -> test.com
+	const sanitizedLink = event.externalReservationUrl?.replace(
+		/^(?:http(?:s?):\/\/(?:www\.)?)?([A-Za-z0-9_:.-]+)\/?/gm,
+		'$1'
+	);
+
+	const handleClick = () => {
+		if (event.externalReservationUrl) {
+			window.open(event.externalReservationUrl, '_blank');
+		} else {
+			setCurrentStep(3);
+		}
+	};
 
 	return (
 		<Button
 			size="card"
 			variant="section"
-			rightIcon="arrow-right"
+			rightIcon={event.externalReservationUrl ? 'arrow-linked' : 'arrow-right'}
 			className="w-full"
-			onClick={() => setCurrentStep(3)}
+			onClick={handleClick}
 		>
 			<div className="flex flex-col items-start flex-1">
 				<div className="button-lg">{format(event.date, 'HH:mm')}</div>
 				<div className="body-2 text-theme-strong">
-					{event.slots} mjesta preostalo
+					{event.externalReservationUrl
+						? `Rezervacija preko ${sanitizedLink}`
+						: `${event.slots} mjesta preostalo`}
 				</div>
 			</div>
 		</Button>
