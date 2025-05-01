@@ -13,7 +13,6 @@ export const env = createEnv({
 		JWT_SECRET: z.string(),
 		// Prisma
 		DATABASE_URL: z.string().url(),
-		PULSE_API_KEY: z.string(),
 		// Cloudflare
 		CLOUDFLARE_ACCESS_ID: z.string(),
 		CLOUDFLARE_ACCESS_KEY: z.string(),
@@ -41,7 +40,6 @@ export const env = createEnv({
 		JWT_SECRET: process.env.JWT_SECRET,
 		// Prisma
 		DATABASE_URL: process.env.DATABASE_URL,
-		PULSE_API_KEY: process.env.PULSE_API_KEY,
 		// Cloudflare
 		CLOUDFLARE_ACCESS_ID: process.env.CLOUDFLARE_ACCESS_ID,
 		CLOUDFLARE_ACCESS_KEY: process.env.CLOUDFLARE_ACCESS_KEY,
