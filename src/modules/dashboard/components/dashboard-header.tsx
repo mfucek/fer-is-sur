@@ -56,7 +56,7 @@ export const DashboardHeader = ({
 			{children && (
 				<div
 					className={cn(
-						'relative flex-1 flex flex-row gap-2 overflow-x-scroll',
+						'relative flex-1 flex flex-row gap-2 overflow-x-auto scrollbar-hidden',
 						!actionsLargerThanContainer && 'justify-end'
 					)}
 					ref={containerRef}
