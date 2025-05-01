@@ -26,6 +26,7 @@ CREATE TABLE "Event" (
     "location" TEXT NOT NULL,
     "capacity" INTEGER NOT NULL DEFAULT 10,
     "price" INTEGER NOT NULL DEFAULT 0,
+    "externalReservationUrl" TEXT,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
@@ -77,6 +78,7 @@ CREATE TABLE "Reservation" (
 CREATE TABLE "Coupon" (
     "id" TEXT NOT NULL,
     "code" TEXT NOT NULL,
+    "creatorByEmail" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "expiresAt" TIMESTAMP(3),
     "discountPercent" INTEGER,
@@ -84,6 +86,15 @@ CREATE TABLE "Coupon" (
     "maxUses" INTEGER NOT NULL DEFAULT 1,
 
     CONSTRAINT "Coupon_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Newsletter" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "email" TEXT NOT NULL,
+
+    CONSTRAINT "Newsletter_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -102,6 +113,9 @@ CREATE UNIQUE INDEX "EventCover_eventId_key" ON "EventCover"("eventId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "EventGallery_eventId_key" ON "EventGallery"("eventId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Newsletter_email_key" ON "Newsletter"("email");
 
 -- CreateIndex
 CREATE INDEX "_EventGalleryToFile_B_index" ON "_EventGalleryToFile"("B");
