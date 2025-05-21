@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "crni-mag-web",
+      "name": "fer-is-sur",
       "dependencies": {
         "@aws-sdk/client-s3": "^3.677.0",
         "@aws-sdk/s3-request-presigner": "^3.677.0",

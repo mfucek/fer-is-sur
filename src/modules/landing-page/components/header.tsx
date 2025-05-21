@@ -40,7 +40,7 @@ export const Header = () => {
 					onClick={() => navigateToId('hero')}
 				>
 					<h1 className="title-2 tracking-[1.8px] font-black text-neutral sm:group-hover:text-accent transition-all">
-						CRNI MAG
+						SUR
 					</h1>
 					<div className="text-accent ml-2 rounded-md px-1.5 py-0.5 bg-accent-medium caption">
 						STG

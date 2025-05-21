@@ -1,11 +1,11 @@
 export const companyInfo = {
-	companyName: 'Conjure',
-	fullLegalName: 'Conjure, vl. Filip Smrekar',
-	companyOIB: '00669787535',
-	companyIBAN: 'HR4924020061140548814',
-	companySWIFT: 'ESBCHR22',
-	companyBank: 'Erste&Steiermarkische Bank dd Rijeka',
-	address: 'Palmotićeva 5, 10000 Zagreb, Croatia',
-	contactEmail: 'info@crni-mag.studio',
-	contactPhone: '+385 99 2448 559'
+	companyName: 'Company Name',
+	fullLegalName: 'Full Legal Name',
+	companyOIB: '00123456789',
+	companyIBAN: 'HR4111111111111111111',
+	companySWIFT: 'ESCHR123',
+	companyBank: 'Bank Name',
+	address: 'Company Address',
+	contactEmail: 'info@company.com',
+	contactPhone: '+385 99 1234 567'
 };

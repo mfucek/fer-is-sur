@@ -42,6 +42,10 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+next-env.d.ts
 
 # idea files
 .idea
+
+# prisma
+prisma/**/generated

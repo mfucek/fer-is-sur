@@ -28,7 +28,7 @@ export const postHandler = async (request: Request) => {
 	console.log('toEmail: ', toEmail);
 
 	await transporter.sendMail({
-		from: `Crni Mag 🎨 <${fromAddress}>`,
+		from: `SUR <${fromAddress}>`,
 		to: toEmail,
 		subject: subject,
 		html: rawHtml

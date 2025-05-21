@@ -16,7 +16,7 @@ export const LoginPage = () => {
 					<div className="w-full max-w-xs flex flex-col gap-10">
 						<div className="flex flex-col items-center justify-center">
 							<h2 className="body-2 text-neutral-strong">Admin Login</h2>
-							<h1 className="display-3 text-neutral">CRNI MAG</h1>
+							<h1 className="display-3 text-neutral">SUR</h1>
 						</div>
 						<LoginForm />
 					</div>
