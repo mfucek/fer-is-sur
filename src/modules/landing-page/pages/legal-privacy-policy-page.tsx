@@ -47,8 +47,8 @@ export const LegalPrivacyPolicyPage = () => {
 			<p className="body-1 mb-6">
 				Web stranice poduzeća {companyInfo.companyName} sadrže određene
 				poveznice na druge web stranice koje nisu u vezi sa poduzećem{' '}
-				{companyInfo.companyName} , Crni Mag Studio ne preuzima nikakvu
-				odgovornost za zaštitu osobnih i drugih podataka na tim web stranicama.
+				{companyInfo.companyName} , SUR ne preuzima nikakvu odgovornost za
+				zaštitu osobnih i drugih podataka na tim web stranicama.
 			</p>
 
 			<p className="body-1 mb-6">
