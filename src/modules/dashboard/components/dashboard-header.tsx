@@ -2,7 +2,7 @@
 
 import { Button } from '@/deps/shadcn/ui/button';
 import { cn } from '@/deps/shadcn/utils';
-import { api } from '@/deps/trpc/react';
+// import { api } from '@/deps/trpc/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode, useEffect, useRef, useState } from 'react';
@@ -17,7 +17,7 @@ export const DashboardHeader = ({
 	const pathname = usePathname();
 	const isOnDashboardHome = pathname === '/admin';
 
-	const { data: me } = api.auth.me.useQuery();
+	// const { data: me } = api.auth.me.useQuery();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const actionsRef = useRef<HTMLDivElement>(null);

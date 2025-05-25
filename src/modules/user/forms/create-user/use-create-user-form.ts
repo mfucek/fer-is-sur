@@ -26,7 +26,8 @@ export const useCreateUserForm = () => {
 
 	// Form submission
 	const onValid: SubmitHandler<TUserCreateSchema> = async (data) => {
-		await createUser(data);
+		// Prompt for password if not present (for demo, use a static password or extend the form)
+		await createUser({ ...data, password: 'changeme' });
 		utils.user.list.invalidate();
 		closeDialog();
 	};

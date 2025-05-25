@@ -12,7 +12,6 @@ import {
 	DialogTrigger,
 	type DialogContextType
 } from '@/deps/shadcn/ui/dialog';
-import { api } from '@/deps/trpc/react';
 import {
 	Actions,
 	ActionsLabel,
@@ -24,19 +23,23 @@ import {
 	List
 } from '@/global/components/list';
 import { Spinner } from '@/global/components/spinner';
+import { api } from '@/presentation/api/trpc/react';
 import { formatDate, isToday } from 'date-fns';
 import { EventListItemDTO } from '../api/procedures/list';
 import { UpdateEventForm } from '../forms/update-event/update-event-form';
 import { EventReservationsList } from './event-reservations-list';
 
 const EventRowActions: FC<{ event: EventListItemDTO }> = ({ event }) => {
+	// const utils = api.useUtils();
+	// const { mutateAsync: deleteEvent, isPending } = api.event.delete.useMutation();
+
 	const utils = api.useUtils();
 	const { mutateAsync: deleteEvent, isPending } =
 		api.event.delete.useMutation();
 
 	const handleDelete = async () => {
 		try {
-			await deleteEvent({ id: event.id });
+			await deleteEvent(event.id);
 		} catch (error) {
 			console.error(error);
 		} finally {

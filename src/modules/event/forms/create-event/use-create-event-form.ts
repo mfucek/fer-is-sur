@@ -5,8 +5,8 @@ import { useRef, useState } from 'react';
 import { type SubmitErrorHandler, useForm } from 'react-hook-form';
 
 import { useDialog } from '@/deps/shadcn/ui/dialog';
-import { api } from '@/deps/trpc/react';
 import { type FileStagingContextType } from '@/modules/file/contexts/file-staging';
+import { api } from '@/presentation/api/trpc/react';
 import {
 	eventCreateSchema,
 	type TEventCreateSchema
@@ -25,8 +25,8 @@ export const useCreateEventForm = () => {
 	// TRPC
 	const utils = api.useUtils();
 	const { mutateAsync: createEvent } = api.event.create.useMutation();
-	const { mutateAsync: updateGallery } = api.event.gallery.update.useMutation();
-	const { mutateAsync: updateCover } = api.event.cover.update.useMutation();
+	// const { mutateAsync: updateGallery } = api.event.gallery.update.useMutation(); // TODO: migrate gallery update to new architecture
+	// const { mutateAsync: updateCover } = api.event.cover.update.useMutation(); // TODO: migrate cover update to new architecture
 	const [isSaving, setIsSaving] = useState(false);
 
 	// File staging refs
@@ -40,7 +40,7 @@ export const useCreateEventForm = () => {
 		setIsSaving(true);
 		try {
 			// Create event in db
-			const { id: eventId } = await createEvent({ event: data });
+			const { id: eventId } = await createEvent(data);
 
 			// Upload gallery files to R2
 			const fileKeys = (await galleryFileStagingRef.current.uploadFiles())
@@ -48,10 +48,10 @@ export const useCreateEventForm = () => {
 				.map((file) => file.key!);
 
 			// Update gallery in db to reflect R2 files
-			await updateGallery({
-				eventId,
-				fileKeys: fileKeys
-			});
+			// await updateGallery({
+			// 	eventId,
+			// 	fileKeys: fileKeys
+			// });
 
 			const coverFile = coverFileStagingRef.current.files[0];
 
@@ -63,11 +63,10 @@ export const useCreateEventForm = () => {
 
 				if (stagedCoverFile) {
 					// Update cover file in db to reflect R2 file
-
-					await updateCover({
-						eventId,
-						fileKey: stagedCoverFile.key
-					});
+					// await updateCover({
+					// 	eventId,
+					// 	fileKey: stagedCoverFile.key
+					// });
 				}
 			}
 		} catch (error) {

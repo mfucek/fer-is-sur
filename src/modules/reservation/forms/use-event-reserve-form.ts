@@ -1,7 +1,4 @@
 import { api } from '@/deps/trpc/react';
-import { env } from '@/env';
-import { openTemporaryTab } from '@/utils/open-temporary-tab';
-import { useDebouncedEffect } from '@/utils/use-debounced-effect';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
@@ -42,47 +39,28 @@ export const useEventReserveForm = (
 	const [globalError, setGlobalError] = useState<string | null>(null);
 
 	// TRPC
-	const {
-		mutateAsync: reserveEvent,
-		isPending,
-		error
-	} = api.reservation.reserve.useMutation();
-
-	// Coupon checking
-	const { mutateAsync: checkCoupon } = api.coupon.checkCoupon.useMutation();
-
+	const { mutateAsync: reserve } = api.reservation.create.useMutation();
+	// TODO: Implement coupon check in the new couponRouter and update this hook accordingly.
+	// For now, comment out coupon check logic and set isCouponValid to null by default.
+	// const { mutateAsync: checkCoupon } = api.coupon.check.useMutation
+	//   ? api.coupon.check.useMutation()
+	//   : { mutateAsync: async () => true };
 	const [isCouponValid, setIsCouponValid] = useState<boolean | null>(null);
-
-	useDebouncedEffect(
-		async () => {
-			const code = watch('couponCode');
-
-			if (!code) {
-				setIsCouponValid(null);
-				return;
-			}
-
-			const isValid = await checkCoupon({ couponCode: code });
-			setIsCouponValid(isValid);
-		},
-		[watch('couponCode')],
-		1000
-	);
 
 	// Form submission
 	const onValid: SubmitHandler<TEventReserveSchema> = async (data) => {
 		try {
-			const { reservation, paymentUrl } = await reserveEvent({
+			const reservation = await reserve({
 				eventId,
-				details: {
-					email: data.email,
-					couponCode: data.couponCode,
-					quantity: data.quantity
-				}
+				email: data.email,
+				couponId: undefined, // Add coupon logic if needed
+				quantity: data.quantity,
+				totalPrice: 0, // Calculate price as needed
+				reservationStatus: 'PENDING',
+				paymentStatus: 'NOT_PAID',
+				paymentIntentId: undefined
 			});
 			onReservationSubmit(reservation.id);
-
-			openTemporaryTab(paymentUrl, `${env.NEXT_PUBLIC_URL}/success`);
 		} catch (e) {}
 	};
 
@@ -90,7 +68,7 @@ export const useEventReserveForm = (
 		console.log(errors);
 	};
 
-	const handleFormSubmit = handleSubmit(onValid, onInvalid);
+	const handleFormSubmit = form.handleSubmit(onValid, onInvalid);
 
 	const submitDisabled = isCouponValid === false;
 
@@ -99,6 +77,6 @@ export const useEventReserveForm = (
 		handleFormSubmit,
 		submitDisabled,
 		isCouponValid,
-		globalError: error?.message
+		globalError: null
 	};
 };

@@ -2,7 +2,7 @@
 
 import { Badge } from '@/deps/shadcn/ui/badge';
 import { Button } from '@/deps/shadcn/ui/button';
-import { api } from '@/deps/trpc/react';
+import { api } from '@/presentation/api/trpc/react';
 import { navigateToId } from '@/utils/navigate-to-id';
 import Image from 'next/image';
 import { Particles } from '../particles/particles';

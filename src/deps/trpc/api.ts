@@ -1,9 +1,8 @@
-import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 import { type NextRequest } from 'next/server';
 
-import { appRouter } from '@/deps/trpc/root';
+// import { appRouter } from '@/deps/trpc/root';
+// The new appRouter is in src/presentation/api/trpc/root.ts
 import { createTRPCContext } from '@/deps/trpc/trpc';
-import { env } from '@/env';
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -16,18 +15,18 @@ const createContext = async (req: NextRequest) => {
 	});
 };
 
-export const trpcApiHandler = (req: NextRequest) =>
-	fetchRequestHandler({
-		endpoint: '/api/trpc',
-		req,
-		router: appRouter,
-		createContext: () => createContext(req),
-		onError:
-			env.NODE_ENV === 'development'
-				? ({ path, error }) => {
-						console.error(
-							`❌ tRPC failed on ${path ?? '<no-path>'}: ${error.message}`
-						);
-					}
-				: undefined
-	});
+// export const trpcApiHandler = (req: NextRequest) =>
+// 	fetchRequestHandler({
+// 		endpoint: '/api/trpc',
+// 		req,
+// 		router: appRouter,
+// 		createContext: () => createContext(req),
+// 		onError:
+// 			env.NODE_ENV === 'development'
+// 				? ({ path, error }) => {
+// 					console.error(
+// 						`❌ tRPC failed on ${path ?? '<no-path>'}: ${error.message}`
+// 					);
+// 				}
+// 			: undefined
+// 	});

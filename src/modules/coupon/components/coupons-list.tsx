@@ -4,7 +4,9 @@ import { type FC } from 'react';
 
 import { Button } from '@/deps/shadcn/ui/button';
 import { cn } from '@/deps/shadcn/utils';
-import { api } from '@/deps/trpc/react';
+// TODO: Replace this import with the new tRPC React client for the refactored couponRouter when integrated into the main app.
+// import { api } from '@/deps/trpc/react';
+// For now, this is a placeholder to indicate where the new API would be used.
 import {
 	Actions,
 	ActionsLabel,
@@ -18,41 +20,48 @@ import {
 	List
 } from '@/global/components/list';
 import { Spinner } from '@/global/components/spinner';
-import { ListCouponsItemDTO } from '../api/procedures/list';
+import { type Coupon } from '../../../domain/entities/coupon.entity';
 
-const CouponRowActions: FC<{ data: ListCouponsItemDTO }> = ({ data }) => {
-	const utils = api.useUtils();
-	const { mutateAsync: deleteCoupon, isPending } =
-		api.coupon.delete.useMutation();
+// CouponsList and CouponRowActions are now presentational components.
+// They accept data and mutation functions as props, ready for integration with the new tRPC client or any data source.
+
+interface CouponRowActionsProps {
+	data: Coupon;
+	onDelete: (id: string) => Promise<void>;
+	isPending: boolean;
+}
+
+const CouponRowActions: FC<CouponRowActionsProps> = ({
+	data,
+	onDelete,
+	isPending
+}) => {
+	const isDisabled = data.creatorByEmail !== null || (data.uses ?? 0) > 0;
 
 	const handleDelete = async () => {
-		try {
-			await deleteCoupon({ id: data.id });
-		} catch (error) {
-			console.error(error);
-		} finally {
-			await utils.coupon.list.invalidate();
-		}
+		await onDelete(data.id);
 	};
 
-	const isDisabled = data.creatorByEmail !== null || data.uses > 0;
-
 	return (
-		<>
-			<Button
-				variant="solid-weak"
-				theme="danger"
-				onClick={handleDelete}
-				singleIcon="trash"
-				size="sm"
-				loading={isPending}
-				disabled={isDisabled}
-			/>
-		</>
+		<Button
+			variant="solid-weak"
+			theme="danger"
+			onClick={handleDelete}
+			singleIcon="trash"
+			size="sm"
+			loading={isPending}
+			disabled={isDisabled}
+		/>
 	);
 };
 
-const CouponItem: FC<{ coupon: ListCouponsItemDTO }> = ({ coupon }) => {
+interface CouponItemProps {
+	coupon: Coupon;
+	onDelete: (id: string) => Promise<void>;
+	isPending: boolean;
+}
+
+const CouponItem: FC<CouponItemProps> = ({ coupon, onDelete, isPending }) => {
 	const isExpired =
 		coupon.expiresAt && coupon.expiresAt.getTime() < new Date().getTime();
 
@@ -68,8 +77,8 @@ const CouponItem: FC<{ coupon: ListCouponsItemDTO }> = ({ coupon }) => {
 
 	const usesString =
 		coupon.maxUses === 0
-			? `${coupon.uses} / Unlimited`
-			: `${coupon.uses} / ${coupon.maxUses}`;
+			? `${coupon.uses ?? 0} / Unlimited`
+			: `${coupon.uses ?? 0} / ${coupon.maxUses}`;
 
 	return (
 		<Item key={coupon.id}>
@@ -85,15 +94,29 @@ const CouponItem: FC<{ coupon: ListCouponsItemDTO }> = ({ coupon }) => {
 				</Data>
 			</Content>
 			<Actions>
-				<CouponRowActions data={coupon} />
+				<CouponRowActions
+					data={coupon}
+					onDelete={onDelete}
+					isPending={isPending}
+				/>
 			</Actions>
 		</Item>
 	);
 };
 
-export const CouponsList = () => {
-	const { data, isLoading } = api.coupon.list.useQuery();
+interface CouponsListProps {
+	coupons: Coupon[];
+	isLoading: boolean;
+	onDelete: (id: string) => Promise<void>;
+	isPending: boolean;
+}
 
+export const CouponsList: FC<CouponsListProps> = ({
+	coupons,
+	isLoading,
+	onDelete,
+	isPending
+}) => {
 	return (
 		<List>
 			<Labels>
@@ -105,7 +128,7 @@ export const CouponsList = () => {
 				<ActionsLabel />
 			</Labels>
 
-			{(!data || isLoading) && (
+			{isLoading && (
 				<Item>
 					<Data>
 						<Spinner absolutelyCentered />
@@ -113,25 +136,35 @@ export const CouponsList = () => {
 				</Item>
 			)}
 
-			{data && (
+			{coupons && (
 				<Items>
-					{data
+					{coupons
 						.filter((coupon) => !coupon.creatorByEmail)
-						.map((coupon) => {
-							return <CouponItem key={coupon.id} coupon={coupon} />;
-						})}
+						.map((coupon) => (
+							<CouponItem
+								key={coupon.id}
+								coupon={coupon}
+								onDelete={onDelete}
+								isPending={isPending}
+							/>
+						))}
 				</Items>
 			)}
 
 			<Annotation>User-generated coupons</Annotation>
 
-			{data && (
+			{coupons && (
 				<Items>
-					{data
+					{coupons
 						.filter((coupon) => coupon.creatorByEmail)
-						.map((coupon) => {
-							return <CouponItem key={coupon.id} coupon={coupon} />;
-						})}
+						.map((coupon) => (
+							<CouponItem
+								key={coupon.id}
+								coupon={coupon}
+								onDelete={onDelete}
+								isPending={isPending}
+							/>
+						))}
 				</Items>
 			)}
 		</List>

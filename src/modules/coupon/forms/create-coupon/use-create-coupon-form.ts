@@ -29,7 +29,16 @@ export const useCreateCouponForm = () => {
 
 	// Form submission
 	const onValid: SubmitHandler<TCouponCreateSchema> = async (data) => {
-		await createCoupon(data);
+		// Ensure required fields for API
+		const payload = {
+			code: data.code ?? '', // Provide a default or handle error if needed
+			maxUses: data.maxUses && data.maxUses > 0 ? data.maxUses : 1,
+			discountPercent: data.discountPercent,
+			discountAmount: data.discountAmount,
+			expiresAt: data.expiresAt ?? null,
+			creatorByEmail: undefined // or null if needed
+		};
+		await createCoupon(payload);
 		utils.coupon.list.invalidate();
 		closeDialog();
 	};

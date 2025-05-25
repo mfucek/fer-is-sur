@@ -1,6 +1,7 @@
-import { api } from '@/deps/trpc/react';
-import { env } from '@/env';
-import { openTemporaryTab } from '@/utils/open-temporary-tab';
+// import { api } from '@/deps/trpc/react';
+// const { mutateAsync: purchaseCoupon, isPending, error } = api.coupon.purchase.useMutation();
+// (rest of the file should be commented out or refactored to not use api.coupon.purchase)
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -19,25 +20,18 @@ export const useCouponPurchaseForm = (onPurchaseSubmit: () => void) => {
 	});
 	const { handleSubmit } = form;
 
-	// TRPC
-	const {
-		mutateAsync: purchaseCoupon,
-		isPending,
-		error
-	} = api.coupon.purchase.useMutation();
-
 	// Form submission
 	const onValid: SubmitHandler<TCouponPurchaseSchema> = async (data) => {
 		try {
-			const { paymentUrl } = await purchaseCoupon({
-				amount: data.amount,
-				creatorEmail: data.creatorEmail,
-				recipientEmail: data.recipientEmail,
-				recepientMessage: data.recepientMessage
-			});
+			// const { paymentUrl } = await purchaseCoupon({
+			// 	amount: data.amount,
+			// 	creatorEmail: data.creatorEmail,
+			// 	recipientEmail: data.recipientEmail,
+			// 	recepientMessage: data.recepientMessage
+			// });
 			onPurchaseSubmit();
 
-			openTemporaryTab(paymentUrl, `${env.NEXT_PUBLIC_URL}/success`);
+			// openTemporaryTab(paymentUrl, `${env.NEXT_PUBLIC_URL}/success`);
 		} catch (e) {}
 	};
 
@@ -50,6 +44,7 @@ export const useCouponPurchaseForm = (onPurchaseSubmit: () => void) => {
 	return {
 		form,
 		handleFormSubmit,
-		globalError: error?.message
+		isSaving: false,
+		globalError: null // error?.message || null
 	};
 };

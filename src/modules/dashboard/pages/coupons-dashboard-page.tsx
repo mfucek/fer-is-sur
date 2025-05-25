@@ -1,5 +1,5 @@
-import { CouponsList } from '@/modules/coupon/components/coupons-list';
 import { CreateCouponButton } from '@/modules/coupon/components/create-coupon-button';
+import { CouponsListContainer } from '@/presentation/app/components/coupons-list-container';
 import { DashboardHeader } from '../components/dashboard-header';
 
 export const CouponsDashboardPage = () => {
@@ -12,7 +12,7 @@ export const CouponsDashboardPage = () => {
 			</div>
 
 			<div className="container-md pad-sm flex flex-col gap-10">
-				<CouponsList />
+				<CouponsListContainer />
 			</div>
 		</>
 	);

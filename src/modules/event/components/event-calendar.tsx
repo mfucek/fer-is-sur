@@ -1,6 +1,6 @@
 import { Button, ButtonProps, buttonVariants } from '@/deps/shadcn/ui/button';
 import { cn } from '@/deps/shadcn/utils';
-import { api } from '@/deps/trpc/react';
+// import { api } from '@/deps/trpc/react';
 import { Icon } from '@/global/components/icon';
 import { useViewport } from '@/utils/use-viewport';
 import {
@@ -28,14 +28,13 @@ export const EventCalendar: FC<{
 }> = ({ onEventSelect }) => {
 	const { isMobile } = useViewport();
 
-	const { mutateAsync: getEventDates, data: eventsNearScope } =
-		api.event.getEventDates.useMutation();
+	// const { mutateAsync: getEventDates, data: eventsNearScope } = api.event.getEventDates.useMutation();
 
 	const [currentMonthState, setCurrentMonthState] =
 		useState<Date>(getCurrentMonth());
 
 	useEffect(() => {
-		getEventDates({ monthDate: currentMonthState.getTime() });
+		// getEventDates({ monthDate: currentMonthState.getTime() });
 	}, [currentMonthState]);
 
 	const buttonSize = isMobile ? 'md' : 'md';
@@ -84,9 +83,7 @@ export const EventCalendar: FC<{
 						const isOutsideCurrentMonth = !isSameMonth(date, displayMonth);
 						const isBeforeToday = isBefore(date, subDays(new Date(), 1));
 
-						const hasEvents = eventsNearScope?.some((event) =>
-							isSameDay(date, new Date(event.date))
-						);
+						const hasEvents = false; // eventsNearScope?.some((event) => isSameDay(date, new Date(event.date)));
 
 						let variant: ButtonProps['variant'] = 'ghost';
 						let theme: ButtonProps['theme'] = 'neutral';
@@ -149,9 +146,7 @@ export const EventCalendar: FC<{
 								style={{ opacity }}
 								onClick={() => {
 									if (hasEvents && !isBeforeToday) {
-										const event = eventsNearScope?.find((event) =>
-											isSameDay(date, new Date(event.date))
-										);
+										const event = false; // eventsNearScope?.find((event) => isSameDay(date, new Date(event.date)));
 
 										if (event) {
 											onEventSelect(event);

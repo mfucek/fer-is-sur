@@ -3,7 +3,7 @@
 import { type FC } from 'react';
 
 import { Button } from '@/deps/shadcn/ui/button';
-import { api } from '@/deps/trpc/react';
+import { User } from '@/domain/entities/user.entity';
 import {
 	Actions,
 	ActionsLabel,
@@ -16,6 +16,7 @@ import {
 	List
 } from '@/global/components/list';
 import { Spinner } from '@/global/components/spinner';
+import { api } from '@/presentation/api/trpc/react';
 import { ListUsersItemDTO } from '../api/procedures/list';
 
 const UserRowActions: FC<{ data: ListUsersItemDTO }> = ({ data }) => {
@@ -24,7 +25,7 @@ const UserRowActions: FC<{ data: ListUsersItemDTO }> = ({ data }) => {
 
 	const handleDelete = async () => {
 		try {
-			await deleteUser({ id: data.id });
+			await deleteUser(data.id);
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -65,7 +66,7 @@ export const UsersList = () => {
 				)}
 
 				{data &&
-					data.map((user) => {
+					data.map((user: User) => {
 						return (
 							<Item key={user.id}>
 								<Content>

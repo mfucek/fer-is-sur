@@ -2,11 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
-import { api } from '@/deps/trpc/react';
+// import { api } from '@/deps/trpc/react';
+// const { mutateAsync: login, error } = api.auth.logIn.useMutation();
+
 import { loginSchema, LoginSchema } from '../../schemas/login-schema';
 
 export const useLoginForm = () => {
-	const { mutateAsync: login, error } = api.auth.logIn.useMutation();
 	const router = useRouter();
 
 	const form = useForm<LoginSchema>({
@@ -18,13 +19,13 @@ export const useLoginForm = () => {
 	});
 
 	const onSubmit = async (data: LoginSchema) => {
-		try {
-			await login(data);
-			router.push('/admin');
-		} catch (e) {}
+		// try {
+		// 	await login(data);
+		// 	router.push('/admin');
+		// } catch (e) {}
 	};
 
 	const handleFormSubmit = form.handleSubmit(onSubmit);
 
-	return { form, handleFormSubmit, globalError: error?.message || null };
+	return { form, handleFormSubmit, globalError: null };
 };

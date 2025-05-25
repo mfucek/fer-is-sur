@@ -1,3 +1,3 @@
-import { trpcApiHandler } from '@/deps/trpc/api';
+import { GET, POST } from '@/presentation/api/trpc/[trpc]';
 
-export { trpcApiHandler as GET, trpcApiHandler as POST };
+export { GET, POST };
